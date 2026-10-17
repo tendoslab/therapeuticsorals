@@ -22,6 +22,8 @@
   const SOURCES = [
     { id: '2025', label: '2025 orals' },
     { id: 'Mock 2025', label: '2025 YO mock orals' },
+    { id: 'Anterior notes', label: '2025 anterior notes' },
+    { id: 'Posterior notes', label: '2025 posterior notes' },
     { id: 'Case studies 2022', label: '2022 case studies' },
     { id: 'YO mock', label: 'YO mock orals (2022 notes)' },
     { id: '2019', label: '2019 orals' },
