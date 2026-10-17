@@ -16,6 +16,8 @@ Open `index.html` in a browser, or host the folder on GitHub Pages (Settings →
   - `viva`: answer out loud, then tick the key points you covered.
 - **Recall Bank**: every topic by year, with a link to practise each case.
 - **Answer Audit**: specific student answers from the recalls, checked and corrected against Australian practice. The same corrections appear inside the matching case steps as "Recall check" boxes.
+- **Source filter**: limit cases to a given exam (2025, 2019 or 2018 orals, or the 2025 mock orals); every case shows its source badges.
+- Sessions are never locked: jump to any tab, then resume from the dashboard, skip a question, or end early and see results.
 - Progress (missed cases) is stored in the browser's `localStorage`.
 
 ## Adding or editing cases

@@ -51,8 +51,36 @@ function poolFilter(c) {
     if (state.pool === 'missed') return p && p.last < PASS_PCT;
     return true;
 }
+// Where each case came from (matches the `years` field on every case)
+const SOURCES = [
+    { id: '2025', label: '2025 orals' },
+    { id: '2019', label: '2019 orals' },
+    { id: '2018', label: '2018 orals' },
+    { id: 'Mock 2025', label: '2025 mock orals' }
+];
+function sourceLabel(id) {
+    const s = SOURCES.find(x => x.id === id);
+    return s ? s.label : id;
+}
+function sourceMatch(c) {
+    return state.source === 'all' || (c.years || []).includes(state.source);
+}
+function inScope(c) {
+    return state.selectedCategories.includes(c.category) && sourceMatch(c);
+}
 function availableCases() {
-    return allCases.filter(c => state.selectedCategories.includes(c.category) && poolFilter(c));
+    return allCases.filter(c => inScope(c) && poolFilter(c));
+}
+function sourceChip(id, label) {
+    const active = state.source === id;
+    const n = id === 'all' ? allCases.length : allCases.filter(c => (c.years || []).includes(id)).length;
+    return `<button onclick="setSource('${id}')" class="px-4 py-2 rounded-full text-sm font-bold transition-all ${active ? 'border-2 border-blue-700 bg-blue-50 text-blue-800' : 'border border-slate-200 bg-white text-slate-600 hover:bg-slate-50'}">${label} <span class="font-medium ${active ? 'text-blue-600' : 'text-slate-400'}">${n}</span></button>`;
+}
+function sourceChips() {
+    return sourceChip('all', 'All sources') + SOURCES.map(x => sourceChip(x.id, x.label)).join('');
+}
+function sourceBadges(caseData, size = 'xs') {
+    return (caseData.years || []).map(y => `<span class="px-2 py-0.5 bg-white border border-slate-200 rounded-full text-${size} font-bold text-slate-500 whitespace-nowrap">${sourceLabel(y)}</span>`).join(' ');
 }
 
 // --- APPLICATION STATE ---
@@ -60,6 +88,7 @@ let state = {
     view: 'start', // start | case-intro | question | feedback | end | bank | corrections | guide
     selectedCategories: categories.map(c => c.id),
     pool: 'all',
+    source: 'all',
     selectedCaseCount: 5,
     mode: 'practice',
     score: 0
@@ -76,12 +105,15 @@ const timerEl = document.getElementById('timer-display');
 const navEl = document.getElementById('main-nav');
 
 // --- RENDER ROUTER ---
-function render() {
-    const inSession = ['case-intro', 'question', 'feedback'].includes(state.view);
-    sessionStatus.classList.toggle('hidden', !inSession);
-    sessionStatus.classList.toggle('flex', inSession);
-    navEl.classList.toggle('hidden', inSession);
+const SESSION_VIEWS = ['case-intro', 'question', 'feedback'];
+
+// keepScroll: re-render in place (dashboard controls) instead of jumping to the top
+function render(opts = {}) {
+    const active = session && !session.finished;
+    sessionStatus.classList.toggle('hidden', !active);
+    sessionStatus.classList.toggle('flex', !!active);
     currentScoreEl.innerText = session ? session.score : 0;
+    document.getElementById('header-resume').classList.toggle('hidden', SESSION_VIEWS.includes(state.view));
     navEl.innerHTML = buildNav();
 
     const views = {
@@ -94,36 +126,57 @@ function render() {
         'corrections': buildCorrections,
         'guide': buildExamGuide
     };
+    const y = window.scrollY;
     appContainer.innerHTML = views[state.view]();
-    window.scrollTo({ top: 0 });
+    window.scrollTo({ top: opts.keepScroll ? y : 0 });
 }
 
 function buildNav() {
     const items = [['start', 'Practice'], ['bank', 'Recall Bank'], ['corrections', 'Answer Audit'], ['guide', 'Exam Guide']];
     return items.map(([view, label]) => {
-        const active = state.view === view;
+        const active = state.view === view || (view === 'start' && SESSION_VIEWS.includes(state.view));
         return `<button onclick="navigate('${view}')" class="nav-btn px-3 py-2 rounded-lg transition-colors ${active ? 'bg-blue-900 text-white' : 'text-slate-600 hover:bg-slate-100'}">${label}</button>`;
     }).join('');
 }
 
+// Leaving a session never loses it: it is parked and can be resumed from the dashboard.
+function parkSession() {
+    if (!session) return;
+    if (session.finished) { session = null; return; }
+    if (SESSION_VIEWS.includes(state.view)) session.resumeView = state.view;
+}
 function navigate(view) {
+    parkSession();
     state.view = view;
     render();
 }
-function goHome() {
-    if (session && !confirm('Leave the current session? Progress on this session will be lost.')) return;
-    endTimer();
-    session = null;
-    state.view = 'start';
+function goHome() { navigate('start'); }
+function resumeSession() {
+    if (!session) return;
+    state.view = session.resumeView || 'case-intro';
     render();
 }
-function quitSession() { goHome(); }
+// End now and show results for whatever has been answered so far.
+function endSession() {
+    if (!session) return;
+    finishSession();
+}
+function discardSession() {
+    endTimer();
+    session = null;
+    render({ keepScroll: true });
+}
+function skipStep() {
+    if (currentStep().type === 'reveal') { advance(); return; }
+    session.last = { score: 0, skipped: true };
+    nextPhase();
+}
 
 // --- DASHBOARD ---
 function buildDashboard() {
     const categoryHTML = categories.map(cat => {
         const isSelected = state.selectedCategories.includes(cat.id);
-        const count = allCases.filter(c => c.category === cat.id).length;
+        const count = allCases.filter(c => c.category === cat.id && sourceMatch(c)).length;
         const activeClasses = isSelected ? `${cat.classBase} ${cat.classBase}-active` : `border-slate-200 bg-white hover:border-slate-300`;
         const checkIcon = isSelected
             ? `<div class="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-white flex-shrink-0"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div>`
@@ -147,9 +200,9 @@ function buildDashboard() {
     if (state.selectedCaseCount === 0 && max > 0) state.selectedCaseCount = 1;
 
     const counts = {
-        all: allCases.filter(c => state.selectedCategories.includes(c.category)).length,
-        new: allCases.filter(c => state.selectedCategories.includes(c.category) && !progress[c.id]).length,
-        missed: allCases.filter(c => state.selectedCategories.includes(c.category) && progress[c.id] && progress[c.id].last < PASS_PCT).length
+        all: allCases.filter(inScope).length,
+        new: allCases.filter(c => inScope(c) && !progress[c.id]).length,
+        missed: allCases.filter(c => inScope(c) && progress[c.id] && progress[c.id].last < PASS_PCT).length
     };
     const poolBtn = (id, label) => {
         const active = state.pool === id;
@@ -158,18 +211,33 @@ function buildDashboard() {
             <div class="text-xs text-slate-500 font-medium">${counts[id]}</div>
         </button>`;
     };
+    const resumeBanner = session && !session.finished ? `
+        <div class="bg-blue-50 border-2 border-blue-200 p-4 rounded-xl mb-6 flex flex-wrap gap-3 justify-between items-center">
+            <div>
+                <div class="font-bold text-blue-900">${session.mode === 'mock' ? 'Mock oral' : 'Practice session'} in progress</div>
+                <div class="text-sm text-blue-800">Case ${session.caseIdx + 1} of ${session.cases.length} · ${session.cases[session.caseIdx].data.title}${session.mode === 'mock' ? ' · the clock is still running' : ''}</div>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="resumeSession()" class="bg-blue-800 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded-lg text-sm">Resume</button>
+                <button onclick="endSession()" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-2 px-4 rounded-lg text-sm">See results</button>
+                <button onclick="discardSession()" class="text-slate-400 hover:text-red-600 font-bold py-2 px-2 text-sm">Discard</button>
+            </div>
+        </div>` : '';
     const anteriorAvail = avail.filter(c => getCategory(c.category).half === 'anterior').length;
     const posteriorAvail = avail.filter(c => getCategory(c.category).half === 'posterior').length;
     const mockReady = anteriorAvail > 0 && posteriorAvail > 0;
 
     return `
         <div class="w-full max-w-6xl mx-auto mt-2 fade-in">
-            <div class="bg-white border border-slate-200 p-4 rounded-xl mb-6 flex flex-wrap gap-2 justify-between items-center shadow-sm">
-                <div class="flex items-center gap-3">
-                    <span class="text-xl">🩺</span>
-                    <span class="font-bold text-slate-700">Case selector</span>
+            ${resumeBanner}
+            <div class="bg-white border border-slate-200 p-4 sm:p-5 rounded-xl mb-6 shadow-sm">
+                <div class="flex flex-wrap gap-2 justify-between items-center mb-3">
+                    <div class="text-xs font-bold text-slate-500 uppercase tracking-wider">Source</div>
+                    <span class="text-xs text-slate-400">Which exam a case was recalled from — applies to practice and mock orals</span>
                 </div>
-                <span class="text-sm text-slate-500">${allCases.length} cases built from 2018, 2019 & 2025 recalls + 2025 mock orals</span>
+                <div class="flex flex-wrap gap-2">
+                    ${sourceChips()}
+                </div>
             </div>
 
             <div class="flex flex-col lg:flex-row gap-8 items-start">
@@ -208,15 +276,15 @@ function buildDashboard() {
                             </div>
                             <div class="flex items-center gap-3 mb-6 bg-slate-50 p-2 rounded-xl border border-slate-200">
                                 <button onclick="setCaseCount(state.selectedCaseCount - 1)" class="w-10 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center font-bold text-slate-600 hover:bg-slate-100 shadow-sm">-</button>
-                                <div class="flex-1 text-center font-extrabold text-3xl text-blue-900">${state.selectedCaseCount}</div>
+                                <div id="case-count" class="flex-1 text-center font-extrabold text-3xl text-blue-900">${state.selectedCaseCount}</div>
                                 <button onclick="setCaseCount(state.selectedCaseCount + 1)" class="w-10 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center font-bold text-slate-600 hover:bg-slate-100 shadow-sm">+</button>
                                 <button onclick="setCaseCount(${max})" class="px-3 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center font-bold text-xs text-slate-600 hover:bg-slate-100 uppercase shadow-sm">Max</button>
                             </div>
-                            <input type="range" min="1" max="${Math.max(1, max)}" value="${Math.max(1, state.selectedCaseCount)}" class="w-full accent-blue-900" onchange="setCaseCount(parseInt(this.value))" aria-label="Number of cases">
+                            <input type="range" min="1" max="${Math.max(1, max)}" value="${Math.max(1, state.selectedCaseCount)}" id="case-slider" class="w-full accent-blue-900" oninput="setCaseCount(parseInt(this.value))" aria-label="Number of cases">
                         </div>
                         <button onclick="startQuiz()" class="w-full bg-[#0a192f] hover:bg-[#112240] text-white font-bold py-4 rounded-xl transition-all shadow-lg flex items-center justify-center gap-3 ${max === 0 ? 'opacity-50 cursor-not-allowed' : ''}" ${max === 0 ? 'disabled' : ''}>
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6z"></path></svg>
-                            Start practice — ${state.selectedCaseCount} case${state.selectedCaseCount === 1 ? '' : 's'}
+                            <span id="start-label">${startLabel(state.selectedCaseCount)}</span>
                         </button>
                         ${Object.keys(progress).length ? `<button onclick="resetProgress()" class="w-full mt-3 text-xs font-bold text-slate-400 hover:text-red-600">Reset my progress</button>` : ''}
                     </div>
@@ -231,22 +299,29 @@ function toggleCategory(catId) {
     } else {
         state.selectedCategories.push(catId);
     }
-    render();
+    render({ keepScroll: true });
 }
 function selectAllCategories(on) {
     state.selectedCategories = on ? categories.map(c => c.id) : [];
-    render();
+    render({ keepScroll: true });
 }
 function setPool(pool) {
     state.pool = pool;
-    render();
+    render({ keepScroll: true });
 }
+function setSource(source) {
+    state.source = source;
+    render({ keepScroll: true });
+}
+function startLabel(n) { return `Start practice — ${n} case${n === 1 ? '' : 's'}`; }
+// Updates the counter in place, so dragging the slider never re-draws or jumps the page.
 function setCaseCount(val) {
     const max = availableCases().length;
-    if (val >= 1 && val <= max) {
-        state.selectedCaseCount = val;
-        render();
-    }
+    if (!(val >= 1 && val <= max)) return;
+    state.selectedCaseCount = val;
+    document.getElementById('case-count').innerText = val;
+    document.getElementById('case-slider').value = val;
+    document.getElementById('start-label').innerText = startLabel(val);
 }
 function resetProgress() {
     if (!confirm('Clear your saved attempts and missed-case list?')) return;
@@ -345,7 +420,6 @@ function buildCaseIntro() {
     const caseData = entry.data;
     const cat = getCategory(caseData.category);
     const isBonus = session.mode === 'mock' && session.caseIdx >= session.bonusFrom;
-    const years = (caseData.years || []).map(y => `<span class="px-2 py-0.5 bg-white border border-slate-200 rounded-full text-xs font-bold text-slate-500">${y}</span>`).join(' ');
     return `
         <div class="glass-panel p-6 sm:p-10 rounded-2xl w-full max-w-3xl fade-in mt-4">
             <div class="flex flex-wrap items-center gap-2 mb-4">
@@ -353,7 +427,7 @@ function buildCaseIntro() {
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Case ${session.caseIdx + 1} of ${session.cases.length}${isBonus ? ' · Bonus — time permitting' : ''}</span>
             </div>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800 mb-2 leading-tight">${caseData.title}</h2>
-            <div class="flex flex-wrap items-center gap-2 mb-6"><span class="text-xs text-slate-400 font-semibold">Seen in recalls:</span> ${years}</div>
+            <div class="flex flex-wrap items-center gap-2 mb-6"><span class="text-xs text-slate-400 font-semibold">Source:</span> ${sourceBadges(caseData)}</div>
 
             <div class="bg-slate-50 p-6 rounded-xl border-l-4 border-blue-600 mb-6">
                 <h3 class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-2">${examinerFor(caseData)} says</h3>
@@ -447,6 +521,7 @@ function buildQuestionScreen() {
 
     return `
         <div class="w-full max-w-4xl fade-in mt-2">
+            ${sessionToolbar(true)}
             <div class="mb-6">
                 <div class="flex justify-between text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider gap-4">
                     <span class="truncate">${caseData.title}</span>
@@ -466,6 +541,19 @@ function buildQuestionScreen() {
                 ${interactionHTML}
             </div>
         </div>`;
+}
+
+// Always-visible way out: park the session, skip the question, or end and see results.
+function sessionToolbar(canSkip) {
+    const caseData = session.cases[session.caseIdx].data;
+    return `<div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div class="flex flex-wrap items-center gap-1">${sourceBadges(caseData)}</div>
+        <div class="flex items-center gap-1 text-xs font-bold">
+            <button onclick="goHome()" class="px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100">← Dashboard</button>
+            ${canSkip ? '<button onclick="skipStep()" class="px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100">Skip question</button>' : ''}
+            <button onclick="endSession()" class="px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100">End & see results</button>
+        </div>
+    </div>`;
 }
 
 function continueReveal() {
@@ -578,7 +666,9 @@ function buildFeedbackScreen() {
     const btnText = isLastStep ? (session.caseIdx >= session.cases.length - 1 ? 'Finish' : 'Next case') : 'Next question';
 
     return `
-        <div class="glass-panel p-6 sm:p-10 rounded-2xl w-full max-w-3xl fade-in mt-2">
+        <div class="w-full max-w-3xl fade-in mt-2">
+        ${sessionToolbar(false)}
+        <div class="glass-panel p-6 sm:p-10 rounded-2xl w-full">
             <div class="text-center">${header}</div>
             <p class="text-sm font-semibold text-slate-500 mb-4">${stepData.question}</p>
             ${body}
@@ -595,6 +685,7 @@ function buildFeedbackScreen() {
                 ${btnText}
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </button>
+        </div>
         </div>`;
 }
 
@@ -636,14 +727,16 @@ function completeCase(entry) {
 
 function finishSession() {
     endTimer();
+    session.finished = true;
     state.view = 'end';
     render();
 }
 
 // --- END SCREEN ---
 function buildEndScreen() {
-    const attempted = session.cases.filter(e => e.done || e.stepScores.length);
-    const maxScore = attempted.reduce((acc, e) => acc + caseMax(e.data), 0);
+    // Unfinished cases only count the questions actually reached
+    const answeredMax = e => e.done ? caseMax(e.data) : e.stepScores.filter(x => x !== undefined).length * 10;
+    const maxScore = session.cases.reduce((acc, e) => acc + answeredMax(e), 0);
     const pct = maxScore ? Math.round(100 * session.score / maxScore) : 0;
     let finalMessage, emoji;
     if (pct >= 90) { finalMessage = 'Excellent. Safe, structured and you could justify your choices — exactly what the panel wants.'; emoji = '🏆'; }
@@ -661,6 +754,7 @@ function buildEndScreen() {
                 <div>
                     <span class="inline-block px-2 py-0.5 font-bold text-[10px] rounded-full uppercase tracking-wider badge-${cat.id}">${cat.title}</span>
                     <div class="font-bold text-slate-800 mt-1">${e.data.title}</div>
+                    <div class="flex flex-wrap gap-1 mt-1">${sourceBadges(e.data)}</div>
                 </div>
                 <div class="font-extrabold text-blue-800 flex-shrink-0">${status}</div>
             </div>
@@ -698,7 +792,8 @@ function resetGame() {
 function buildRecallBank() {
     const years = [...new Set(allCases.flatMap(c => c.years || []))].sort();
     const sections = categories.map(cat => {
-        const cases = allCases.filter(c => c.category === cat.id);
+        const cases = allCases.filter(c => c.category === cat.id && sourceMatch(c));
+        if (!cases.length) return '';
         const rows = cases.map(c => {
             const p = progress[c.id];
             const cells = years.map(y => `<td class="px-2 py-2 text-center">${(c.years || []).includes(y) ? '●' : '<span class="text-slate-200">·</span>'}</td>`).join('');
@@ -719,6 +814,7 @@ function buildRecallBank() {
     }).join('');
     return `<div class="w-full max-w-5xl fade-in">
         <h2 class="text-2xl font-extrabold text-slate-800 mb-2">Recall Bank</h2>
+        <div class="flex flex-wrap gap-2 mb-4">${sourceChips()}</div>
         <p class="text-slate-500 mb-6 text-sm">Every topic that appeared in the 2018, 2019 and 2025 recalls (plus the 2025 mock orals), sorted by topic. ● = that topic was examined that year. Jump straight into any case.</p>
         ${sections}
     </div>`;
