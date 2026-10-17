@@ -279,8 +279,14 @@ table.t td.c, table.t th.c { text-align: center; }
 
 /* ---------- recall bank / audit / guide ---------- */
 .hue-top { border-top: 4px solid hsl(var(--h) 65% var(--tint-mid)); }
-.bank-table td:first-child { min-width: 14rem; }
-.bank-table .btn { white-space: nowrap; }
+/* Short headers that wrap, tight cells and a clickable title in place of a button column keep
+   all the source columns in view on a laptop screen; narrow phones still scroll sideways. */
+.bank-table th, .bank-table td { padding: .45rem .25rem; }
+.bank-table th.c { font-size: .64rem; letter-spacing: .02em; line-height: 1.25; min-width: 3.2rem; max-width: 4.6rem; }
+.bank-table td:first-child { min-width: 13rem; width: 30%; padding-left: .5rem; }
+.case-link { all: unset; cursor: pointer; color: var(--ink); }
+.case-link:hover b, .case-link:focus-visible b { color: var(--accent); text-decoration: underline; }
+.case-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
 .dotyes { color: var(--accent); font-weight: 800; }
 .dotno { color: var(--line); }
 .audit { display: flex; flex-direction: column; gap: .35rem; }
