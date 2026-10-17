@@ -32,9 +32,9 @@ window.CASES.push(
                 question: 'How would Posner–Schlossman syndrome differ from this presentation?',
                 options: [
                     'PSS: open angle, white or mildly injected eye, a few fine KPs, minimal cells, normal pupil, recurrent unilateral spikes in a younger adult; only mild discomfort.',
-                    'PSS: closed angle, fixed dilated pupil, severe pain and vomiting — it only differs by being bilateral.',
-                    'PSS: posterior synechiae and a miotic pupil with hypopyon.',
-                    'PSS: IOP is normal; the cornea is clear and the eye is very red.'
+                    'PSS: closed angle on gonioscopy, mid-dilated pupil and marked corneal oedema like AAC, but the spikes are bilateral and occur in older hyperopic women; pain is usually severe.',
+                    'PSS: open angle with a dense AC reaction (3+ cells), posterior synechiae and a miotic pupil; recurrent spikes in children, usually with photophobia and a hypopyon.',
+                    'PSS: normal IOP between and during attacks, a very red eye with diffuse injection and mucopurulent discharge; mostly in elderly patients after cataract surgery.'
                 ],
                 answer: 0,
                 explain: 'PSS (glaucomatocyclitic crisis) gives recurrent unilateral IOP spikes (often 40–60 mmHg) with an <strong>open angle</strong>, minimal discomfort, a few fine KPs and very little AC reaction — usually in adults aged 20–50. CMV is implicated, especially in Asian patients. Gonioscopy (open angle) is the key separator from AAC.'
@@ -44,10 +44,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'The cornea is too hazy to view the left angle. What is your quickest way to support the diagnosis?',
                 options: [
-                    'Indentation gonioscopy on the inflamed left eye straight away.',
+                    'Indentation gonioscopy on the affected (left) eye straight away.',
                     'Van Herick and gonioscopy on the FELLOW (right) eye.',
-                    'Instil pilocarpine 2% to clear the cornea, then do gonioscopy.',
-                    'Dilate the right eye to compare pupil reactions.'
+                    'Wait for timolol to clear the cornea, then gonioscope the left eye.',
+                    'Dilate the right eye and compare the depth of the two chambers.'
                 ],
                 answer: 1,
                 critical: true,
@@ -98,10 +98,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'How do you get oral acetazolamide (Diamox) for this patient in Australia?',
                 options: [
-                    'Write the prescription yourself — it is on the optometry list.',
-                    'Ask the community pharmacist to supply it without a prescription.',
+                    'Prescribe it yourself on an optometry script: oral acetazolamide 500 mg is on the endorsed optometrist list for glaucoma emergencies, so give the script while you start topical first aid.',
+                    'Ask the community pharmacist to supply it over the counter as a Pharmacist Only medicine; acetazolamide 250 mg tablets don’t need a prescription when the optometrist documents the IOP.',
                     'Contact a medical practitioner (on-call ophthalmology registrar, ED or the patient\'s GP) to prescribe or give it, while you start topical first aid — or send the patient to ED.',
-                    'It is not needed if topical drops are used.'
+                    'Skip it: if timolol, brimonidine and a topical CAI are all given, oral acetazolamide adds nothing, so there is no need to involve a doctor before transfer.'
                 ],
                 answer: 2,
                 explain: 'Endorsed optometrists in Australia prescribe <strong>topical</strong> ocular medicines. Oral acetazolamide (S4) needs a medical prescriber; a pharmacist can\'t supply it without a prescription. Phone the ophthalmology registrar or ED, start topical first aid and arrange urgent transfer. Typical dose: 500 mg orally stat (two 250 mg tablets), or IV in ED.'
@@ -111,10 +111,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'She vomits the acetazolamide tablet. What will the hospital most likely do?',
                 options: [
-                    'Repeat the oral dose every 10 minutes.',
+                    'Repeat oral acetazolamide 500 mg every 10–15 minutes with an antiemetic until one dose stays down.',
                     'Give IV acetazolamide and/or IV mannitol (hyperosmotic), plus an antiemetic and analgesia.',
-                    'Give atropine to relax the ciliary body.',
-                    'Nothing more until the cornea clears by itself.'
+                    'Give atropine 1% to relax the ciliary body and an antiemetic, then repeat the oral tablet.',
+                    'Give IV prednisolone and pilocarpine 4% every 5 minutes until the cornea clears.'
                 ],
                 answer: 1,
                 explain: 'If oral acetazolamide can\'t be tolerated or is contraindicated, ED or ophthalmology use IV acetazolamide or IV mannitol (check cardiac and renal status — mannitol causes volume load), with an antiemetic and analgesia. AAC is often misdiagnosed in ED as migraine, gastroenteritis or an intracranial event because of the headache and vomiting.'
@@ -124,10 +124,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Why hold pilocarpine 2% at first, and what else must happen before you use it?',
                 options: [
-                    'It dilates the pupil; wait until the patient is in hospital.',
-                    'Above ~40 mmHg the iris sphincter is ischaemic and won\'t respond, and pilocarpine pulls the lens–iris diaphragm forward. Wait until IOP is below ~40 and ophthalmology has confirmed a pupil-block mechanism (not phacomorphic or aqueous misdirection).',
-                    'It permanently damages the ciliary body.',
-                    'It only works on open angles, so it is never used in AAC.'
+                    'Pilocarpine dilates the pupil at high IOP, deepening the closure, so wait until IOP is below ~20 mmHg and the fellow eye has had an LPI; no specialist input is needed if the fellow-eye angle is open.',
+                    'Above ~40 mmHg the sphincter is ischaemic and won’t respond, and pilocarpine pulls the lens–iris diaphragm forward. Wait until IOP is below ~40 and ophthalmology has confirmed a pupil-block mechanism.',
+                    'Above ~40 mmHg pilocarpine is absorbed too fast and causes systemic toxicity, so wait until IOP is below ~40; the only other requirement is that the patient has stopped vomiting and can lie flat.',
+                    'It is held only because it stings an oedematous cornea; once the cornea clears (usually within an hour of timolol) it can be used every 5 minutes without the ophthalmologist’s agreement or any other check.'
                 ],
                 answer: 1,
                 explain: 'Ischaemia (reduced blood flow) at high IOP paralyses the sphincter, so pilocarpine is useless until IOP falls. Ciliary muscle contraction also thickens the lens and moves it forward, which can <em>worsen</em> lens-related closure. Once IOP is below ~40 mmHg and ophthalmology agrees, pilocarpine 1–2% helps pull the iris out of the angle.',
@@ -163,7 +163,12 @@ window.CASES.push(
                 phase: '1. Next step',
                 type: 'mcq',
                 question: 'What is the single most important test now?',
-                options: ['Dilated fundus exam', 'Gonioscopy (with indentation)', 'Water-drinking test', 'Pachymetry'],
+                options: [
+                    'Dilated fundus exam (to check the discs)',
+                    'Gonioscopy (with indentation)',
+                    'Water-drinking provocative test',
+                    'Anterior segment pachymetry'
+                ],
                 answer: 1,
                 explain: 'Symptoms brought on in dim light in a hyperopic Asian woman suggest intermittent angle closure. Gonioscopy (with indentation, to tell appositional from synechial closure) is essential <strong>before</strong> any dilation.'
             },
@@ -178,9 +183,9 @@ window.CASES.push(
                 question: 'How would you classify each eye (ISGEO-style terms), assuming the discs and fields are normal?',
                 options: [
                     'R: primary angle-closure suspect (PACS); L: primary angle closure (PAC — raised IOP and/or PAS, no optic neuropathy).',
-                    'R: PAC; L: PACG.',
-                    'Both eyes: primary open-angle glaucoma.',
-                    'R: normal; L: acute angle closure.'
+                    'R: primary angle closure (PAC — occludable with raised IOP); L: primary angle-closure glaucoma (PACG — because PAS are present).',
+                    'R: normal (2 quadrants isn’t occludable); L: primary angle-closure suspect (PACS — PAS don’t change the stage without raised IOP).',
+                    'R: primary angle-closure suspect (PACS); L: chronic angle-closure glaucoma (PAS plus IOP 26 define glaucoma even with normal discs).'
                 ],
                 answer: 0,
                 explain: '<ul><li><strong>PACS</strong>: iridotrabecular contact (≥180° in recent definitions such as ZAP; ≥270° in the original ISGEO) with normal IOP, no PAS and no glaucomatous optic neuropathy.</li><li><strong>PAC</strong>: as above, plus raised IOP and/or PAS — but no optic neuropathy.</li><li><strong>PACG</strong>: PAC plus glaucomatous optic neuropathy.</li></ul>'
@@ -209,10 +214,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'The left eye is now PACG. What is the best plan?',
                 options: [
-                    'Observe — angle closure doesn\'t need treatment until there is an acute attack.',
+                    'Start pilocarpine 2% QID long-term in both eyes to keep the angles open and review in 3 months; LPI is only needed after an acute attack, and lens extraction isn’t indicated before cataract.',
                     'Refer to ophthalmology for LPI (both eyes) ± lens extraction; start IOP-lowering for the left eye (e.g. a PGA if not contraindicated) and set a target.',
-                    'Start pilocarpine 4% QID long-term as monotherapy.',
-                    'Dilate to assess the disc fully, then decide.'
+                    'Start latanoprost in the left eye and refer within 4 months under the OBA rule like POAG; LPI isn’t needed once a PGA controls the IOP, because PGAs bypass the closed angle.',
+                    'Dilate both eyes to assess the discs fully, then refer for SLT in both eyes, which opens appositional angles and avoids the need for LPI or lens extraction in PACG.'
                 ],
                 answer: 1,
                 explain: 'PACG needs the mechanism treated (LPI to relieve pupil block; lens extraction is often better per EAGLE) <strong>and</strong> the IOP controlled. PGAs work well in angle closure because they don\'t depend on the trabecular meshwork. Chronic pilocarpine isn\'t first-line. Say “provided there are no contraindications” and refer to ophthalmology, as angle-closure glaucoma is managed with them.'
@@ -222,10 +227,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'For the PACS right eye, the examiner asks what the ZAP trial means for you, and why a metro patient might be treated differently from a rural one.',
                 options: [
-                    'ZAP showed LPI in PACS greatly lowers risk, so every PACS eye must have LPI urgently.',
-                    'ZAP (Chinese PACS) found a statistically significant but small absolute benefit from LPI, so routine prophylaxis isn\'t needed. Treat if there are risk factors such as poor access to emergency eye care (rural/remote), need for frequent dilation, symptoms, fellow-eye attack or strong family history.',
-                    'ZAP showed lens extraction is better than LPI for PACS.',
-                    'ZAP is a glaucoma surgery trial and doesn\'t apply.'
+                    'ZAP (Chinese PACS) found LPI roughly halved progression to PAC and almost eliminated acute attacks, so every PACS eye should have prophylactic LPI; metro and rural patients are treated the same way.',
+                    'ZAP (Chinese PACS) found a real but small absolute benefit from LPI, so routine prophylaxis isn’t needed; treat with risk factors such as poor access to emergency care (rural), frequent dilation or a fellow-eye attack.',
+                    'ZAP (Indian PACS) found lens extraction beat LPI for PACS, so a metro patient should have early cataract surgery; a rural patient is simply observed, because they can’t attend the frequent post-operative reviews that surgery needs.',
+                    'ZAP (Chinese PAC with raised IOP) found LPI gave no benefit, so no PACS eye should be lasered; a rural patient is given pilocarpine to use if symptoms start, while a metro patient attends ED if needed.'
                 ],
                 answer: 1,
                 explain: 'ZAP: over ~6 years, few untreated PACS eyes progressed, so the number needed to treat was high. In metropolitan Sydney the patient can reach emergency ophthalmology quickly. A rural patient far from LPI and emergency care has a stronger case for prophylactic LPI. EAGLE (lens extraction) applies to PAC with IOP ≥30 and PACG, not to PACS.',
@@ -263,10 +268,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Which findings separate PXF from pigment dispersion syndrome (PDS)?',
                 options: [
-                    'PDS: peripupillary TIDs and patchy TM pigment. PXF: mid-peripheral slit TIDs.',
+                    'PXF: dense homogeneous 360° TM pigment, Krukenberg spindle, mid-peripheral radial slit TIDs, older patients. PDS: patchy TM pigment heavier superiorly, Sampaolesi line, peripupillary TIDs, white capsular flakes, young myopes.',
                     'PXF: patchy TM pigment (heavier inferiorly), Sampaolesi line, peripupillary TIDs, older patients. PDS: dense homogeneous 360° TM pigment, Krukenberg spindle, mid-peripheral radial slit TIDs, young myopes.',
-                    'PXF only affects the lens; PDS only affects the TM.',
-                    'PXF presents in young myopic men; PDS in older Scandinavian women.'
+                    'PXF: patchy TM pigment (heavier inferiorly), mid-peripheral slit TIDs, posterior iris bowing, older patients. PDS: dense TM pigment, white capsular flakes, peripupillary TIDs, young hyperopes.',
+                    'PXF: patchy TM pigment and Sampaolesi line, peripupillary TIDs, young myopic men. PDS: dense homogeneous TM pigment, Krukenberg spindle, mid-peripheral TIDs, older Scandinavian women.'
                 ],
                 answer: 1,
                 explain: 'Sampaolesi\'s line (pigment anterior to Schwalbe\'s line) can occur in both, but it is classically linked with PXF. Patient profile matters too: PDS is young, myopic and usually Caucasian; PXF is over 60 with high prevalence in Scandinavians.',
@@ -290,10 +295,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'In the Early Manifest Glaucoma Trial, how did untreated progression in PXF glaucoma compare with other types?',
                 options: [
-                    'Slowest of all, at about −0.1 dB/year.',
+                    'Slowest — about −0.4 dB/year MD, compared with about −1.3 for high-tension POAG and −3.1 for NTG.',
                     'Fastest — about −3.1 dB/year MD, compared with about −1.3 for high-tension POAG and −0.4 for NTG.',
-                    'Same as NTG.',
-                    'EMGT didn\'t include PXF patients.'
+                    'Similar to POAG — about −1.3 dB/year MD, compared with about −0.4 for NTG; PXF only differs in IOP.',
+                    'Fastest — about −13 dB/year MD, compared with about −3 for high-tension POAG and −1 for NTG.'
                 ],
                 answer: 1,
                 explain: 'EMGT (Sweden) included many PXF patients. PXG has higher and more variable IOP, worse response to medicines and faster progression. That justifies a lower target, closer review and early ophthalmology involvement.',
@@ -308,7 +313,12 @@ window.CASES.push(
                 phase: '6. Drop choice',
                 type: 'mcq',
                 question: 'You decide to start treatment in the left eye. Which first-line drop?',
-                options: ['Timolol 0.5% BD', 'Betaxolol 0.25% BD', 'Latanoprost 0.005% nocte', 'Pilocarpine 2% QID'],
+                options: [
+                    'Timolol 0.5% mane only',
+                    'Betaxolol 0.25% twice daily',
+                    'Latanoprost 0.005% nocte',
+                    'Brimonidine 0.2% twice daily'
+                ],
                 answer: 2,
                 critical: true,
                 explain: 'A PGA is first-line (best IOP lowering, once daily, no respiratory risk), provided there are no contraindications such as active or past uveitis, CMO risk, a history of herpetic keratitis, or pregnancy. Asthma — even mild — is a contraindication to non-selective β-blockers.',
@@ -319,10 +329,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'If a colleague switched a patient from timolol to betaxolol, why might they have done it?',
                 options: [
-                    'Betaxolol lowers IOP more than timolol.',
+                    'Betaxolol is non-selective, so it lowers IOP more than timolol. It is preferred in asthma because it relaxes bronchial smooth muscle.',
                     'Betaxolol is β1-selective, so it causes less bronchospasm. It still needs caution in airway disease and lowers IOP less.',
-                    'Betaxolol is safe in heart block.',
-                    'Betaxolol is a prostaglandin.'
+                    'Betaxolol is β2-selective, so it causes less bradycardia. It is safe in heart block and lowers IOP about as much as timolol.',
+                    'Betaxolol is an α2-agonist, so it causes no bronchospasm. It is used when timolol causes allergy and lowers IOP more.'
                 ],
                 answer: 1,
                 explain: 'Cardioselectivity is relative, not absolute, so betaxolol is a <em>precaution</em> in asthma and COPD, not a free pass. Betaxolol may also have some calcium-channel (vascular) effects. Check current availability in Australia.'
@@ -332,10 +342,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What is your plan after starting latanoprost?',
                 options: [
-                    'Manage alone indefinitely; review yearly.',
-                    'Treat and refer to ophthalmology (secondary glaucoma — not suitable for collaborative care on the RANZCO pathway; OBA requires referral within 4 months of starting glaucoma treatment). Review IOP in ~4 weeks; consider SLT and keep in mind the cataract-surgery risks.',
-                    'Refer only if IOP goes above 40.',
-                    'Stop treatment once IOP is below 21.'
+                    'Manage in collaborative care without referral (PXG suits optometric care on the RANZCO pathway; OBA requires referral only if IOP isn’t controlled by 4 months). Review IOP in ~4 weeks; add timolol early, since SLT is ineffective in pseudoexfoliation.',
+                    'Treat and refer to ophthalmology (secondary glaucoma isn’t routine collaborative care on the RANZCO pathway; OBA requires referral within 4 months of starting treatment). Review IOP in ~4 weeks; consider SLT; note cataract-surgery risks.',
+                    'Refer to ophthalmology within 24 hours and stop the latanoprost (secondary glaucomas must not be treated by optometrists under the OBA guideline). Review IOP in ~4 weeks, once the ophthalmologist has seen her.',
+                    'Treat and refer to ophthalmology within 12 months (OBA requires referral within a year of starting glaucoma treatment). Review IOP in ~6 months, as latanoprost takes 3–6 months to reach its full effect.'
                 ],
                 answer: 1,
                 explain: 'PXG progresses quickly. You can start treatment, then refer. Ophthalmology may add SLT (often a good initial response in PXF, though it can wane), lens extraction (zonular weakness — capsular tension ring) or surgery. Latanoprost starts working within hours and reaches a stable full effect over a few weeks, so review at ~4 weeks. Medicare limits how often computerised perimetry can be claimed (check the current MBS items); if PXG needs more frequent fields, discuss the fee with the patient.',
@@ -345,7 +355,12 @@ window.CASES.push(
                 phase: '9. Review schedule',
                 type: 'mcq',
                 question: 'If you found PXF <strong>without</strong> glaucoma (normal IOP, disc and field), how would you monitor?',
-                options: ['Discharge — PXF is benign.', 'Every 6–12 months: IOP, disc/OCT and fields — PXF eyes can convert to glaucoma and IOP can spike.', 'Every 5 years.', 'Only when symptomatic.'],
+                options: [
+                    'Every 2–3 years: IOP and disc only — PXF without glaucoma converts slowly, so fields add little.',
+                    'Every 6–12 months: IOP, disc/OCT and fields — PXF eyes can convert to glaucoma and IOP can spike.',
+                    'Discharge to routine 2-yearly care — PXF only matters once IOP is raised, so check again when symptomatic.',
+                    'Every 6–12 months: IOP only — discs and fields can wait until the IOP rises above 30 mmHg.'
+                ],
                 answer: 1,
                 explain: 'PXF carries a substantial conversion risk to PXG and IOP can rise quickly, so monitor closely (around 6-monthly) even without glaucoma. Warn about cataract-surgery risk, and that the fellow eye is often affected later.'
             }
@@ -382,10 +397,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Roughly what is the risk of PDS converting to pigmentary glaucoma, and what are the risk factors?',
                 options: [
-                    'About 100% within a year.',
+                    'About 50% at 5 years and 90% at 15 years (Siddiqui 2003). Risk factors: female sex, hyperopia, absence of a Krukenberg spindle, lower baseline IOP.',
                     'About 10% at 5 years and 15% at 15 years (Siddiqui 2003). Risk factors: male sex, high myopia, Krukenberg spindle, higher baseline IOP.',
-                    'Under 1% lifetime.',
-                    'About 50% at 1 year, mostly in women.'
+                    'About 1% at 5 years and 2% at 15 years (Siddiqui 2003). Risk factors: older age, PXF in the fellow eye, Sampaolesi line, thin central cornea.',
+                    'About 10% at 5 years and 15% at 15 years (EMGT). Risk factors: female sex, low myopia, peripupillary TIDs, lower baseline IOP.'
                 ],
                 answer: 1,
                 explain: 'Older hospital-based series quoted 35–50% lifetime conversion; population data (Olmsted County) gave ~10% at 5 years and ~15% at 15 years. PDS is roughly equal by sex, but PG is about 3:1 male.',
@@ -400,7 +415,12 @@ window.CASES.push(
                 phase: '4. Expected field',
                 type: 'mcq',
                 question: 'What visual field defect do you expect in the left eye?',
-                options: ['Superior arcuate / nasal step', 'Inferior nasal step / inferior arcuate', 'Right homonymous hemianopia', 'Central scotoma'],
+                options: [
+                    'Superior nasal step / superior arcuate defect',
+                    'Inferior nasal step / inferior arcuate',
+                    'Right homonymous hemianopia (incongruous)',
+                    'Central (fixation-involving) scotoma'
+                ],
                 answer: 1,
                 explain: 'Superotemporal RNFL loss gives an <strong>inferior</strong> field defect (the field is inverted). An inferior nasal step respecting the horizontal midline is the classic early glaucomatous defect.'
             },
@@ -433,10 +453,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What happens to PDS with age (“burnt-out” phase)?',
                 options: [
-                    'It always gets worse with age.',
-                    'Pigment release falls as the lens enlarges and accommodation and pupil size decline. TM pigment can fade (pigment-reversal sign — more pigment superiorly than inferiorly), TIDs and Krukenberg spindle may lessen, and IOP can normalise.',
-                    'It turns into PXF.',
-                    'It causes angle closure in all patients.'
+                    'Pigment release increases as the lens enlarges and the pupil shrinks, so TM pigment darkens inferiorly, the Krukenberg spindle grows and IOP keeps rising — PDS never burns out and needs escalating treatment with age.',
+                    'Pigment release falls as the lens grows and accommodation and pupil size decline. TM pigment can fade (pigment-reversal sign: more superiorly than inferiorly), TIDs and the spindle may lessen, and IOP can normalise.',
+                    'The iris becomes convex as the lens grows, so PDS converts to angle closure. TM pigment fades evenly, TIDs vanish and IOP falls to normal in nearly every patient within a year of age 40.',
+                    'Pigment release falls with age, but TM pigment stays densest inferiorly (no reversal sign) and the spindle always persists, so burnt-out PDS is easily told from POAG and IOP never normalises.'
                 ],
                 answer: 1,
                 explain: 'Burnt-out PDS can be mistaken for POAG or NTG. Look for residual pigment and reversal patterns. Exercise-induced symptoms fade as pigment showering stops.'
@@ -487,10 +507,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'How do you interpret a CCT of 585 µm?',
                 options: [
-                    'Thin — Goldmann underestimates IOP; higher risk.',
+                    'Thinner than average (mean ~580–600 µm) — Goldmann underestimates IOP, so her true IOP is higher than measured, and thin CCT raised conversion risk in OHTS. It adds to the disc haemorrhage and family history.',
                     'Thicker than average (mean ~540–550 µm) — Goldmann may overestimate IOP, and thicker CCT is linked with lower conversion risk in OHTS. It doesn\'t cancel out the disc haemorrhage or family history.',
-                    'Irrelevant to glaucoma risk.',
-                    'Means she has corneal oedema.'
+                    'Average (mean ~580 µm) — Goldmann is accurate at this thickness, and CCT only matters below 500 µm in OHTS. It has no bearing on the disc haemorrhage or family history.',
+                    'Thicker than average (mean ~540–550 µm) — Goldmann underestimates IOP in thick corneas, and thicker CCT raised conversion risk in OHTS. It adds to the disc haemorrhage and family history.'
                 ],
                 answer: 1,
                 explain: 'In OHTS, thinner CCT (below ~555 µm) was an independent risk factor for conversion, both because Goldmann under-reads in thin corneas and possibly because of lamina biomechanics. Don\'t use simple correction formulas as gospel; use CCT as part of a risk calculator.',
@@ -501,10 +521,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What is your working diagnosis and plan?',
                 options: [
-                    'Normal — discharge.',
-                    'High-risk OHT (disc haemorrhage, first-degree family history, IOP 26) or possible pre-perimetric glaucoma. Repeat OCT in ~3 months, rule out other causes of the haemorrhage, and seriously consider treatment.',
-                    'Definite POAG — refer urgently.',
-                    'NTG.'
+                    'Low-risk OHT: the thick cornea means her true IOP is about 21, and haemorrhages are common in normal eyes. Repeat IOP in 12 months; treatment isn’t warranted unless a field defect appears.',
+                    'High-risk OHT (disc haemorrhage, family history, IOP 26) or pre-perimetric glaucoma: repeat OCT in ~3 months, exclude other causes of the haemorrhage, and seriously consider treatment.',
+                    'Definite POAG (a disc haemorrhage is diagnostic of glaucoma even with normal fields). Start treatment in both eyes today and refer urgently within 24 hours under the RANZCO pathway.',
+                    'Normal-tension glaucoma (a disc haemorrhage with an IOP that is normal after CCT correction). Start brimonidine for neuroprotection and order an MRI to exclude compression first.'
                 ],
                 answer: 1,
                 explain: 'Disc haemorrhages usually reabsorb within 2–3 months and often come before detectable RNFL or field loss. With FHx and IOP in the mid-20s her risk is well above average. Repeat structural testing soon and use an OHTS/EGPS risk estimate.'
@@ -514,10 +534,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'If you treat, what does OHTS tell you about benefit and target?',
                 options: [
-                    'Treatment doesn\'t change conversion.',
+                    'Treatment (aiming for ≥30% reduction and IOP ≤18) cut 5-year conversion from 9.5% to 1.4% — about a seventh.',
                     'Treatment (aiming for ≥20% reduction and IOP ≤24) cut 5-year conversion from 9.5% to 4.4% — roughly half.',
-                    'Target a 50% reduction.',
-                    'Treatment only helps if IOP is above 35.'
+                    'Treatment (aiming for ≥20% reduction and IOP ≤24) cut 5-year conversion from 4.4% to 2.2% — exactly half.',
+                    'Treatment (aiming for ≥20% reduction and IOP ≤21) made no significant difference to 5-year conversion.'
                 ],
                 answer: 1,
                 explain: 'OHTS targets: ≥20% reduction from baseline and ≤24 mmHg. For established POAG, EMGT achieved ~25%; CNTGS used 30% for NTG. Be ready for “where did you get that number from?”',
@@ -528,10 +548,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'She mentions her 32-year-old daughter (also OHT) is planning a pregnancy. What is your approach for the daughter?',
                 options: [
-                    'Start latanoprost — it is pregnancy category A.',
-                    'Weigh risk vs benefit: low-risk OHT can often be watched through pregnancy, or treated with SLT. If drops are needed, brimonidine (B3 — stop before delivery and while breastfeeding: neonatal CNS depression/apnoea) or timolol (C — lowest dose, punctal occlusion) are usual. Avoid PGAs (B3, uterotonic concern).',
-                    'Oral acetazolamide is safest.',
-                    'All glaucoma drugs are absolutely contraindicated, so nothing can be done.'
+                    'Weigh risk vs benefit: low-risk OHT can often be watched, but if drops are needed latanoprost is preferred (B1; very low absorption at 0.005%, so safe until delivery). Avoid brimonidine and timolol throughout pregnancy (both D).',
+                    'Weigh risk vs benefit: low-risk OHT can often be watched through pregnancy, or treated with SLT. If drops are needed, brimonidine (B3; stop before delivery and breastfeeding) or timolol (C; lowest dose, punctal occlusion). Avoid PGAs.',
+                    'Treat all OHT through pregnancy to avoid conversion: oral acetazolamide (category A, the safest IOP drug in pregnancy), switching to timolol after delivery. Avoid SLT in pregnancy because laser energy can reach the fetus.',
+                    'Weigh risk vs benefit: low-risk OHT can often be watched, or treated with SLT. If drops are needed, brimonidine (category A; safe through delivery and breastfeeding) or latanoprost (B3; continue until the third trimester). Avoid timolol.'
                 ],
                 answer: 1,
                 explain: 'Use Australian TGA categories: latanoprost/bimatoprost/travoprost B3, timolol C, brimonidine B3, dorzolamide/brinzolamide B3, acetazolamide B3. Punctal occlusion reduces systemic absorption. Involve the obstetrician and ophthalmologist.',
@@ -543,9 +563,9 @@ window.CASES.push(
                 question: 'Why is once-daily timolol given in the <strong>morning</strong>?',
                 options: [
                     'Aqueous production is highest during the day and β-blockers have little effect on the low nocturnal production; night dosing adds risk of nocturnal systemic hypotension (reduced optic nerve perfusion).',
-                    'Timolol causes insomnia.',
-                    'It is absorbed better in the morning.',
-                    'There is no reason.'
+                    'Aqueous production is highest at night and β-blockers work best on it then, but morning dosing is chosen because timolol causes vivid dreams and insomnia; the nocturnal hypotension risk is the same either way.',
+                    'Timolol is absorbed better through the morning tear film, so a morning dose doubles its effect; evening doses are washed out by nocturnal tear production, giving almost no IOP lowering at night.',
+                    'There is no physiological reason — timolol works equally at any time, so morning dosing is just a convention for adherence; evening doses carry no extra systemic risk because blood pressure is higher at night.'
                 ],
                 answer: 0,
                 explain: 'This is why PGAs (which work around the clock) are better for 24-hour control and why evening β-blockers are avoided, especially in NTG.',
@@ -588,10 +608,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'He doesn\'t want daily drops. What does the evidence say about primary SLT?',
                 options: [
-                    'SLT is experimental.',
+                    'LiGHT: primary SLT kept ~74% of patients drop-free at 3 years, but quality of life was worse and more patients needed surgery than in the drops-first group.',
                     'LiGHT: primary SLT kept ~74% of patients drop-free at 3 years, with comparable quality of life, fewer surgeries and lower cost than drops-first.',
-                    'SLT only works in angle closure.',
-                    'SLT permanently cures OHT.'
+                    'LiGHT: primary SLT kept ~24% of patients drop-free at 3 years, so it is mainly a way to delay drops by a few months rather than a first-line option.',
+                    'EAGLE: primary SLT kept ~74% of patients drop-free at 3 years in angle closure, so it shouldn’t be used in open-angle OHT like his.'
                 ],
                 answer: 1,
                 explain: 'SLT is a reasonable first-line option and discussing it was expected. Effect can wane over years, and repeat SLT is possible. The ophthalmologist performs it (involve the GP as needed). Check IOP about 1 hour after laser for a spike; assess the full effect at about 6–8 weeks.'
@@ -601,10 +621,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'After SLT his IOP is 24 mmHg. He\'ll now accept a drop but hates the idea of red eyes and eyelash changes. Best next option?',
                 options: [
-                    'Timolol 0.5% — he is young and active, so no concerns.',
-                    'Timolol is possible after checking contraindications (ask about exercise tolerance, asthma, heart rate — involve GP), but in a young active man a topical CAI or brimonidine may suit better. Discuss trade-offs.',
-                    'Pilocarpine 4% QID.',
-                    'Oral acetazolamide long-term.'
+                    'Timolol 0.5% BD is ideal for a young active man (no cosmetic effects and well tolerated in fit people); check his BP only. A CAI or brimonidine is weaker, so keep them as third-line options.',
+                    'Timolol is possible after checking contraindications (exercise tolerance, asthma, heart rate — involve the GP), but in a young active man a topical CAI or brimonidine may suit better.',
+                    'Pilocarpine 2% QID avoids red eyes and lash changes and suits young patients who accommodate well; check for myopia. Timolol and brimonidine are avoided in men under 50.',
+                    'Oral acetazolamide 250 mg BD via the GP avoids all eye-drop cosmetic effects and is well tolerated long-term in young adults; check for sulfonamide allergy and kidney stones first.'
                 ],
                 answer: 1,
                 explain: 'β-blockers blunt exercise heart rate and can cause fatigue and bronchospasm. If you use one, confirm with the GP and ophthalmologist. Brimonidine: watch for allergy and fatigue. Topical CAI: stinging, bitter taste.'
@@ -638,7 +658,12 @@ window.CASES.push(
                 phase: '1. Central involvement',
                 type: 'mcq',
                 question: 'There is a defect close to fixation. Which extra test?',
-                options: ['30-2 SITA Fast', '10-2 (central 10°)', 'Goldmann kinetic perimetry', 'Amsler only'],
+                options: [
+                    '30-2 SITA Fast',
+                    '10-2 (central 10°)',
+                    'Goldmann kinetic perimetry',
+                    'Amsler grid only'
+                ],
                 answer: 1,
                 explain: 'The 24-2 grid (6° spacing) under-samples the macula. A 10-2 maps paracentral loss, which matters for prognosis and target IOP and is common in NTG and myopic glaucoma.'
             },
@@ -647,10 +672,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'How would you grade this field?',
                 options: [
-                    'Early, because MD is only about −6 dB.',
-                    'At least moderate: MD is borderline, and a paracentral defect within the central field upgrades the stage (Hodapp). Confirm repeatability and explain your reasoning.',
-                    'Advanced, because the GHT is outside normal limits.',
-                    'Ungradable.'
+                    'Early: MD is better than −6 dB, so Hodapp grades it early regardless of where the defect sits. Confirm repeatability; it won’t change anything.',
+                    'At least moderate: MD is borderline, and a paracentral defect upgrades the stage (Hodapp). Confirm repeatability and explain why.',
+                    'Advanced: any defect within 10° of fixation is advanced on Hodapp, whatever the MD. Refer urgently for surgery rather than starting drops.',
+                    'Ungradable: Hodapp can’t be used when there is a central defect, so describe it and stage it later on a 30-2 once the defect is confirmed.'
                 ],
                 answer: 1,
                 explain: 'Explain your reasoning aloud — the management (treat, close review, refer) doesn\'t change, but the examiner wants to hear that central involvement raises the threat to vision.'
@@ -660,10 +685,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Your management?',
                 options: [
-                    'Observe for 12 months.',
-                    'Start a PGA (e.g. latanoprost 0.005% nocte) provided there are no contraindications (pregnancy, active or past uveitis, CMO risk, herpetic keratitis); aim for ~25–30% reduction; review in ~4 weeks; refer to ophthalmology within 4 months (OBA) for collaborative care.',
-                    'Refer only — optometrists can\'t treat glaucoma.',
-                    'Pilocarpine first-line.'
+                    'Start timolol 0.5% BD as first-line if no contraindications (asthma, bradycardia, heart block); aim for ~10% reduction; review in ~6 months; refer to ophthalmology within 12 months (OBA).',
+                    'Start a PGA (e.g. latanoprost 0.005% nocte) if no contraindications (pregnancy, uveitis, CMO risk, herpetic keratitis); aim for ~25–30% reduction; review in ~4 weeks; refer within 4 months (OBA).',
+                    'Start a PGA (e.g. latanoprost 0.005% mane) if no contraindications (pregnancy, uveitis, CMO); aim for ≥50% reduction; review in ~1 week; refer within 24 hours (OBA) because the defect is central.',
+                    'Don’t start treatment: optometrists may only monitor POAG. Refer within 4 months (OBA) and repeat the fields in 3 months so the ophthalmologist has a baseline before choosing a drop.'
                 ],
                 answer: 1,
                 explain: 'Optometrists can diagnose and start treatment for POAG. Refer within 4 months under the OBA guideline (check the current version) and follow the RANZCO collaborative-care pathway.'
@@ -673,10 +698,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Would you treat the right eye (IOP 22, normal structure and function)?',
                 options: [
-                    'Yes — always treat both eyes.',
-                    'Not necessarily: an IOP of 22 with normal structure and function is low risk on OHTS. Monitor closely (asymmetric POAG often becomes bilateral). Some clinicians treat both for convenience or symmetry — justify either choice.',
-                    'Yes, with timolol.',
-                    'No, and discharge the right eye.'
+                    'Yes: OHTS showed every eye with IOP over 21 converts within 5 years, so treat the right eye now with the same drop. Discharging it from monitoring is then reasonable once IOP is controlled.',
+                    'Not necessarily: IOP 22 with normal structure and function is low risk on OHTS. Monitor closely (asymmetric POAG often becomes bilateral); treating both for symmetry is also defensible.',
+                    'No, and discharge the right eye: 22 is within the normal range, normal structure and function rule out glaucoma, and asymmetric POAG almost never becomes bilateral.',
+                    'Yes, but with timolol: the right eye needs a different class from the left so you can tell which drop is working; PGA cosmetic asymmetry doesn’t matter once both eyes are treated.'
                 ],
                 answer: 1,
                 explain: 'Both answers are defensible if justified. The examiner is checking you know OHTS risk stratification and PGA cosmetic asymmetry (lashes, iris and periorbital changes).'
@@ -699,10 +724,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'A different patient — a 45-year-old woman — is on latanoprost with IOP 15 (from 25), but her field has progressed. Next steps?',
                 options: [
-                    'Reassure her; IOP is normal.',
-                    'Check adherence and drop technique, look for IOP fluctuation (phasing), confirm progression with repeat fields/OCT, lower the target, and escalate (add a second agent or combination, SLT, refer for surgery). Her long life expectancy calls for aggressive control.',
-                    'Stop the drops.',
-                    'Change to a different PGA and review in 12 months.'
+                    'Reassure her: IOP 15 is within the target for every POAG patient, so the field change must be a learning effect. Repeat the field in 12 months and continue latanoprost unchanged; escalation isn’t needed at her age or IOP.',
+                    'Check adherence and technique, look for fluctuation (phasing), confirm progression on repeat fields/OCT, then lower the target and escalate (second agent, SLT, surgery). Her long life expectancy calls for tight control.',
+                    'Stop the latanoprost and switch to timolol: progression on a PGA means PGA resistance. Review in 12 months; younger patients progress slowly, so SLT or surgery is reserved for patients over 65.',
+                    'Refer for an MRI only: progression at IOP 15 is always neurological. Keep the current drop and target, and don’t repeat the fields until the MRI is back, as repeat testing only adds learning effects.'
                 ],
                 answer: 1,
                 explain: 'Younger patients have more years of life to lose vision in, so set lower targets and escalate earlier. Combination drops (e.g. latanoprost/timolol — Xalacom; brinzolamide/brimonidine — Simbrinza) reduce drop burden.',
@@ -741,10 +766,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Why use a D15 rather than Ishihara here?',
                 options: [
-                    'Ishihara is more sensitive to everything.',
+                    'Ishihara picks up acquired defects including blue–yellow (tritan) and grades severity; the D15 screens only for congenital red–green defects — useful for spotting inherited colour deficiency in glaucoma.',
                     'Ishihara screens for congenital red–green defects; the D15 picks up acquired defects including blue–yellow (tritan) and grades severity — useful for spotting a non-glaucomatous optic neuropathy.',
-                    'D15 measures field loss.',
-                    'There is no difference.'
+                    'The D15 tests the central 15° of field, so it maps paracentral glaucomatous loss; Ishihara only tests colour — useful because NTG defects are paracentral and the D15 is quicker than a 10-2.',
+                    'Ishihara is more sensitive to all colour defects, but the D15 is required by the OBA for glaucoma work-ups; either gives the same result for spotting a non-glaucomatous optic neuropathy.'
                 ],
                 answer: 1,
                 explain: 'Colour loss out of proportion to the disc or field suggests compressive, toxic or inflammatory optic neuropathy rather than glaucoma.'
@@ -771,10 +796,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Untreated phasing averages 14 mmHg, with a water-drinking peak of 18 mmHg. What is your target?',
                 options: [
-                    '30% below 18 → about 12.5 mmHg.',
-                    'About 30% below the untreated mean baseline (CNTGS): 14 → about 10 mmHg — while also blunting peaks and fluctuation.',
-                    'Below 21 mmHg.',
-                    'No target is needed in NTG.'
+                    'About 30% below the water-drinking peak (CNTGS): 18 → about 12.5 mmHg, since the peak does the damage.',
+                    'About 30% below the untreated mean (CNTGS): 14 → about 10 mmHg, while also blunting peaks.',
+                    'About 20% below the untreated mean baseline (OHTS): 14 → about 11 mmHg, since OHTS sets NTG targets too.',
+                    'Below 21 mmHg (the upper limit of normal), which she already meets, so no treatment target is needed.'
                 ],
                 answer: 1,
                 explain: 'CNTGS: a 30% reduction from baseline cut progression from 35% to 12%. Base the target on the mean untreated baseline and recheck that peaks are controlled.',
@@ -798,10 +823,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'First-line drug choice?',
                 options: [
-                    'Timolol 0.5% at night.',
+                    'Timolol 0.5% at night (provided there are no contraindications) — night dosing covers the nocturnal IOP peak in NTG. Avoid PGAs (they reduce optic nerve perfusion at night). Brimonidine is contraindicated in NTG (LoGTS).',
                     'A PGA at night (provided there are no contraindications) — 24-hour IOP lowering. Avoid evening β-blockers (nocturnal hypotension reduces optic nerve perfusion). Brimonidine is a reasonable alternative (LoGTS).',
-                    'Oral acetazolamide.',
-                    'Pilocarpine.'
+                    'A PGA in the morning (provided there are no contraindications) — morning dosing covers the day-time peak. Avoid brimonidine (it lowers blood pressure). Timolol at night is the second choice (LoGTS).',
+                    'Oral acetazolamide via the GP (provided there are no contraindications) — systemic treatment lowers IOP around the clock. Topical drops are too weak in NTG. Brimonidine is only used after surgery (LoGTS).'
                 ],
                 answer: 1,
                 explain: 'In NTG, also consider BP review with the GP (avoid over-treating hypertension at night). SLT lowers IOP in NTG (~15–20%), but the absolute drop is smaller because the starting IOP is low.'
@@ -811,10 +836,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: '“Sometimes I miss a day, so other days I put in two drops.” What do you tell her?',
                 options: [
-                    'Great — that makes up for it.',
-                    'One drop once at night at the same time each day. More latanoprost doesn\'t lower IOP further (more frequent dosing can even reduce efficacy) and adds side effects. If you miss a dose, just continue the next night. Suggest reminders, check technique, close the eyelids gently or press on the tear duct for 1–2 minutes, and wait 5 minutes between different drops.',
-                    'Switch to three drops a day.',
-                    'Stop the drops if you forget.'
+                    'That’s fine: two drops the next day replace the missed dose, so the weekly total stays the same. Latanoprost has a long half-life, so doubling up is safe and keeps lowering steady; space the two drops 5 minutes apart.',
+                    'One drop once at night, same time each day. Extra latanoprost doesn’t lower IOP further (it can even reduce efficacy) and adds side effects; if you miss a dose, just carry on the next night. Use reminders and punctal pressure.',
+                    'Use it twice every day from now on so a missed dose matters less: more frequent latanoprost lowers IOP further. If you miss a dose, use three drops the next night, and press on the tear duct for 1–2 minutes after each drop.',
+                    'If you keep forgetting, it is safer to stop the drop and rely on reviews: intermittent latanoprost raises IOP more than none at all. If you miss a dose, wait a week before restarting so the eye can reset.'
                 ],
                 answer: 1,
                 explain: 'Teach drop technique and adherence strategies (alarms, linking the drop to a routine, family help). Poor adherence is a major cause of apparent progression.'
@@ -854,7 +879,12 @@ window.CASES.push(
                 phase: '3. Hyphaema grade',
                 type: 'mcq',
                 question: 'Grade that original hyphaema.',
-                options: ['Grade I: under 1/3 of the AC', 'Grade II: over 50% of the AC', 'Grade III: total (8-ball)', 'Microhyphaema only'],
+                options: [
+                    'Grade I: under 1/3 of the AC',
+                    'Grade II: over 50% of the chamber',
+                    'Grade III: total (8-ball)',
+                    'Microhyphaema (cells only)'
+                ],
                 answer: 0,
                 explain: 'Grade I <1/3; Grade II 1/3–1/2; Grade III >1/2 (subtotal); Grade IV total (“8-ball”). Higher grades carry more risk of raised IOP, rebleed and corneal blood staining.',
                 recall: 'A 2025 candidate called Grade II “>50%”. Grade II is <strong>1/3 to 1/2</strong>; more than half is Grade III.'
@@ -864,10 +894,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What is the glaucoma risk after angle recession, and what drives it?',
                 options: [
-                    'Every eye with recession develops glaucoma within a year.',
+                    'Roughly 60–90% over 10 years — higher with <180° recession. Onset is usually within weeks of the injury. The cause is the recession itself pulling the iris root forward over the meshwork.',
                     'Roughly 6–9% over 10 years — higher with >180° recession. Onset can be delayed by years to decades. The cause is TM scarring and damage rather than the recession itself.',
-                    'Zero — recession lowers IOP.',
-                    'Only if there is a cataract.'
+                    'Roughly 6–9% within the first month — no relation to the extent of recession. Onset after the first year is rare. The cause is blood clogging the meshwork.',
+                    'Roughly 1% lifetime — only with >360° recession. Onset is at the time of injury or never. The cause is inflammation from the original hyphaema.'
                 ],
                 answer: 1,
                 explain: 'This is why traumatised eyes need lifelong (at least annual) IOP checks. Fellow eyes may also develop POAG later (a higher predisposition has been reported).'
@@ -876,7 +906,12 @@ window.CASES.push(
                 phase: '5. Fluctuation',
                 type: 'mcq',
                 question: 'How would you assess IOP fluctuation clinically?',
-                options: ['A single Goldmann reading', 'Diurnal IOP phasing (several readings across a day, ideally including early morning)', 'Corneal topography', 'Pachymetry'],
+                options: [
+                    'Water-drinking test (IOP before and after 1 L of water)',
+                    'Diurnal IOP phasing (several readings across a day)',
+                    'A single Goldmann reading at the time of the injury',
+                    'Pachymetry with a CCT-corrected IOP at each visit'
+                ],
                 answer: 1,
                 explain: 'The water-drinking test is a stress test of outflow reserve; diurnal phasing captures real fluctuation. Base your target on the peak and mean.',
                 recall: 'A 2025 candidate offered the water-drinking test, but the examiner wanted something “more clinical” — <strong>IOP phasing</strong>.'
@@ -885,7 +920,12 @@ window.CASES.push(
                 phase: '6. Drug choice',
                 type: 'mcq',
                 question: 'Which drug class is least effective, and may even raise IOP, in angle recession glaucoma?',
-                options: ['Prostaglandin analogues', 'β-blockers', 'Topical CAIs', 'Pilocarpine (miotics)'],
+                options: [
+                    'Prostaglandin analogues',
+                    'β-blockers (timolol)',
+                    'Topical CAIs (dorzolamide)',
+                    'Pilocarpine (miotics)'
+                ],
                 answer: 3,
                 critical: true,
                 explain: 'Pilocarpine improves trabecular outflow by pulling on the scleral spur and TM, but the TM is scarred here. It also <em>reduces</em> uveoscleral outflow, which these eyes rely on, so IOP can rise. PGAs, which boost uveoscleral outflow, and aqueous suppressants work well in <strong>chronic</strong> ARG.',
@@ -921,10 +961,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'How do corticosteroids raise IOP?',
                 options: [
-                    'They increase aqueous production by the ciliary body.',
+                    'They increase aqueous production: steroids stimulate the ciliary epithelium and carbonic anhydrase activity, so more aqueous is made while outflow through the TM stays normal.',
                     'They reduce trabecular outflow: extracellular matrix builds up in the TM, phagocytosis falls, cross-linked actin networks form and myocilin (MYOC) is upregulated.',
-                    'They close the angle by dilating the pupil.',
-                    'They thicken the cornea, so the IOP reading is falsely high.'
+                    'They close the angle: steroids relax the iris sphincter and dilate the pupil, pushing the peripheral iris into the TM — a secondary angle-closure mechanism reversed by pilocarpine.',
+                    'They raise uveoscleral outflow resistance: steroids cause ciliary muscle fibrosis and reduce MMP activity, while the trabecular meshwork itself is unaffected.'
                 ],
                 answer: 1,
                 explain: 'This is a secondary open-angle mechanism. IOP typically rises 2–6 weeks after starting (sooner with potent drops and in children) and usually falls within weeks of stopping, though not always.'
@@ -943,9 +983,9 @@ window.CASES.push(
                 question: 'Classic Armaly/Becker figures for topical dexamethasone in the general population?',
                 options: [
                     '~5% high responders (rise >15 mmHg), ~30–35% moderate (6–15 mmHg), the rest low (<6 mmHg).',
-                    '~50% high responders.',
-                    'Nobody responds before 6 months.',
-                    '~1% of everyone, regardless of potency.'
+                    '~30% high responders (rise >15 mmHg), ~50% moderate (6–15 mmHg), and the rest low (<6 mmHg).',
+                    '~1% high responders (rise >15 mmHg), ~5% moderate (6–15 mmHg), the rest low (<6 mmHg).',
+                    '~5% high responders (rise >6 mmHg), ~30% moderate (3–6 mmHg), the rest low (<3 mmHg).'
                 ],
                 answer: 0,
                 explain: 'A practical clinical rule is to act on a rise of ~10 mmHg or more, or IOP above ~25–30 mmHg, depending on the disc.',
@@ -958,8 +998,8 @@ window.CASES.push(
                 options: [
                     'Prednisolone acetate 1% and dexamethasone 0.1%',
                     'Fluorometholone 0.1% and loteprednol 0.5%',
-                    'Hydrocortisone 1% and FML',
-                    'Prednisolone sodium phosphate 0.5% and rimexolone'
+                    'Prednisolone sodium phosphate 0.5% and FML',
+                    'Hydrocortisone 1% and fluorometholone acetate 0.1%'
                 ],
                 answer: 0,
                 explain: 'Prednisolone <strong>acetate</strong> is a lipophilic suspension → excellent corneal penetration. Prednisolone sodium <strong>phosphate</strong> is a hydrophilic solution and penetrates an intact epithelium poorly. FML and loteprednol are “soft” steroids with lower IOP risk.'

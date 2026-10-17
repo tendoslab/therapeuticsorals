@@ -32,10 +32,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Using the 1-2-3 rule and the clinical picture, what is your triage decision?',
                 options: [
-                    'Optometric management with ciprofloxacin 0.3%; review in 24 hours.',
-                    'Stop CL wear, start prednisolone acetate QID and review in 3 days.',
+                    'Optometric management with ciprofloxacin 0.3% intensive dosing; review in 24 hours and refer only if worse.',
+                    'Stop CL wear, start ciprofloxacin QID and prednisolone acetate QID, and review in 3 days.',
                     'Same-day referral to a hospital eye/corneal service for scraping, culture and fortified dual therapy.',
-                    'Chloramphenicol 0.5% QID and oral doxycycline.'
+                    'Same-day referral to the GP for oral ciprofloxacin, since the infiltrate is deeper than drops reach.'
                 ],
                 answer: 2,
                 critical: true,
@@ -47,10 +47,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'The registrar can\'t see him for 4 hours. What do you do in the chair?',
                 options: [
-                    'Start ciprofloxacin 0.3% with a loading dose now (after talking with the registrar), and send him in with the bottle and a referral letter.',
-                    'Nothing — any antibiotic will ruin the culture.',
-                    'Prednisolone acetate 1% to reduce scarring.',
-                    'Tobramycin 0.3% QID.'
+                    'Start ciprofloxacin 0.3% with a loading dose now (after talking to the registrar) and send him in with the bottle and a letter.',
+                    'Start nothing: any antibiotic before scraping makes the cultures useless, so keep him comfortable, patch the eye and send him in.',
+                    'Start prednisolone acetate 1% now to limit scarring near the axis, and let the hospital choose the antibiotic.',
+                    'Start chloramphenicol 0.5% hourly, since it doesn’t affect cultures, and send him in with a referral letter.'
                 ],
                 answer: 0,
                 critical: true,
@@ -61,10 +61,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'For a smaller peripheral bacterial ulcer you manage yourself, what is the ciprofloxacin 0.3% (Ciloxan) regimen?',
                 options: [
-                    'QID for 7 days.',
-                    'Every 15 min for the first 6 h, then every 30 min for the rest of day 1 (including overnight); hourly on day 2; then every 4 h from day 3 until healed (PI: up to 14 days). Review at 24 h.',
-                    'Hourly for 1 hour, then BD.',
-                    'Every 2 hours while awake only.'
+                    'Every 15 min for 1 h, then hourly while awake on day 1 (not overnight), every 2 h on day 2, then QID from day 3 for exactly 7 days. Review at 72 h.',
+                    'Every 15 min for 6 h, every 30 min for the rest of day 1 (overnight too), hourly on day 2, then every 4 h from day 3 until healed (up to 14 days). Review at 24 h.',
+                    'Every 30 min for 6 h, then hourly for the rest of day 1 (overnight too), every 4 h on day 2, then BD from day 3 until healed. Review at 1 week.',
+                    'Every 15 min for 6 h, every 30 min for the rest of day 1 (overnight too), hourly on day 2, then QID from day 3 until healed (up to 14 days). Review at 24 h, then every 3 days.'
                 ],
                 answer: 1,
                 explain: 'This is the product-information schedule for corneal ulcers. Add cycloplegia (e.g. atropine 1% BD, or cyclopentolate) for pain and ciliary spasm, plus oral paracetamol or ibuprofen. At 24 h expect <em>no worsening</em> (blunted edges, less pain) rather than dramatic improvement. Review daily until re-epithelialised.',
@@ -75,10 +75,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Why ciprofloxacin rather than ofloxacin?',
                 options: [
-                    'Ofloxacin isn\'t available in Australia.',
-                    'Ciprofloxacin is very potent against Gram-negatives (Pseudomonas — the key CL pathogen). Ofloxacin has been linked with higher corneal perforation rates in some series (it penetrates better but has weaker anti-Pseudomonas activity). Cipro can leave white crystalline precipitates.',
-                    'Ciprofloxacin is a steroid.',
-                    'Ofloxacin causes cataract.'
+                    'Ofloxacin is very potent against Gram-negatives (Pseudomonas, the key CL pathogen), and ciprofloxacin has been linked with more corneal perforations in some series. Ofloxacin can leave white precipitates.',
+                    'Ciprofloxacin is very potent against Gram-negatives (Pseudomonas, the key CL pathogen), and ofloxacin has been linked with more corneal perforations in some series. Cipro can leave white precipitates.',
+                    'Ciprofloxacin covers fungi and Acanthamoeba as well as bacteria, while ofloxacin covers only Gram-positives, so cipro gives broader cover before culture results. Cipro rarely leaves precipitates.',
+                    'Ciprofloxacin is a fourth-generation fluoroquinolone with the best Gram-positive cover, while ofloxacin is first-generation and isn’t available as an eye drop in Australia. Cipro never precipitates.'
                 ],
                 answer: 1,
                 explain: 'Both are broad-spectrum fluoroquinolones that inhibit DNA gyrase (topoisomerase II) and topoisomerase IV, and both are bactericidal.',
@@ -101,10 +101,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'When might a steroid be added for bacterial keratitis?',
                 options: [
-                    'At the first visit, to prevent scarring near the visual axis.',
-                    'Only once the organism is responding to antibiotics (usually ≥48 h, ideally culture-guided, never for fungi or Nocardia), usually ophthalmology-led. SCUT found no overall benefit, but possible benefit in severe central ulcers when started early.',
-                    'Never — steroids are always contraindicated in keratitis.',
-                    'Instead of antibiotics if pain is severe.'
+                    'At the first visit with the first antibiotic dose, because SCUT showed starting both together halved scarring in central ulcers; delaying the steroid lets the stroma melt.',
+                    'Only once the organism is responding to antibiotics (usually ≥48 h, never for fungi or Nocardia), usually ophthalmology-led. SCUT: no overall benefit, possible benefit in severe central ulcers.',
+                    'Only once the epithelium has fully healed and the antibiotic has been stopped for a week, because SCUT showed steroids given alongside antibiotics increased perforation in every type of bacterial ulcer.',
+                    'Instead of increasing the antibiotic if pain is severe at 24 h, because SCUT showed steroids work as well as fluoroquinolones in Pseudomonas ulcers and relieve pain faster.'
                 ],
                 answer: 1,
                 critical: true,
@@ -156,10 +156,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'How does an infiltrative ulcer differ from a simple corneal abrasion on fluorescein?',
                 options: [
-                    'No difference.',
-                    'An abrasion is a clean epithelial defect with no infiltrate (white cells) beneath it. An ulcer has an underlying stromal infiltrate (with or without loss of tissue).',
-                    'Abrasions never stain.',
-                    'Ulcers never stain.'
+                    'An abrasion has a stromal infiltrate beneath a clean defect; an ulcer is an epithelial defect with no infiltrate under it.',
+                    'An abrasion is a clean epithelial defect with no infiltrate beneath it; an ulcer has an underlying stromal infiltrate.',
+                    'An abrasion stains only with rose bengal; an ulcer stains only with fluorescein, whatever lies beneath it.',
+                    'An abrasion always has a feathery edge; an ulcer always has a smooth round edge, with or without infiltrate.'
                 ],
                 answer: 1,
                 explain: 'Other causes of full-thickness epithelial defects: trauma, recurrent erosion, neurotrophic keratopathy, exposure, toxicity, and HSV (geographic).'
@@ -169,10 +169,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'You are confident it is a CLPU. Management?',
                 options: [
-                    'Fortified dual therapy.',
-                    'Stop CL wear. Prophylactic antibiotic (e.g. chloramphenicol 0.5% QID) while the epithelium is open. A mild steroid can be considered once infection is excluded and the epithelium is closing. Review in 24–48 h; refit (dailies, no overnight wear) once resolved.',
-                    'Natamycin.',
-                    'No treatment and continue wearing lenses.'
+                    'Stop CL wear; fortified cefazolin and tobramycin hourly until healed, since CLPU is an early Pseudomonas infection; no steroid at any stage; review in 24 h; refit with monthly lenses.',
+                    'Stop CL wear; prophylactic antibiotic (e.g. chloramphenicol QID) while the epithelium is open; a mild steroid once infection is excluded and it is closing; review in 24–48 h; refit later.',
+                    'Continue CL wear with a bandage lens; prednisolone acetate hourly from day 1, since CLPU is purely inflammatory and antibiotics aren’t needed; review in 1 week; refit with extended-wear lenses.',
+                    'Stop CL wear; ciprofloxacin q15min loading dose and hourly overnight, since CLPU and MK are treated identically; add a steroid at day 1; review in 1 week; no refit is ever possible.'
                 ],
                 answer: 1,
                 explain: 'If in any doubt, treat as MK (fluoroquinolone with intensive dosing) and review in 24 h. Reassess lens hygiene and modality.'
@@ -207,10 +207,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Which features favour marginal keratitis over microbial keratitis?',
                 options: [
-                    'Central location, large size, AC reaction, purulent discharge.',
-                    'Peripheral at 2, 4, 8 or 10 o\'clock (where the lid crosses the limbus); clear zone from the limbus; little or no staining early; minimal pain; quiet AC; blepharitis; often recurrent and possibly bilateral.',
-                    'Ring-shaped infiltrate with severe pain.',
-                    'Feathery margins and satellite lesions.'
+                    'Paracentral at 12 or 6 o’clock with no clear zone; a defect larger than the infiltrate; marked pain; AC cells; mucopurulent discharge; often a CL wearer.',
+                    'Peripheral at 2, 4, 8 or 10 o’clock with a clear zone to the limbus; little or no staining early; minimal pain; quiet AC; blepharitis; often recurrent.',
+                    'Peripheral ring-shaped infiltrate with radial perineural lines; severe pain out of proportion; quiet AC; history of swimming in lenses; slowly progressive.',
+                    'Peripheral infiltrate with feathery margins and satellite lesions; raised dry texture; endothelial plaque; history of vegetable-matter trauma; slowly progressive.'
                 ],
                 answer: 1,
                 explain: 'Marginal keratitis is a type III hypersensitivity (immune-complex) reaction to staphylococcal antigens, not an active corneal infection. Later the epithelium over it may break down, so staining doesn\'t rule it out.'
@@ -235,10 +235,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'The staph blepharitis settles but she still has burning, foreign-body sensation and blur. Next?',
                 options: [
-                    'Repeat the steroid indefinitely.',
-                    'Dry eye work-up (TFOS DEWS): symptom questionnaire (OSDI / DEQ-5), NIBUT, osmolarity, staining, meibography, tear meniscus — then treat the subtype (aqueous-deficient vs evaporative).',
-                    'Refer for corneal transplant.',
-                    'Nothing — symptoms are psychological.'
+                    'Restart the steroid indefinitely: persistent burning means low-grade marginal keratitis, which needs long-term FML at a low dose to stay quiet.',
+                    'Dry eye work-up (TFOS DEWS): questionnaire (OSDI/DEQ-5), NIBUT, osmolarity, staining, meibography, meniscus — then treat the subtype.',
+                    'Refer for a corneal graft: burning and blur after marginal keratitis mean stromal scarring that only keratoplasty can fix.',
+                    'Start oral doxycycline yourself for 3 months: the symptoms are ocular rosacea, which optometrists treat with oral tetracyclines.'
                 ],
                 answer: 1,
                 explain: 'Blepharitis, MGD and dry eye coexist. A 2019 recall had this exact progression: marginal keratitis → aqueous deficiency → which questionnaires.'
@@ -268,10 +268,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'How would Acanthamoeba keratitis look different?',
                 options: [
-                    'Painless with feathery margins.',
-                    'Pain out of proportion to signs; early epithelial pseudodendrites and radial perineural infiltrates (radial keratoneuritis); a ring infiltrate later; risk from CL plus water exposure.',
-                    'Always has a hypopyon on day 1.',
-                    'Dendrites with terminal bulbs.'
+                    'Painless with feathery margins and satellite lesions; a dry, raised greyish plaque; risk from vegetable-matter trauma and topical steroid use.',
+                    'Pain out of proportion; early pseudodendrites and radial perineural infiltrates; a ring infiltrate later; risk from CL plus water exposure.',
+                    'Rapid onset over hours with a dense central abscess and hypopyon on day 1; risk from overnight wear and poor case hygiene.',
+                    'True dendrites with terminal bulbs and reduced sensation; recurrent episodes; risk from stress, fever and UV exposure.'
                 ],
                 answer: 1,
                 explain: 'Treated in hospital with biguanides (PHMB 0.02% or chlorhexidine 0.02%) ± propamidine. Often misdiagnosed as HSV early.'
@@ -281,10 +281,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What is your management?',
                 options: [
-                    'Prescribe natamycin yourself and review in a week.',
-                    'Urgent same-day referral to a corneal/hospital service: scraping and culture, then natamycin 5% (filamentous; MUTT I favoured it over voriconazole for Fusarium) or amphotericin B for Candida — hourly at first. Stop any steroid; you can\'t prescribe compounded antifungals.',
-                    'Prednisolone acetate to reduce scarring.',
-                    'Ciprofloxacin and review in 3 days.'
+                    'Prescribe natamycin 5% yourself hourly (it is on the optometry list for filamentous keratitis) and review in 24 h; refer only if not improving after 1 week; add prednisolone once it starts to heal.',
+                    'Same-day referral to a corneal service for scraping and culture, then natamycin 5% (filamentous; MUTT I) or amphotericin B (Candida). Stop any steroid; you can’t prescribe compounded antifungals.',
+                    'Same-day referral for voriconazole 1% as first line (MUTT I showed it beat natamycin for Fusarium); continue the chloramphenicol meanwhile, and keep any steroid to limit scarring.',
+                    'Start ciprofloxacin hourly and review in 3 days: most post-trauma ulcers are bacterial, and antifungals are only used once culture proves fungus after 2 weeks.'
                 ],
                 answer: 1,
                 critical: true,
@@ -295,7 +295,12 @@ window.CASES.push(
                 phase: '4. MUTT',
                 type: 'mcq',
                 question: 'What did MUTT II add?',
-                options: ['Oral voriconazole helps all fungal ulcers.', 'Adding oral voriconazole to topical therapy gave no overall benefit in severe filamentous ulcers (possible benefit in a Fusarium subgroup).', 'Steroids help fungal keratitis.', 'Natamycin is ineffective.'],
+                options: [
+                    'Adding oral voriconazole to topical therapy halved perforation in all severe filamentous ulcers, so it is now standard.',
+                    'Adding oral voriconazole to topical therapy gave no overall benefit in severe filamentous ulcers (possible Fusarium subgroup benefit).',
+                    'Adding topical steroid to natamycin improved vision in fungal ulcers, so steroids are given once antifungals start.',
+                    'Topical natamycin was ineffective for Fusarium, so oral voriconazole alone replaced topical therapy for all severe filamentous ulcers.'
+                ],
                 answer: 1,
                 explain: 'MUTT I: topical natamycin beat voriconazole for filamentous (especially Fusarium) ulcers. MUTT II: oral voriconazole adjunct — no overall benefit.'
             }
@@ -343,10 +348,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Treatment for HSV epithelial keratitis?',
                 options: [
-                    'Prednisolone acetate 1% QID.',
-                    'Topical antiviral: aciclovir 3% ointment 5×/day (continue ~3 days after healing) or ganciclovir 0.15% gel (Virgan) 5×/day until healed, then TDS for 7 days — check current Australian availability. ± gentle debridement. No steroids. Review in 24–48 h, then about weekly.',
-                    'Chloramphenicol alone.',
-                    'Oral prednisolone.'
+                    'Topical antiviral (aciclovir 3% ointment 5×/day) plus prednisolone acetate QID to limit scarring from the start; review in 1–2 weeks, as antivirals take that long to start working.',
+                    'Topical antiviral (aciclovir 3% ointment 5×/day or ganciclovir 0.15% gel 5×/day — check availability) ± gentle debridement; no steroid; review in 24–48 h, then about weekly.',
+                    'Oral aciclovir 400 mg BD alone (topical antivirals are too toxic for epithelial disease); no debridement; review in 2–4 weeks, since epithelial HSV heals slowly.',
+                    'Chloramphenicol QID to prevent secondary infection plus lubricants; antivirals are kept for stromal disease; review in 1 week, as most dendrites heal without treatment.'
                 ],
                 answer: 1,
                 critical: true,
@@ -357,10 +362,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'At one week the epithelium has healed, but there is now disciform stromal oedema with KPs and mild AC cells. Management?',
                 options: [
-                    'Keep the antiviral only.',
-                    'Immune stromal / endothelial keratitis: topical steroid (e.g. prednisolone acetate, slow taper) under antiviral cover (oral antiviral prophylaxis via GP or topical), monitoring IOP. Usually co-managed with ophthalmology (HEDS).',
-                    'Debride the stroma.',
-                    'Fortified antibiotics.'
+                    'Recurrent active epithelial disease: restart topical aciclovir 5×/day alone and avoid steroids, since stromal oedema with KPs means live virus is back in the epithelium (HEDS).',
+                    'Immune stromal/endothelial keratitis: topical steroid (e.g. prednisolone acetate, slow taper) under antiviral cover, monitoring IOP, usually co-managed (HEDS).',
+                    'Secondary bacterial keratitis: start ciprofloxacin intensively and stop the antiviral, since KPs with stromal oedema mean bacterial invasion (HEDS).',
+                    'Antiviral toxicity: stop all drops and start lubricants, since disciform oedema is a reaction to aciclovir and settles in a few weeks without steroid (HEDS).'
                 ],
                 answer: 1,
                 explain: 'HEDS: topical steroid with antiviral cover sped recovery of stromal keratitis. Oral aciclovir 400 mg BD prophylaxis roughly halved recurrences (HEDS-APT) — think of it for frequent recurrences (via GP or ophthalmology).'
@@ -369,7 +374,7 @@ window.CASES.push(
                 phase: '5. Recurrence',
                 type: 'multi',
                 question: 'Who is at higher risk of recurrent or severe HSV keratitis?',
-                options: ['Immunocompromised (HIV, chemotherapy, transplant, systemic immunosuppressants)', 'Atopic patients (eczema)', 'People using topical steroids inappropriately', 'Those with previous episodes', 'Patients on PGA drops (case reports of reactivation)', 'Hyperopes'],
+                options: ['Immunocompromised (HIV, chemotherapy, transplant, systemic immunosuppressants)', 'Atopic patients (eczema)', 'People using topical steroids inappropriately', 'Those with previous episodes', 'Patients on PGA drops (case reports of reactivation)', 'Patients on oral aciclovir prophylaxis'],
                 answers: [0, 1, 2, 3, 4],
                 explain: 'Triggers: stress, fever, UV light, trauma, menstruation and ocular surgery or laser.',
                 recall: 'A 2025 candidate blanked on “what type of patients get recurrences?” The answer the examiner wanted: <strong>immunocompromised</strong> (HIV, chemotherapy, organ transplant, systemic immunosuppressants) and atopic patients.'
@@ -405,10 +410,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What is the key treatment and who gives it?',
                 options: [
-                    'Topical aciclovir ointment alone, prescribed by you.',
-                    'Oral antiviral within 72 h of rash onset via the GP (or ED/ophthalmology): e.g. valaciclovir 1 g TDS × 7 days, famciclovir 500 mg TDS × 7 days or aciclovir 800 mg 5×/day × 7 days. Adjust dose for renal function.',
-                    'Oral prednisolone first.',
-                    'No treatment — it is self-limiting.'
+                    'Topical aciclovir 3% ointment 5×/day prescribed by you, plus oral prednisolone via the GP to prevent post-herpetic neuralgia; oral antivirals add nothing once the rash has appeared.',
+                    'Oral antiviral within 72 h of rash onset via the GP/ED (valaciclovir 1 g TDS, famciclovir 500 mg TDS or aciclovir 800 mg 5×/day, 7 days), dose-adjusted for renal function.',
+                    'Oral aciclovir 400 mg BD via the GP for 12 months (HEDS dose), started at any point in the illness; the 72-hour window only applies to herpes simplex.',
+                    'Oral valaciclovir 1 g TDS prescribed by you (oral antivirals are on the optometry list for HZO) for 7 days, started within 7 days of rash onset.'
                 ],
                 answer: 1,
                 critical: true,
@@ -434,7 +439,12 @@ window.CASES.push(
                 phase: '4. Precautions',
                 type: 'mcq',
                 question: 'Which precaution matters for oral aciclovir or valaciclovir in this 72-year-old?',
-                options: ['Asthma', 'Renal impairment — reduce the dose and keep her hydrated', 'Glaucoma', 'Contact lens wear'],
+                options: [
+                    'Asthma — avoid in reactive airways disease or COPD',
+                    'Renal impairment — reduce the dose and keep her hydrated',
+                    'Glaucoma — aciclovir raises intraocular pressure in older eyes',
+                    'Hypertension — it raises blood pressure in older adults'
+                ],
                 answer: 1,
                 explain: 'Aciclovir is renally cleared. Neurotoxicity and acute kidney injury risk rise with renal impairment and in older patients. The GP checks eGFR.'
             }
@@ -469,10 +479,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Management of early symptomatic Fuchs\'?',
                 options: [
-                    'Topical CAIs to lower IOP.',
-                    'Hypertonic saline (NaCl 5% drops by day, ointment at night — unscheduled, from a pharmacy), blowing warm air (e.g. a hair dryer at arm\'s length) in the morning, lower IOP if raised (avoid topical CAIs), bandage CL for ruptured bullae, and refer for endothelial keratoplasty (DMEK/DSAEK) when vision is significantly affected.',
-                    'Steroids long-term.',
-                    'No treatment exists.'
+                    'Topical CAI (dorzolamide TDS) to reduce corneal fluid, prednisolone acetate QID long-term to protect the endothelium, a bandage CL worn continuously, and refer for penetrating keratoplasty at the very first sign of guttae.',
+                    'Hypertonic saline (5% drops by day, ointment at night, from a pharmacy), warm air in the morning, lower IOP if raised (avoid topical CAIs), bandage CL for ruptured bullae, and refer for DMEK/DSAEK when vision is affected.',
+                    'Hypertonic saline (5% drops at night only, prescription-only), cool air in the morning, latanoprost to thin the cornea, and refer for DMEK only once the patient is legally blind in that eye.',
+                    'Lubricants and observation only: Fuchs’ has no medical treatment, and keratoplasty is avoided because grafts fail in all Fuchs’ patients; topical CAIs are fine if IOP is raised.'
                 ],
                 answer: 1,
                 explain: 'Topical CAIs can worsen endothelial pump function — avoid them in a compromised endothelium. Review every 6–12 months (sooner if symptoms progress).'

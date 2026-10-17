@@ -14,7 +14,12 @@ window.CASES.push(
                 phase: '1. Localise',
                 type: 'mcq',
                 question: 'Where is the lesion?',
-                options: ['Right optic tract', 'Left post-chiasmal pathway (optic tract, LGN, optic radiation or occipital cortex)', 'Optic chiasm', 'Right optic nerve'],
+                options: [
+                    'Right post-chiasmal pathway (tract, LGN, radiation or occipital cortex)',
+                    'Left post-chiasmal pathway (tract, LGN, radiation or occipital cortex)',
+                    'Optic chiasm (crossing nasal fibres from both eyes, mainly superior)',
+                    'Right optic nerve with spread to the junction (anterior chiasm)'
+                ],
                 answer: 1,
                 explain: 'Homonymous = same side of the field in both eyes = a lesion behind the chiasm on the <strong>opposite</strong> side. Right-sided field loss means a left-sided lesion.'
             },
@@ -37,7 +42,12 @@ window.CASES.push(
                 phase: '3. Refine',
                 type: 'mcq',
                 question: 'There is NO RAPD, the defect is highly congruous with macular sparing, and the discs look normal. Where is the lesion?',
-                options: ['Left optic tract', 'Left temporal lobe', 'Left parietal lobe', 'Left occipital cortex'],
+                options: [
+                    'Left optic tract',
+                    'Left temporal lobe (Meyer’s loop)',
+                    'Left parietal lobe',
+                    'Left occipital cortex'
+                ],
                 answer: 3,
                 explain: 'Tract lesions are incongruous, give an RAPD in the contralateral eye (more fibres cross — about 53% crossed vs 47% uncrossed) and eventually band (bow-tie) atrophy. Occipital lesions are congruous and macula-sparing, with no RAPD and normal discs (the damage is beyond the LGN).',
                 recall: 'From 2019: “Don\'t get the RAPD wrong — MORE nasal fibres cross.” A tract lesion causes an RAPD in the eye with the <strong>temporal</strong> field loss (contralateral to the lesion).'
@@ -72,7 +82,12 @@ window.CASES.push(
                 phase: '1. Localise',
                 type: 'mcq',
                 question: 'Where is the lesion?',
-                options: ['Both optic tracts', 'Optic chiasm (crossing nasal fibres)', 'Occipital cortex', 'Retina'],
+                options: [
+                    'Both optic tracts (the uncrossed fibres)',
+                    'Optic chiasm (crossing nasal fibres)',
+                    'Occipital cortex (both poles)',
+                    'Both optic nerves (papillomacular)'
+                ],
                 answer: 1,
                 explain: 'Crossing nasal retinal fibres carry the temporal fields. Compression at the chiasm causes bitemporal loss that respects the vertical midline.'
             },
@@ -92,7 +107,12 @@ window.CASES.push(
                 phase: '3. Testing',
                 type: 'mcq',
                 question: 'Which perimetry best maps the full extent of chiasmal defects?',
-                options: ['10-2 only', 'Kinetic perimetry (e.g. Goldmann) or a full-threshold 30-2, as well as the 24-2', 'Amsler grid', 'FDT screening'],
+                options: [
+                    'A 10-2 SITA Standard, since chiasmal loss starts centrally',
+                    'Kinetic perimetry (e.g. Goldmann) or a 30-2, as well as the 24-2',
+                    'An Amsler grid, since it maps the vertical midline best',
+                    'FDT screening alone, since threshold fields over-call these defects'
+                ],
                 answer: 1,
                 explain: 'Neurological defects can extend beyond 24°. Kinetic perimetry shows the peripheral isopters and whether the defect respects the vertical meridian. Also check colour, red desaturation (compare across the vertical midline), pupils and OCT (band atrophy / GCL loss).',
                 recall: '2019 recall: “Kinetic perimetry, not HVFA” for the bitemporal case.'
@@ -153,10 +173,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'She reports jaw pain when chewing and scalp tenderness. What now?',
                 options: [
-                    'Review in 4 weeks with repeat fields.',
-                    'Same-day emergency referral (ED / ophthalmology) for ESR/CRP and immediate high-dose systemic corticosteroids — don\'t wait for biopsy. Temporal artery ultrasound or biopsy follows.',
-                    'Prescribe topical prednisolone acetate.',
-                    'Start aspirin and recheck in a week.'
+                    'Urgent but not same-day referral: book temporal artery biopsy within 2 weeks and start steroids only once the biopsy confirms GCA.',
+                    'Same-day emergency referral (ED/ophthalmology) for ESR/CRP and immediate high-dose systemic steroids — don’t wait for a biopsy.',
+                    'Start topical prednisolone acetate hourly yourself, then refer to the GP for ESR/CRP within a week to confirm before oral steroids.',
+                    'Refer to the GP for aspirin and ESR/CRP, and review the fields in 4 weeks, since NAION and GCA are managed the same way.'
                 ],
                 answer: 1,
                 critical: true,
@@ -224,10 +244,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'OCT macula is normal; there is temporal disc pallor in both eyes. Next step?',
                 options: [
-                    'Start latanoprost.',
+                    'Start latanoprost in both eyes: temporal pallor with centrocaecal loss is classic normal-tension glaucoma, so lower IOP and review in 3 months.',
                     'Refer to neuro-ophthalmology (via GP or ophthalmologist) for MRI and blood tests; coordinate with the GP to stop any toxic agent.',
-                    'Prescribe topical steroids.',
-                    'Review in 12 months.'
+                    'Prescribe topical prednisolone and review in a week: bilateral pallor with central loss is optic neuritis, which responds to topical steroid.',
+                    'Review in 12 months with repeat fields: bilateral temporal pallor is a normal variant in young adults, so investigation can wait.'
                 ],
                 answer: 1,
                 explain: 'Bilateral optic neuropathy with central loss in a young adult needs investigation. Toxic and nutritional causes can partly recover if caught early.'
@@ -262,10 +282,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What field pattern suggests a tilted disc rather than chiasmal compression or glaucoma?',
                 options: [
-                    'A dense defect strictly respecting the vertical midline that progresses.',
-                    'Superotemporal defects that cross the vertical midline, don\'t respect the horizontal midline, are stable over time and shrink with extra minus lens power.',
-                    'An inferior nasal step that respects the horizontal midline.',
-                    'Central scotoma.'
+                    'Dense bitemporal defects strictly respecting the vertical midline that progress over months and don’t change with lenses.',
+                    'Superotemporal defects that cross the vertical midline, are stable over time and shrink with extra minus lens power.',
+                    'Inferior nasal steps that respect the horizontal midline and progress over time, unaffected by adding minus power.',
+                    'Superotemporal defects that respect the vertical midline exactly and enlarge when extra minus lens power is added.'
                 ],
                 answer: 1,
                 explain: 'The inferonasal retina sits in an ectatic (more myopic) zone, so it is relatively out of focus → a refractive scotoma. Adding about −2 to −3 D brings it into focus and the defect shrinks. Glaucoma respects the horizontal midline and progresses; chiasmal defects respect the vertical midline.',
@@ -276,10 +296,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What is a sensible plan?',
                 options: [
-                    'Start a PGA immediately.',
-                    'Document baseline (disc photos, OCT, fields with and without extra minus), repeat fields, and monitor for progression. If the defect respects the vertical midline and doesn\'t change with lenses, consider neuro-imaging.',
-                    'MRI everyone with a tilted disc.',
-                    'Discharge.'
+                    'Start a PGA in both eyes now: tilted discs are myopic glaucoma until proven otherwise, and waiting for progression risks central loss. Repeat fields only after the IOP has been lowered by 30% from baseline.',
+                    'Document a baseline (photos, OCT, fields with and without extra minus), repeat fields and monitor; if the defect respects the vertical midline and doesn’t change with lenses, consider imaging.',
+                    'Order an MRI for everyone with a tilted disc and a field defect, since tilted discs and pituitary lesions look identical; fields with extra minus don’t help separate them.',
+                    'Discharge to routine care: tilted discs never cause field defects, so the defect must be artefact. No baseline imaging is needed because tilted discs can’t be assessed on OCT.'
                 ],
                 answer: 1,
                 explain: 'Stability over time is the key discriminator. Any progression, true vertical-midline respect, pallor or loss of acuity needs further work-up.'

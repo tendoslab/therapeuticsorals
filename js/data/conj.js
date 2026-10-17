@@ -29,10 +29,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Which history question really pins the diagnosis?',
                 options: [
-                    '“Are you allergic to anything?”',
-                    '“Has anyone around you — at home, work, school or the gym — had a red eye or a cold recently?”',
-                    '“Do you wear glasses?”',
-                    '“Do you have diabetes?”'
+                    '“Are you allergic to anything, and do your eyes itch more in spring or around cats and dogs?”',
+                    '“Has anyone around you — home, work, school or the gym — had a red eye or a cold recently?”',
+                    '“Have you started any new eye drops, make-up or face creams in the last few weeks?”',
+                    '“Do you wear contact lenses, and have you slept in them or swum in them recently?”'
                 ],
                 answer: 1,
                 explain: 'Adenovirus is highly contagious (incubation ~5–12 days) through hands, towels and contaminated instruments, so ask about contacts and disinfect your clinic (tonometer tips).',
@@ -57,10 +57,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'At 2 weeks, central SEIs have reduced her VA to 6/12 and she has glare. Options?',
                 options: [
-                    'Ciprofloxacin.',
-                    'Topical steroid (e.g. FML 0.1% or prednisolone at low frequency) with a slow taper — warn about rebound if stopped quickly and a longer course; check IOP. Mild SEIs often fade over months without treatment.',
-                    'Aciclovir ointment.',
-                    'Corneal graft.'
+                    'Ciprofloxacin QID for 2 weeks, since SEIs are bacterial superinfection of the adenoviral cornea; avoid steroids, which make SEIs permanent.',
+                    'Topical steroid (e.g. FML 0.1% or low-frequency prednisolone) with a slow taper — warn about rebound and a long course; check IOP. Mild SEIs often fade without treatment.',
+                    'Aciclovir 3% ointment 5×/day, since SEIs are live adenovirus in the stroma; steroids are contraindicated until the SEIs have cleared.',
+                    'Prednisolone acetate hourly for 3 days then stop; SEIs clear permanently with a short intensive burst, rebound doesn’t occur after adenovirus, and IOP checks aren’t needed for courses this short.'
                 ],
                 answer: 1,
                 explain: 'Steroids suppress the immune response but may prolong viral shedding and SEIs can recur on stopping. Only treat if vision or symptoms justify it.'
@@ -70,10 +70,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'One infiltrate now has overlying staining and the eye is more painful. What changes?',
                 options: [
-                    'Nothing — SEIs always stain.',
-                    'SEIs shouldn\'t have a significant epithelial defect over them. Staining over an infiltrate with more pain suggests a secondary microbial keratitis (or CLPU / marginal keratitis in the right context). Stop the steroid, treat as MK, and review in 24 h.',
-                    'Double the steroid.',
-                    'Bandage CL and steroid.'
+                    'SEIs often stain as they mature, and pain increases as they clear. Keep the steroid at the same dose and review in a week; staining over an SEI is expected at about 2 weeks.',
+                    'SEIs shouldn’t have an epithelial defect over them. Staining plus more pain suggests a secondary MK (or CLPU/marginal in context): stop the steroid, treat as MK, review in 24 h.',
+                    'Staining over an SEI means the steroid is working too slowly. Double the steroid to hourly, add a bandage CL for comfort, and review in 3 days.',
+                    'Staining over an SEI means adenovirus has re-activated. Stop the steroid and start aciclovir 5×/day; MK isn’t a concern because adenoviral eyes are protected.'
                 ],
                 answer: 1,
                 critical: true,
@@ -95,10 +95,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Most likely organisms?',
                 options: [
-                    'Pseudomonas and Acanthamoeba',
-                    'Haemophilus influenzae (non-typeable), Streptococcus pneumoniae, Moraxella, Staphylococcus aureus. Conjunctivitis plus otitis media suggests H. influenzae.',
-                    'Adenovirus only',
-                    'Fusarium'
+                    'Pseudomonas aeruginosa and Serratia, as in contact lens wearers; conjunctivitis together with otitis media in a toddler strongly suggests Pseudomonas.',
+                    'Non-typeable Haemophilus influenzae, Streptococcus pneumoniae, Moraxella, Staph aureus; conjunctivitis plus otitis suggests H. influenzae.',
+                    'Neisseria gonorrhoeae and Chlamydia trachomatis at any age; conjunctivitis plus otitis suggests chlamydia.',
+                    'Adenovirus types 8 and 19 (EKC) and enterovirus; conjunctivitis plus otitis suggests pharyngoconjunctival fever.'
                 ],
                 answer: 1,
                 explain: 'In conjunctivitis–otitis syndrome, the child needs oral antibiotics via the GP for the ear.'
@@ -108,10 +108,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What would you prescribe, and how does it work?',
                 options: [
-                    'Ciprofloxacin q15min.',
-                    'Chloramphenicol 0.5% drops (e.g. 1 drop every 2–6 h while awake for the first 48 h, then QID to complete ~5 days) ± 1% ointment at night. MoA: binds the 50S ribosomal subunit, inhibiting peptidyl transferase — bacteriostatic and broad-spectrum. Plus lid hygiene and GP for otitis media.',
-                    'Prednisolone acetate.',
-                    'Natamycin.'
+                    'Ciprofloxacin 0.3% q15min for 6 h then hourly; inhibits DNA gyrase (bactericidal, Gram-negative); first line in children because chloramphenicol is contraindicated under 12 years.',
+                    'Chloramphenicol 0.5% (every 2–6 h while awake for 48 h, then QID to ~5 days) ± ointment at night; binds 50S, inhibiting peptidyl transferase (bacteriostatic, broad). GP for the otitis.',
+                    'Tobramycin 0.3% QID for 7 days; binds 50S, blocking peptidyl transferase (bacteriostatic); the otitis settles with the eye drops, so the GP isn’t needed.',
+                    'Chloramphenicol 0.5% QID; binds 30S, causing mRNA misreading (bactericidal); continue for 3 weeks to prevent recurrence; the otitis needs no treatment.'
                 ],
                 answer: 1,
                 explain: 'Topical chloramphenicol is TGA category A and widely used in children. The very rare idiosyncratic aplastic anaemia is the reason it is avoided with a personal or family history of blood dyscrasia. “Grey baby syndrome” relates to systemic neonatal dosing.'
@@ -161,10 +161,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What types of episcleritis are there, and what are its associations?',
                 options: [
-                    'Diffuse, nodular and necrotising.',
-                    'Simple (sectoral or diffuse — most common) and nodular. About a third have an association: rosacea, atopy, RA, IBD, SLE, gout, herpes zoster. Women more than men. Necrotising is a SCLERITIS subtype.',
-                    'Anterior and posterior.',
-                    'Granulomatous only.'
+                    'Simple, nodular and necrotising; most are associated with RA or vasculitis; men more than women, usually over 60. Necrotising episcleritis is the commonest type and can perforate.',
+                    'Simple (sectoral or diffuse, most common) and nodular; about a third have an association (rosacea, atopy, RA, IBD, SLE, gout, zoster); women more than men. Necrotising is SCLERITIS.',
+                    'Anterior and posterior; almost none have a systemic association; equal in men and women. Posterior episcleritis causes choroidal folds and needs oral steroids.',
+                    'Granulomatous and non-granulomatous; most are caused by HLA-B27; women more than men. Granulomatous episcleritis is treated with oral NSAIDs by the optometrist.'
                 ],
                 answer: 1,
                 explain: 'Nodular, recurrent or bilateral episcleritis prompts a systemic work-up (GP — FBC, ESR/CRP, RF, ANA, uric acid).',

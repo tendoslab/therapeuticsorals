@@ -27,10 +27,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'How do SAC, PAC, VKC and AKC differ?',
                 options: [
-                    'SAC/PAC: seasonal or perennial, mild, no corneal involvement; VKC: young boys, warm climates, giant upper-tarsal papillae, Horner–Trantas dots, shield ulcer; AKC: adults with atopic dermatitis, lower-tarsal involvement, chronic scarring, corneal neovascularisation.',
-                    'They are identical.',
-                    'SAC causes shield ulcers routinely.',
-                    'AKC is seen only in children.'
+                    'SAC/PAC: seasonal or perennial, mild, no corneal involvement. VKC: young boys, warm climates, giant upper papillae, Trantas dots, shield ulcer. AKC: adults with eczema, lower-lid involvement, scarring, corneal vessels.',
+                    'SAC/PAC: seasonal or perennial, with shield ulcers in most cases. VKC: older adults, cold climates, lower-lid follicles, no corneal signs. AKC: children with hay fever, giant upper papillae, Trantas dots, resolves at puberty.',
+                    'SAC/PAC: giant papillae and corneal neovascularisation. VKC: young girls, cold climates, follicles and pseudomembranes, recurrent dendrites. AKC: adults with hay fever only, mild, seasonal, no scarring or corneal signs.',
+                    'SAC/PAC: type IV reactions with eczematous lids and scarring. VKC: adults over 40, perennial, lower-lid papillae, no Trantas dots. AKC: young boys in warm climates, giant upper papillae, shield ulcers, resolves at puberty.'
                 ],
                 answer: 0,
                 explain: 'SAC and PAC are type I (IgE / mast cell) reactions. VKC and AKC also involve chronic T-cell (Th2) and eosinophil-mediated inflammation and can threaten sight.',
@@ -81,10 +81,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What type of hypersensitivity is VKC, and what are Horner–Trantas dots?',
                 options: [
-                    'Type II; dots are calcium deposits.',
-                    'Type I (IgE / mast cell) plus type IV (Th2 T-cell, eosinophil-mediated) hypersensitivity; Horner–Trantas dots are limbal collections of degenerated eosinophils and epithelial cells.',
-                    'Type III; dots are follicles.',
-                    'Non-immune; dots are pigment.'
+                    'Type II (antibody-mediated cytotoxic) hypersensitivity only, like pemphigoid; Trantas dots are calcium deposits at the limbus that remain after each flare and slowly enlarge.',
+                    'Type I (IgE/mast cell) plus type IV (Th2, eosinophil-mediated) hypersensitivity; Trantas dots are limbal clumps of degenerated eosinophils and epithelial cells.',
+                    'Type III (immune-complex) hypersensitivity, like marginal keratitis; Trantas dots are lymphoid follicles at the superior limbus.',
+                    'Type I hypersensitivity only, identical to SAC; Trantas dots are pigment clumps from limbal melanocytes that darken with sun exposure.'
                 ],
                 answer: 1,
                 explain: 'Typical patient: boys aged ~5–20, warm and dry climates, atopy. It often resolves after puberty. Two forms: palpebral, limbal or mixed.'
@@ -107,10 +107,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What is your treatment plan?',
                 options: [
-                    'Olopatadine alone.',
-                    'A potent topical steroid pulse (e.g. prednisolone acetate 1% frequently, then tapered) + prophylactic antibiotic (chloramphenicol QID until healed) + a mast cell stabiliser / antihistamine + cold compresses. Refer to ophthalmology for debridement ± amniotic membrane if there is a plaque, and steroid-sparing therapy (topical ciclosporin / tacrolimus). Close IOP monitoring.',
-                    'Bandage CL only.',
-                    'Oral antibiotics.'
+                    'Olopatadine BD and cold compresses only: steroids are avoided in children with a corneal ulcer because of cataract and glaucoma risk, and antibiotics aren’t needed because shield ulcers are sterile; review in 2 weeks and refer if not healed.',
+                    'Potent steroid pulse (prednisolone acetate, then taper) + prophylactic chloramphenicol until healed + dual-acting antihistamine + cold compresses; refer for debridement ± amniotic membrane if there is a plaque; close IOP checks.',
+                    'Bandage CL and chloramphenicol QID until healed; add FML BD only if it hasn’t healed by 4 weeks; continue the dual-acting antihistamine; no referral needed, since debridement is reserved for adults with AKC.',
+                    'Oral prednisolone via the GP plus oral antibiotics, since topical drops can’t reach under the plaque; stop the antihistamine drops; cold compresses; review in a week and refer if the ulcer is still open.'
                 ],
                 answer: 1,
                 critical: true,
@@ -135,10 +135,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'The ulcer heals. Trantas dots keep recurring with mild symptoms. Long-term plan?',
                 options: [
-                    'Long-term dexamethasone QID.',
-                    'Year-round dual-acting antihistamine / mast cell stabiliser; short mild steroid pulses (FML) for flares; specialist steroid-sparing topical ciclosporin (e.g. Verkazia where available) or tacrolimus; cool climate / allergen strategies; regular IOP checks.',
-                    'Stop all drops.',
-                    'Systemic steroids indefinitely.'
+                    'Long-term dexamethasone 0.1% QID to suppress the Trantas dots, with IOP checks every 2 years; antihistamines add nothing once dots appear.',
+                    'Year-round dual-acting antihistamine; short FML pulses for flares; specialist ciclosporin (e.g. Verkazia) or tacrolimus; allergen strategies; regular IOP checks.',
+                    'Stop all drops between flares and treat each recurrence with a 6-month course of prednisolone acetate QID; ciclosporin is only for adults.',
+                    'Oral prednisolone via the GP at a low dose indefinitely, plus a bandage CL during spring; all topical drops are stopped to avoid preservative toxicity and steroid response.'
                 ],
                 answer: 1,
                 explain: 'Avoid long-term potent steroids (steroid glaucoma and cataract). See the “Steroid response in a teenager” case for what goes wrong.'
@@ -173,10 +173,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'TFOS DEWS II diagnostic approach?',
                 options: [
-                    'A Schirmer test alone.',
-                    'Positive symptoms (OSDI ≥13 or DEQ-5 ≥6) plus at least one homeostasis marker: NIBUT < 10 s, osmolarity ≥ 308 mOsm/L (or > 8 between eyes), or ocular surface staining (> 5 corneal spots, > 9 conjunctival spots, or lid-margin staining). Then subtype with meibography, lipid layer, tear meniscus height, Schirmer.',
-                    'Fluorescein BUT > 20 s.',
-                    'Diagnosis by symptoms only.'
+                    'Symptoms (OSDI ≥33 or DEQ-5 ≥12) plus all three homeostasis markers: Schirmer under 5 mm, fluorescein BUT under 5 s and positive staining. Subtyping isn’t part of DEWS II and is left to specialists.',
+                    'Symptoms (OSDI ≥13 or DEQ-5 ≥6) plus one homeostasis marker: NIBUT under 10 s, raised or asymmetric osmolarity, or ocular surface staining. Then subtype (meibography, meniscus, Schirmer).',
+                    'A Schirmer test under 10 mm alone is diagnostic; symptoms are excluded because they correlate poorly with signs. Then treat with lubricants before any further subtyping.',
+                    'Symptoms alone (any OSDI score) are enough; homeostasis markers are only used to grade severity. Then subtype by meibography, with osmolarity reserved for research.'
                 ],
                 answer: 1,
                 explain: 'TFOS DEWS III (2025) builds on this — worth a skim if your examiner loves dry eye (recalls suggest some do).'
@@ -201,10 +201,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'You prescribe ciclosporin 0.1% cationic emulsion (Ikervis). Which counselling is correct?',
                 options: [
-                    '1 drop BD; works within 48 hours; no side effects.',
-                    '1 drop once daily at bedtime; it is a calcineurin inhibitor (blocks T-cell activation / IL-2); effect builds over 1–3+ months (signs such as staining often improve before symptoms); burning or instillation pain is common at first; remove CLs; space 15 min from other drops. PBS-restricted (authority) for severe dry eye with keratitis — check current criteria.',
-                    'Use only as needed for flares.',
-                    'Apply as an ointment to the lid margins.'
+                    'One drop twice daily, morning and night; a corticosteroid (blocks phospholipase A2); works within 48 hours (symptoms improve before signs); any burning means allergy, so stop it straight away.',
+                    'One drop once daily at bedtime; a calcineurin inhibitor (blocks T-cell activation/IL-2); builds over 1–3+ months (signs before symptoms); burning is common at first; space 15 min from other drops.',
+                    'One drop as needed for flares only; a mast-cell stabiliser (blocks histamine release); works within minutes; insert with the eye closed at the inner canthus so it seeps in slowly.',
+                    'One drop once daily in the morning; an NSAID (blocks cyclo-oxygenase); full effect after a week; it can be used with contact lenses in and needs no gap from other drops.'
                 ],
                 answer: 1,
                 explain: 'Ikervis (0.1% cationic emulsion) is dosed once daily at bedtime. Some other ciclosporin products are BD. Expect slow onset, so set expectations to improve adherence.',
@@ -227,10 +227,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'How do you tell Demodex blepharitis from staphylococcal blepharitis?',
                 options: [
-                    'They look identical.',
-                    'Demodex: cylindrical dandruff (sleeves / collarettes hugging the lash base), itch, lash loss or misdirection. Confirm by epilating (or rotating) a lash and viewing mites under the slit lamp or microscope. Staph: hard, brittle scales or crusts (collarettes may be ring-like), lid ulceration, madarosis, marginal keratitis, phlyctenules.',
-                    'Demodex always causes hypopyon.',
-                    'Staph only affects children.'
+                    'Demodex: hard brittle scales with lid-margin ulceration and marginal keratitis; confirm by culture of the lid margin. Staph: cylindrical sleeves hugging the lash base and intense itch; confirm by epilating a lash.',
+                    'Demodex: cylindrical dandruff (sleeves at the lash base), itch, lash loss; confirm by epilating or rotating a lash. Staph: hard scales or ring collarettes, ulceration, madarosis, marginal keratitis, phlyctenules.',
+                    'Demodex: greasy foamy tears, capped meibomian glands and chalazia; confirm with meibography. Staph: cylindrical dandruff and lash loss; confirm by a positive Schirmer test.',
+                    'They can only be told apart by lid-margin swabs: both give identical crusting, itch and collarettes, so treat both with oral doxycycline until the swab result is back.'
                 ],
                 answer: 1,
                 explain: 'Rotating a lash with forceps can draw mites out to the base. Both can coexist with MGD and rosacea.'
@@ -254,10 +254,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'If chloramphenicol is contraindicated (e.g. personal or family history of blood dyscrasia), what topical ointment can you use, and how does it differ?',
                 options: [
-                    'Tobramycin 0.3% ointment (Tobrex) — an aminoglycoside that binds the 30S ribosomal subunit (bactericidal, mainly Gram-negative but also active against Staph). Chloramphenicol binds the 50S subunit and is bacteriostatic.',
-                    'Natamycin ointment.',
-                    'Aciclovir ointment.',
-                    'Atropine ointment.'
+                    'Tobramycin 0.3% ointment — an aminoglycoside binding the 30S subunit (bactericidal, mainly Gram-negative but active against Staph). Chloramphenicol binds 50S and is bacteriostatic.',
+                    'Natamycin 5% ointment — a polyene binding the 50S subunit (bactericidal against Staph). Chloramphenicol binds the 30S subunit and is bactericidal.',
+                    'Aciclovir 3% ointment — a nucleoside analogue that is also bactericidal against Staph. Chloramphenicol inhibits DNA gyrase and is bacteriostatic.',
+                    'Ciprofloxacin ointment — a fluoroquinolone binding the 50S subunit (bacteriostatic, Gram-positive only), so it covers Staph well. Chloramphenicol binds DNA gyrase and is bactericidal.'
                 ],
                 answer: 0,
                 explain: 'Framycetin (an aminoglycoside) or fusidic acid have been used where available — check what is currently on the market in Australia. Chloramphenicol is TGA category A, broad-spectrum and cheap.'
@@ -279,10 +279,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Which history question is most useful, in patient-friendly language?',
                 options: [
-                    '“Have there been changes in your environment?”',
-                    '“Have you started using any new face creams, make-up, eye drops, hair dye or nail polish in the last few weeks?”',
-                    '“What are the ingredients in your moisturiser?”',
-                    '“Do you have a fever?”'
+                    '“Have there been any changes in your environment, home or workplace, or exposures to new allergens recently?”',
+                    '“Have you started any new face creams, make-up, eye drops, hair dye or nail polish in the last few weeks?”',
+                    '“Which preservatives and ingredients are in the moisturiser and cosmetics you use?”',
+                    '“Have you had a fever, a sore throat, or been around anyone with a red, sticky eye?”'
                 ],
                 answer: 1,
                 explain: 'Common culprits: cosmetics, nail polish (transferred by touching the face), preservatives (BAK), neomycin, atropine, brimonidine, hair dye. Contact dermatitis is a type IV delayed reaction, so onset is 24–72 h after exposure.',
@@ -293,10 +293,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What distinguishes this from preseptal cellulitis and acute allergic angioedema?',
                 options: [
-                    'Contact dermatitis: itchy, eczematous scaly skin, usually bilateral, non-tender, no fever. Preseptal cellulitis: unilateral, tender, warm, red, often from a stye, abrasion or sinusitis. Angioedema: sudden boggy swelling, minimal skin change, may involve lips or airway.',
-                    'They are indistinguishable.',
-                    'Preseptal cellulitis is always bilateral and itchy.',
-                    'Angioedema causes scaling.'
+                    'Dermatitis: itchy, scaly eczematous skin, usually bilateral, non-tender, afebrile. Preseptal: unilateral, tender, warm, often from a stye or sinusitis. Angioedema: sudden boggy swelling, little skin change, may involve the airway.',
+                    'Dermatitis: tender, warm and unilateral, often from a stye or sinusitis, with fever. Preseptal: itchy, scaly skin, usually bilateral, never tender. Angioedema: slow onset over weeks with marked scaling and crusting of both lids.',
+                    'Dermatitis: sudden boggy swelling involving the lips and airway. Preseptal: bilateral and itchy with flaky skin. Angioedema: unilateral, tender and warm with fever, from sinusitis.',
+                    'They can’t be told apart clinically: all three are usually bilateral and itchy, so all need oral antibiotics and steroids via the GP until a skin biopsy shows which it is, and any may involve the airway.'
                 ],
                 answer: 0,
                 explain: 'Airway involvement with angioedema is an emergency (call 000).'
@@ -340,10 +340,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'No orbital signs, afebrile. Management?',
                 options: [
-                    'Topical chloramphenicol alone.',
-                    'Oral antibiotics via the GP (eTG: e.g. amoxicillin–clavulanate; cefalexin if non-severe penicillin allergy), warm compresses, analgesia; review within 24–48 h; escalate to ED if it spreads or orbital signs appear. Children need a low referral threshold.',
-                    'Topical steroids.',
-                    'Incise and drain in the chair.'
+                    'Topical chloramphenicol QID prescribed by you, warm compresses and analgesia; review in a week; oral antibiotics only if a fever develops, since topical drops penetrate the lid tissue well.',
+                    'Oral antibiotics via the GP (e.g. amoxicillin–clavulanate; cefalexin if non-severe penicillin allergy), warm compresses, analgesia; review in 24–48 h; ED if it spreads or orbital signs appear.',
+                    'Oral flucloxacillin plus oral prednisolone via the GP to settle the swelling quickly; review in a week; ED only if vision drops, since orbital spread is rare in adults.',
+                    'IV antibiotics in ED for every preseptal cellulitis with CT orbits; warm compresses are avoided because heat spreads infection; review after discharge.'
                 ],
                 answer: 1,
                 explain: 'Why oral rather than topical antibiotics? The infection is in the lid soft tissue deep to the skin, which topical drops don\'t reach. A topical antibiotic may be added for a draining hordeolum or conjunctivitis.',
@@ -353,7 +353,12 @@ window.CASES.push(
                 phase: '3. Hordeolum alone',
                 type: 'mcq',
                 question: 'If it had been a simple external hordeolum without cellulitis?',
-                options: ['Oral antibiotics routinely.', 'Warm compresses and lid massage several times a day, lid hygiene; topical antibiotic only if draining or with conjunctivitis; most resolve within 1–2 weeks. Refer for incision and drainage if persistent (chalazion).', 'IV antibiotics.', 'Steroid injection by the optometrist.'],
+                options: [
+                    'Oral antibiotics via the GP for every hordeolum to stop spread; cold compresses; most resolve in 3–4 days; incise it yourself at the slit lamp if it hasn’t drained.',
+                    'Warm compresses and lid massage several times a day, lid hygiene; topical antibiotic only if draining or with conjunctivitis; most resolve in 1–2 weeks; refer if persistent.',
+                    'Topical steroid–antibiotic combination QID and cold compresses; avoid massage (it spreads infection); most resolve in a month; refer for a steroid injection at 1 week.',
+                    'IV antibiotics via ED if it is larger than 5 mm; warm compresses only once it has drained; most need surgical drainage; review in 2 days.'
+                ],
                 answer: 1,
                 explain: 'Recurrent lesions in the same place in an older patient — consider sebaceous gland carcinoma and biopsy.'
             }
