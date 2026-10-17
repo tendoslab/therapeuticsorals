@@ -27,6 +27,9 @@
     { id: 'Case studies 2016', label: '2016 case studies' },
     { id: 'Case studies 2022', label: '2022 case studies' },
     { id: 'YO mock', label: 'YO mock orals' },
+    { id: 'Exam recall', label: 'Undated exam recall' },
+    { id: 'Mini oral prep', label: 'Mini oral prep' },
+    { id: 'Practice orals', label: 'Practice orals deck' },
   ];
   const sourceLabel = (id) => (SOURCES.find((s) => s.id === id) || { label: id }).label;
 
