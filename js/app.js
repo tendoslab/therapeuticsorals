@@ -446,7 +446,7 @@
     }).join('');
     const openSoFar = !matchMedia('(max-width: 800px)').matches;
     return `<aside class="record card" aria-label="Case record">
-      <div><p class="label">Case</p><h3>${c.title}</h3><div class="pills" style="margin-top:.35rem">${catPill(c.category)}</div></div>
+      <div><p class="label">Case</p><h3>${c.title}</h3><div class="pills" style="margin-top:.35rem">${catPill(c.category)}${sourcePills(c)}</div></div>
       <div><p class="label">Patient</p><p style="margin:0">${c.patient}</p></div>
       <div><p class="label">Presenting</p><p style="margin:0">${c.stem}</p></div>
       ${photosHTML(c, upto)}
