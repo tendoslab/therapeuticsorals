@@ -319,3 +319,57 @@ table.t td.c, table.t th.c { text-align: center; }
   .topbar { position: relative; }
   h1 { font-size: 1.6rem; }
 }
+
+/* ---------- play: lightning round and pair rush ---------- */
+.arc-games { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: 1.2rem; }
+.arc-game { display: flex; flex-direction: column; gap: .6rem; }
+.arc-game h2 { font-size: 1.3rem; }
+.arc-game p { margin: 0; }
+.arc-game .btn.big { margin-top: auto; }
+.arc-ico { font-size: 2.2rem; line-height: 1; }
+.arc-rules { margin: 0; padding-left: 0; list-style: none; font-size: .9rem; display: flex; flex-direction: column; gap: .25rem; }
+.arc-best { display: flex; align-items: baseline; justify-content: space-between; padding: .55rem .8rem; border-radius: 8px; background: var(--surface-2); }
+.arc-best b { font-size: 1.15rem; }
+
+.arc-hud { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; margin-bottom: .5rem; }
+.arc-lives span { font-size: 1.15rem; transition: opacity .3s, filter .3s; }
+.arc-lives .lost { opacity: .25; filter: grayscale(1); }
+.arc-score { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+.arc-combo { font-size: .88rem; font-weight: 700; color: var(--muted); padding: .2rem .6rem; border-radius: 999px; background: var(--surface-2); }
+.arc-combo.hot { color: var(--warn); background: var(--warn-soft); }
+.arc-sec { margin-left: auto; font-size: 1.2rem; font-weight: 700; min-width: 2ch; text-align: right; }
+.arc-track { height: 8px; border-radius: 999px; background: var(--surface-2); overflow: hidden; margin-bottom: 1rem; }
+.arc-bar { height: 100%; background: linear-gradient(90deg, var(--mint), var(--accent)); border-radius: inherit; transition: width .2s linear; }
+.arc-bar.low { background: var(--bad); }
+.arc-ctx { font-size: .9rem; margin: 0; }
+.arc-q { font-size: 1.2rem; }
+.arc-key { width: 1.5rem; height: 1.5rem; border-radius: 5px; display: grid; place-items: center; font-size: .8rem; font-weight: 700; background: var(--surface-2); border: 1px solid var(--line); }
+.arc-verdict { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .7rem 1rem; border-radius: 9px; font-size: 1.05rem; }
+.arc-verdict.good { background: var(--good-soft); color: var(--good); }
+.arc-verdict.bad { background: var(--bad-soft); color: var(--bad); }
+.arc-gain { font-weight: 700; }
+
+.arc-board { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: .7rem; }
+.arc-col { display: flex; flex-direction: column; gap: .55rem; }
+.arc-tile { text-align: left; padding: .7rem .85rem; border-radius: 9px; border: 2px solid var(--line); background: var(--surface); cursor: pointer; line-height: 1.35; font-size: .92rem; min-height: 3.2rem; transition: transform .15s, background .2s, border-color .2s, opacity .3s; }
+.arc-tile:hover:not([disabled]) { border-color: var(--accent); }
+.arc-tile.sel { border-color: var(--accent); background: var(--accent-soft); transform: scale(1.02); }
+.arc-tile.done { border-color: var(--good); background: var(--good-soft); color: var(--good); opacity: .55; cursor: default; }
+.arc-tile.shake { border-color: var(--bad); background: var(--bad-soft); }
+.arc-flash { font-weight: 800; font-size: .9rem; margin-left: auto; }
+.arc-flash.good { color: var(--good); }
+.arc-flash.bad { color: var(--bad); }
+@media (max-width: 520px) { .arc-tile { font-size: .85rem; padding: .55rem .6rem; } }
+
+.arc-end.record { background: linear-gradient(120deg, var(--warn-soft), var(--hero-b)); }
+.arc-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: .8rem; }
+.arc-stats b { font-size: 1.5rem; }
+.arc-miss { padding: 1rem 1.1rem; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .arc-tile.shake { animation: arc-shake .35s; }
+  .arc-verdict.good, .arc-flash { animation: arc-pop .35s ease-out; }
+  .arc-end.record h1 { animation: arc-pop .5s ease-out; }
+  @keyframes arc-shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+  @keyframes arc-pop { from { transform: scale(.85); opacity: 0; } to { transform: none; opacity: 1; } }
+}
