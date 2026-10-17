@@ -285,7 +285,9 @@ table.t td.c, table.t th.c { text-align: center; }
 .dotno { color: var(--line); }
 .audit { display: flex; flex-direction: column; gap: .35rem; }
 .audit .claim { font-style: italic; color: var(--muted); margin: 0; }
-.guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: 1rem; align-items: start; }
+/* Columns rather than grid rows, so a short card never leaves a gap beside a tall one. */
+.guide-grid { columns: 3 22rem; column-gap: 1rem; }
+.guide-grid > .card { break-inside: avoid; margin: 0 0 1rem; display: inline-block; width: 100%; }
 
 @media (prefers-reduced-motion: no-preference) {
   .fade { animation: fade .25s ease-out; }
