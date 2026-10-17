@@ -7,6 +7,7 @@ Open `index.html` in a browser, or host the folder on GitHub Pages (Settings →
 ## Features
 
 - **Oral simulator**: pick topics and a source, choose a pool (All / New / Missed) and run any number of cases. The **Mock oral** sits under the practice pool: a 20-minute clock and two examiners, a case-report warm-up, one anterior-eye case and one glaucoma/neuro case, plus a bonus case if time allows.
+- **Photos and printouts**: about 100 cases show the photo, disc image or field printout the panel would hand you, taken from the source documents (the past papers, the practice orals deck and the 2025 notes). The written description of the exhibit starts folded so you read the image first, and where each image came from is only shown after your first answer in the case, because a slide or section title often names the diagnosis. Click an image to enlarge it. A few field cases use a schematic grey scale drawn from the case description; these are labelled as schematics.
 - **Case record**: beside every question, a panel shows the patient, the presenting story, the exhibit and everything so far in the case (results the examiner revealed and the answers to earlier questions), so moving on is never disorienting.
 - **Answering**: pick an option, then lock it in (nothing submits on a stray tap). Typed notes and dropdown choices are kept if you switch tabs mid-question. Every tab has its own URL, so the browser back button works.
 - **Step types**: `reveal` (the examiner gives you results), `mcq` (single best answer), `multi` (select all that apply), `match` (dropdown matching), `viva` (answer out loud, then tick the key points you covered).
@@ -29,6 +30,9 @@ js/data/recalls-2018.js, recalls-2019.js, recalls-2025.js, mock-2025.js,
         exam-recall.js, mini-oral-prep.js, practice-orals.js,
         anterior-notes-2025.js, posterior-notes-2025.js
                       cases grouped by the document they came from
+js/data/images.js     photos per case (generated; edit tools/case-images.py instead)
+img/cases/            the photos and printouts themselves
+tools/case-images.py  rebuilds img/cases and js/data/images.js from the source documents (tools/fields.py draws the schematic fields)
 tools/check-mcq.js    flags multiple-choice questions where the answer stands out by length
 js/app.js             simulator, my mistakes, recall bank, answer audit, exam guide
 ```
