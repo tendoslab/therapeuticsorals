@@ -3,7 +3,8 @@
  * Step types: 'reveal' (examiner gives info), 'mcq' (single best answer), 'multi' (select all that apply),
  * 'match' (dropdown matching) and 'viva' (say your answer out loud, then tick the key points you covered).
  * Optional step fields: critical (safety-critical), recall (what past candidates said vs what's correct),
- * exhibit (on reveal steps), fixedOrder (mcq/multi options keep their order). */
+ * exhibit (on reveal steps), fixedOrder (mcq/multi options keep their order).
+ * Photos and printouts for a case live in js/data/images.js (window.CASE_IMAGES, keyed by case id). */
 (() => {
   'use strict';
 
@@ -17,6 +18,7 @@
   const CASES = window.CASES || [];
   const CATS = window.CATEGORIES || [];
   const CORRECTIONS = window.CORRECTIONS || [];
+  const IMAGES = window.CASE_IMAGES || {};
   // Where each case came from (matches the `years` field on every case), newest first;
   // sources with no date sit at the end.
   const SOURCES = [
@@ -78,6 +80,26 @@
     if (st.type === 'viva') return `<ul>${st.points.map((p) => `<li>${p}</li>`).join('')}</ul>`;
     return st.text || '';
   }
+
+  // Photos for a case up to step `upto` (-1 = only those shown from the start). The source is held back
+  // until the case has an answer in this session, because a document or slide title can name the diagnosis.
+  const imagesFor = (c, upto) => (IMAGES[c.id] || []).filter((im) => (im.step === undefined ? -1 : im.step) <= upto);
+  const creditShown = (c) => !!sim.s && sim.s.results.some((r) => r.c === c);
+  function photosHTML(c, upto) {
+    const ims = imagesFor(c, upto);
+    if (!ims.length) return '';
+    const credit = creditShown(c);
+    return `<div class="photos">${ims.map((im) => `<figure class="photo">
+      <button type="button" data-act="zoom" data-v="${esc(im.src)}" aria-label="Enlarge: ${esc(im.caption)}"><img src="${esc(im.src)}" width="${im.w}" height="${im.h}" alt="${esc(im.caption)}" loading="lazy"></button>
+      <figcaption>${esc(im.caption)}<span class="credit">${credit ? `Source: ${esc(im.credit)}` : 'Source shown after your first answer in this case'}</span></figcaption>
+    </figure>`).join('')}</div>`;
+  }
+  // The written exhibit gives the findings away, so with a photo it starts folded.
+  const exhibitBlock = (c, upto) => {
+    if (!c.exhibit) return '';
+    if (!imagesFor(c, upto).length) return exhibitHTML(c.exhibit);
+    return `<details class="exhibit"><summary class="label">📷 Written description (try reading the image first)</summary><p>${c.exhibit}</p></details>`;
+  };
 
   // ------------------------------------------------------------------ simulator state
   const sim = {
@@ -370,7 +392,8 @@
       <h1>${c.title}</h1>
       <div class="pills"><span class="muted" style="font-size:.85rem">Source:</span>${sourcePills(c)}</div>
       <div class="says"><span class="who">${esc(examinerFor(c))} says</span><p style="font-size:1.08rem;font-weight:600">${c.patient}</p><p>${c.stem}</p></div>
-      ${c.exhibit ? exhibitHTML(c.exhibit) : ''}
+      ${photosHTML(c, -1)}
+      ${exhibitBlock(c, -1)}
       <button class="btn primary big" data-act="begin">${no === 1 ? 'Enter the exam room' : 'Begin case'} →</button>
     </article>`;
   }
@@ -426,7 +449,8 @@
       <div><p class="label">Case</p><h3>${c.title}</h3><div class="pills" style="margin-top:.35rem">${catPill(c.category)}</div></div>
       <div><p class="label">Patient</p><p style="margin:0">${c.patient}</p></div>
       <div><p class="label">Presenting</p><p style="margin:0">${c.stem}</p></div>
-      ${c.exhibit ? `<div><p class="label">Exhibit</p><p style="margin:0">${c.exhibit}</p></div>` : ''}
+      ${photosHTML(c, upto)}
+      ${c.exhibit ? (imagesFor(c, upto).length ? exhibitBlock(c, upto) : `<div><p class="label">Exhibit</p><p style="margin:0">${c.exhibit}</p></div>`) : ''}
       ${upto > 0 ? `<details class="sofar" ${openSoFar ? 'open' : ''}><summary><span class="label" style="margin:0">Case so far</span></summary><ol class="timeline">${items}</ol></details>` : ''}
     </aside>`;
   }
@@ -748,6 +772,18 @@
       case 'finish': finish(); break;
       case 'restart': sim.s = null; render(); break;
       case 'begin': s.i++; prepItem(); render(); break;
+      case 'zoom': {
+        const img = b.querySelector('img'), cap = b.closest('figure').querySelector('figcaption');
+        const box = document.createElement('div');
+        box.className = 'lightbox';
+        box.innerHTML = `<figure><img src="${esc(v)}" alt="${esc(img.alt)}"><figcaption>${cap.innerHTML}</figcaption></figure><button type="button" class="btn small" aria-label="Close">Close ✕</button>`;
+        const close = () => { box.remove(); document.removeEventListener('keydown', onKey); };
+        const onKey = (e) => { if (e.key === 'Escape') close(); };
+        box.addEventListener('click', close);
+        document.addEventListener('keydown', onKey);
+        document.body.appendChild(box);
+        break;
+      }
       case 'continue': next(); break;
       case 'skip': skip(); break;
       case 'pick': {
