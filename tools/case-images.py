@@ -6,6 +6,7 @@ Run from the repo root:  python3 tools/case-images.py <work-dir>
                         cut from the rendered page and named by page and image xref
   pp/<file>/...         media folders unzipped from the .docx/.pptx past papers
   pdfimg/...            pdfimages -png -p output of the past-paper PDFs
+Photos added by hand sit in images/ (no source document) and are read from there.
 Each entry below: case id -> list of (source, crop, caption, credit, step).
 crop is (left, top, right, bottom) as fractions of the image, or None.
 step: the image appears from that step on (None = from the start of the case).
@@ -22,12 +23,14 @@ CS16 = '2016 case studies (Past Papers/thera-case-studies.docx): {}'
 CS22 = '2022 case studies / YO MOTHs (Past Papers/All_the_case_studies_22.pdf), p. {}'
 R25 = '2025 orals recall (Past Papers/THERA-ORALS-2025.pdf), p. {}'
 YO25 = '2025 YO mock orals (Past Papers/YO Mock Orals 2025.pdf), p. 3'
+ADDED = 'Photo added to the repo (images/{}), not from the exam sources'
 SCHEM = 'Schematic drawn for this simulator from the case description (not a real printout)'
 
 def ex(code): return f'{W}/ex/{code}.png'
 def ppt(n): return f'{W}/pp/Practice-Therapeutics-Orals.pptx/ppt/media/{n}'
 def cs16(n): return f'{W}/pp/thera-case-studies.docx/word/media/{n}'
 def pdf(n): return f'{W}/pdfimg/{n}.png'
+def added(n): return f'images/{n}'
 
 # Reused sources, named once
 BK = (ex('A072-807'), (0, 0, .5, .44))           # top-left panel of a labelled 2x2 grid (bacterial keratitis)
@@ -41,6 +44,8 @@ EPISCLERITIS = (ex('A078-864'), None)
 KRUKENBERG = (cs16('image15.jpeg'), None)
 DRANCE = (ppt('image24.jpeg'), None)
 HYPOPYON = (pdf('YO_Mock_Orals_2025-003-000'), (.768, .335, .99, .855))
+RECESSION = (added('angle recession glaucoma.jpeg'), None)
+KPS = (added('keratic precipitates.jpg'), None)
 
 M = {
   # ---- glaucoma
@@ -78,6 +83,12 @@ M = {
       (ppt('image10.png'), None, 'Field printout, left eye', PPT.format(10), None),
       (ppt('image9.png'), None, 'Field printout, right eye', PPT.format(10), None),
       (ppt('image11.jpeg'), None, 'Left disc photo', PPT.format(11) + ' (image watermarked EyeRounds.org)', 1)],
+  'angle-recession': [
+      (*RECESSION, 'Gonioscopy photo, right eye', ADDED.format('angle recession glaucoma.jpeg'), None),
+      (added('hyphema.jpg'), None, 'Photo from the day of the injury', ADDED.format('hyphema.jpg') + ' (a similar hyphaema)', 1)],
+  'mp-angle-recession': [(*RECESSION, 'Gonioscopy photo', ADDED.format('angle recession glaucoma.jpeg'), None)],
+  'neovascular-glaucoma': [(added('neovascular glaucoma.webp'), None, 'Slit-lamp photo, right eye', ADDED.format('neovascular glaucoma.webp') + ' (a similar eye)', None)],
+  'peer-lily-glaucoma': [(pdf('All_the_case_studies_22-010-007'), None, 'Disc photos, right and left', CS22.format(10) + ' (a similar pair from the YO MOTHs PXF case)', None)],
   'cs16-oht-to-poag': [
       (cs16('image11.jpeg'), None, 'Right disc, 15 years later', CS16.format('Glaucoma case 3, 15 years later'), 4),
       (cs16('image12.png'), None, 'Field printout, 15 years later', CS16.format('Glaucoma case 3, 15 years later'), 4)],
@@ -94,6 +105,7 @@ M = {
   'pn-myasthenia': [(ex('P058-802'), None, 'External photo', P.format(58, 'Myasthenia gravis'), None)],
   'an-bell-exposure': [(ex('P058-799'), None, 'External photo, attempted eye closure', P.format(58, 'Isolated CN7 palsy: demonstrates lagophthalmos'), None)],
   'pn-iih': [(ex('P061-817'), None, 'Disc photo', P.format(61, 'Papilloedema'), None)],
+  'tilted-disc': [(added('tilted disc.jpg'), None, 'Disc photo, one eye', ADDED.format('tilted disc.jpg') + ' (a similar disc)', None)],
   'pn-gca': [(ex('P062-825'), None, 'Right disc photo', P.format(62, 'Arteritic AION (giant cell arteritis)'), None)],
   # ---- retina
   'pn-pvd-break': [(ex('P009-306'), None, 'Peripheral fundus photo, right eye', P.format(9, 'Retinal break (tear)'), None)],
@@ -123,6 +135,7 @@ M = {
       (ppt('image5.png'), None, 'Fluorescein, cobalt blue', PPT.format(6), None),
       (ppt('image6.png'), None, 'Fluorescein, later', PPT.format(6), 1)],
   'po-hsv-disciform': [(ppt('image13.gif'), None, 'Slit-lamp photo, right eye (pupil dilated)', PPT.format(14), None)],
+  'peer-herpes-types': [(*DENDRITE_NOTES, 'Fluorescein photo', A.format(76, 'HSV epithelial keratitis'), None)],
   'hzo': [(ex('A077-848'), None, 'External photo', A.format(77, 'Herpes zoster ophthalmicus'), None)],
   'er-hzo-fiona': [
       (ex('A077-848'), None, 'External photo', A.format(77, 'Herpes zoster ophthalmicus') + ' (a similar case)', None),
@@ -143,7 +156,10 @@ M = {
   'yo25-aau-fibrin': [(*HYPOPYON, 'Anterior eye photo', YO25 + ' (AC cells and flare grading slide)', None)],
   'po-aau-steroid-response': [(*SYNECHIAE, 'Anterior eye photo, left eye', PPT.format(4) + ' (image watermarked University of Michigan Kellogg Eye Center)', None)],
   'r2018-lily-synechiae': [(*SYNECHIAE, 'Anterior eye photo', PPT.format(4) + ' (a similar case)', None)],
-  'r2019-aau-drugs': [(*SYNECHIAE, 'Anterior eye photo', PPT.format(4) + ' (a similar case)', None)],
+  'r2019-aau-drugs': [
+      (*KPS, 'Zoomed-in slit-lamp photo, inferior cornea', ADDED.format('keratic precipitates.jpg'), None),
+      (*SYNECHIAE, 'Anterior eye photo', PPT.format(4) + ' (a similar case)', None)],
+  'granulomatous-au': [(*KPS, 'Slit-lamp photo, endothelium', ADDED.format('keratic precipitates.jpg') + ' (a similar eye)', None)],
   'cs22-aau': [(pdf('All_the_case_studies_22-004-004'), None, 'External photo, left eye', CS22.format(4) + ' (unilateral AAU case)', None)],
   'cs16-aau-joints': [(cs16('image1.tiff'), (0, 0, 1, .86), 'Anterior eye photo, right eye', CS16.format('Case 1, anterior uveitis'), None)],
   # ---- allergy / lids
@@ -170,6 +186,7 @@ M = {
   'episcleritis': [(*EPISCLERITIS, 'Anterior eye photo', A.format(78, 'Episcleritis'), None)],
   'mp-episcleritis': [(*EPISCLERITIS, 'Anterior eye photo', A.format(78, 'Episcleritis'), None)],
   'cs16-episcleritis': [(cs16('image5.png'), None, 'Anterior eye photo', CS16.format('47-year-old with a red eye'), None)],
+  'phlyctenulosis': [(added('phlyctenulosis.jpg'), None, 'Slit-lamp photo', ADDED.format('phlyctenulosis.jpg') + ' (a similar case)', None)],
   'an-pterygium': [(ex('A055-570'), None, 'Anterior eye photo', A.format(55, 'Pterygium'), None)],
   'mp-subconj-haem': [(ex('A055-573'), None, 'Anterior eye photo', A.format(55, 'Subconjunctival haemorrhage'), None)],
 }
@@ -226,8 +243,8 @@ def main():
         for src, crop, caption, credit, step in items:
             key = (src, crop)
             if key not in done:
-                tag = 'ppt-' if '.pptx' in src else 'cs16-' if '.docx' in src else ''
-                name = tag + os.path.splitext(os.path.basename(src))[0].lower().replace('_', '-')
+                tag = 'ppt-' if '.pptx' in src else 'cs16-' if '.docx' in src else 'added-' if src.startswith('images/') else ''
+                name = tag + os.path.splitext(os.path.basename(src))[0].lower().replace('_', '-').replace(' ', '-')
                 if crop: name += '-crop'
                 done[key] = (name, save(src, crop, name))
             name, (w, h) = done[key]
