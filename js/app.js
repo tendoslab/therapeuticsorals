@@ -20,19 +20,19 @@
   // Where each case came from (matches the `years` field on every case), newest first;
   // sources with no date sit at the end.
   const SOURCES = [
-    { id: '2025', label: '2025 orals' },
-    { id: 'Mock 2025', label: '2025 YO mock orals' },
-    { id: 'Anterior notes', label: '2025 anterior notes' },
-    { id: 'Posterior notes', label: '2025 posterior notes' },
-    { id: 'Case studies 2022', label: '2022 case studies' },
-    { id: 'YO mock', label: 'YO mock orals (2022 notes)' },
-    { id: '2019', label: '2019 orals' },
-    { id: '2018', label: '2018 orals' },
-    { id: 'Case studies 2016', label: '2016 case studies' },
-    { id: 'Peer recalls', label: 'Peer recalls (other candidates)' },
-    { id: 'Exam recall', label: 'Undated exam recall' },
-    { id: 'Mini oral prep', label: 'Mini oral prep' },
-    { id: 'Practice orals', label: 'Practice orals deck' },
+    { id: '2025', label: '2025 orals', short: '2025' },
+    { id: 'Mock 2025', label: '2025 YO mock orals', short: '2025 YO mock' },
+    { id: 'Anterior notes', label: 'Anterior notes', short: 'Ant. notes' },
+    { id: 'Posterior notes', label: 'Posterior notes', short: 'Post. notes' },
+    { id: 'Case studies 2022', label: '2022 case studies', short: '2022 notes' },
+    { id: 'YO mock', label: 'YO mock orals (2022 notes)', short: 'YO mock 2022' },
+    { id: '2019', label: '2019 orals', short: '2019' },
+    { id: '2018', label: '2018 orals', short: '2018' },
+    { id: 'Case studies 2016', label: '2016 case studies', short: '2016 notes' },
+    { id: 'Peer recalls', label: 'Peer recalls (other candidates)', short: 'Peer recalls' },
+    { id: 'Exam recall', label: 'Undated exam recall', short: 'Undated recall' },
+    { id: 'Mini oral prep', label: 'Mini oral prep', short: 'Mini oral' },
+    { id: 'Practice orals', label: 'Practice orals deck', short: 'Practice deck' },
   ];
   const sourceLabel = (id) => (SOURCES.find((s) => s.id === id) || { label: id }).label;
 
@@ -82,12 +82,12 @@
   // ------------------------------------------------------------------ simulator state
   const sim = {
     cats: new Set(CATS.map((c) => c.id)),
-    source: 'all', pool: 'all', count: 5,
+    sources: new Set(), pool: 'all', count: 5, // no sources picked = all sources
     s: null, // the current session (practice, mock or drill); it survives tab switches
   };
   let timerHandle = null;
 
-  const sourceMatch = (c) => sim.source === 'all' || (c.years || []).includes(sim.source);
+  const sourceMatch = (c) => !sim.sources.size || (c.years || []).some((y) => sim.sources.has(y));
   const inScope = (c) => sim.cats.has(c.category) && sourceMatch(c);
   function poolCases(pool = sim.pool) {
     return CASES.filter(inScope).filter((c) => {
@@ -332,7 +332,7 @@
         <div class="card stack mock-card">
           <div>
             <h2 style="font-size:1.15rem">Mock oral</h2>
-            <p class="muted" style="margin:.4rem 0 0">Runs like the real thing: a ${MOCK_MINUTES}-minute clock and two examiners. A case-report warm-up, then one anterior-eye case and one glaucoma/posterior case, plus a bonus case if you move quickly. Uses the topics and source picked here.</p>
+            <p class="muted" style="margin:.4rem 0 0">Runs like the real thing: a ${MOCK_MINUTES}-minute clock and two examiners. A case-report warm-up, then one anterior-eye case and one glaucoma/posterior case, plus a bonus case if you move quickly. Uses the topics and sources picked here.</p>
           </div>
           <button class="btn mock big" data-act="mock" ${mockReady ? '' : 'disabled'}>⏱ Start ${MOCK_MINUTES}-minute mock oral</button>
           ${mockReady ? '' : '<p class="warn-text">Select at least one anterior-eye topic and one glaucoma or neuro topic.</p>'}
@@ -348,9 +348,11 @@
     </div>`;
   }
   const startLabel = () => `Start practice · ${sim.count} case${sim.count === 1 ? '' : 's'}`;
+  // Tap sources to combine them; "All sources" clears the selection.
   function sourceChips() {
-    const chip = (id, label, n) => `<button class="chip" data-act="source" data-v="${esc(id)}" aria-pressed="${sim.source === id}">${esc(label)} <small>${n}</small></button>`;
-    return chip('all', 'All sources', CASES.length) + SOURCES.map((s) => chip(s.id, s.label, CASES.filter((c) => (c.years || []).includes(s.id)).length)).join('');
+    const chip = (id, label, n, on) => `<button class="chip" data-act="source" data-v="${esc(id)}" aria-pressed="${on}">${esc(label)} <small>${n}</small></button>`;
+    return chip('all', 'All sources', CASES.length, !sim.sources.size)
+      + SOURCES.map((s) => chip(s.id, s.label, CASES.filter((c) => (c.years || []).includes(s.id)).length, sim.sources.has(s.id))).join('');
   }
 
   function caseNumbers() {
@@ -581,29 +583,29 @@
 
   // ------------------------------------------------------------------ recall bank
   function renderBank() {
-    const years = SOURCES.map((s) => s.id).filter((y) => CASES.some((c) => (c.years || []).includes(y)));
+    // Only the picked sources get a column, so narrowing the sources also narrows the table.
+    const years = SOURCES.map((s) => s.id).filter((y) => (!sim.sources.size || sim.sources.has(y)) && CASES.some((c) => (c.years || []).includes(y)));
     const sections = CATS.map((ct) => {
       const cs = CASES.filter((c) => c.category === ct.id && sourceMatch(c));
       if (!cs.length) return '';
       const rows = cs.map((c) => {
         const p = saved.cases[c.id];
         const nm = c.steps.filter((_, i) => saved.missed[stepKey(c, i)]).length;
-        return `<tr><td><b>${c.title}</b><br><small class="muted">${esc(c.theme)}</small></td>
+        return `<tr><td><button class="case-link" data-act="case" data-v="${c.id}" title="Practise this case"><b>${c.title}</b></button><br><small class="muted">${esc(c.theme)}</small></td>
           ${years.map((y) => `<td class="c">${(c.years || []).includes(y) ? '<span class="dotyes">●</span>' : '<span class="dotno">·</span>'}</td>`).join('')}
           <td class="c">${nm ? `<a href="#review" class="no">${nm}</a>` : '<span class="dotno">—</span>'}</td>
-          <td class="c mono ${p ? (p.last >= PASS_PCT ? 'ok' : 'no') : ''}">${p ? p.last + '%' : '<span class="dotno">—</span>'}</td>
-          <td><button class="btn small" data-act="case" data-v="${c.id}">Practise →</button></td></tr>`;
+          <td class="c mono ${p ? (p.last >= PASS_PCT ? 'ok' : 'no') : ''}">${p ? p.last + '%' : '<span class="dotno">—</span>'}</td></tr>`;
       }).join('');
       return `<section class="card hue-top" style="--h:${ct.hue};margin-bottom:1rem">
         <div class="row" style="gap:.5rem;margin-bottom:.6rem"><span style="font-size:1.2rem">${ct.icon}</span><h2 style="font-size:1.1rem">${esc(ct.title)}</h2><span class="muted" style="font-size:.85rem">${cs.length} case${cs.length === 1 ? '' : 's'}</span></div>
-        <div class="tablewrap"><table class="t bank-table"><tr><th>Case</th>${years.map((y) => `<th class="c">${esc(sourceLabel(y).replace(' orals', '').replace(' case studies', ' notes'))}</th>`).join('')}<th class="c">Missed Qs</th><th class="c">Last</th><th></th></tr>${rows}</table></div>
+        <div class="tablewrap"><table class="t bank-table"><tr><th>Case</th>${years.map((y) => `<th class="c" title="${esc(sourceLabel(y))}">${esc(SOURCES.find((s) => s.id === y).short)}</th>`).join('')}<th class="c">Missed</th><th class="c">Last</th></tr>${rows}</table></div>
       </section>`;
     }).join('');
     view.innerHTML = `<div class="fade">
       <section class="hero"><div><p class="label">Recall bank</p><h1>Every case, by topic and source</h1>
-      <p>● = that case was recalled from that exam or set of notes. Jump straight into any case.</p></div></section>
+      <p>● = that case was recalled from that exam or set of notes. Tap a case title to practise it. Pick several sources to compare just those columns.</p></div></section>
       <div class="row" style="gap:.4rem;margin-bottom:1.2rem">${sourceChips()}</div>
-      ${sections || '<p class="muted">No cases match this source.</p>'}
+      ${sections || '<p class="muted">No cases match these sources.</p>'}
     </div>`;
   }
 
@@ -725,7 +727,7 @@
       case 'toggle-cat': sim.cats.has(v) ? sim.cats.delete(v) : sim.cats.add(v); again(); break;
       case 'all-cats': CATS.forEach((c) => sim.cats.add(c.id)); again(); break;
       case 'no-cats': sim.cats.clear(); again(); break;
-      case 'source': sim.source = v; again(); break;
+      case 'source': if (v === 'all') sim.sources.clear(); else sim.sources.has(v) ? sim.sources.delete(v) : sim.sources.add(v); again(); break;
       case 'pool': sim.pool = v; again(); break;
       case 'count': sim.count = Math.max(1, Math.min(poolCases().length, sim.count + Number(v))); updateCount(); break;
       case 'count-max': sim.count = poolCases().length; updateCount(); break;
