@@ -920,7 +920,7 @@
       : `<div class="arc-verdict bad"><b>${L.pick === null ? '⏱ Time’s up' : '✕ Not quite'}</b><span>−1 ❤️</span></div>`;
     view.innerHTML = `<div class="fade arc-play">${hud(g)}
       <section class="card stack">
-        <div class="pills">${catPill(q.c.category)}<span class="pill">Question ${g.i + 1}</span>${q.st.critical ? '<span class="pill bad">Safety-critical</span>' : ''}</div>
+        <div class="pills">${catPill(q.c.category)}${sourcePills(q.c)}<span class="pill">Question ${g.i + 1}</span>${q.st.critical ? '<span class="pill bad">Safety-critical</span>' : ''}</div>
         <p class="arc-ctx muted"><b>${esc(q.c.patient || '')}</b> ${q.c.stem || ''}</p>
         <h2 class="arc-q">${q.st.question}</h2>
         <div class="opts">${opts}</div>
@@ -939,7 +939,7 @@
     };
     view.innerHTML = `<div class="${g.done.size || g.wrong ? '' : 'fade'} arc-play">${hud(g)}
       <section class="card stack">
-        <div class="pills">${catPill(c.category)}<span class="pill">Board ${g.b + 1}</span><span class="pill">${g.done.size} / ${g.pairsNow.length} matched</span>${g.flash ? `<span class="arc-flash ${g.flash.startsWith('−') ? 'bad' : 'good'}">${g.flash}</span>` : ''}</div>
+        <div class="pills">${catPill(c.category)}${sourcePills(c)}<span class="pill">Board ${g.b + 1}</span><span class="pill">${g.done.size} / ${g.pairsNow.length} matched</span>${g.flash ? `<span class="arc-flash ${g.flash.startsWith('−') ? 'bad' : 'good'}">${g.flash}</span>` : ''}</div>
         <h2 class="arc-q">${st.question}</h2>
         <div class="arc-board">
           <div class="arc-col">${g.left.map((i) => tile('L', i, g.pairsNow[i].label)).join('')}</div>
