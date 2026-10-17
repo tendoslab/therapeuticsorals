@@ -726,8 +726,259 @@
       </div></div>`;
   }
 
+  // ------------------------------------------------------------------ play: two quick games built from the case bank
+  // Lightning round: the single-best-answer questions against the clock, with lives and a streak multiplier.
+  // Pair rush: the matching questions as tap-to-pair boards against a shared clock.
+  // Lightning answers count towards My mistakes like any other answer; the pair boards don't.
+  const BOLT_SECS = 30, BOLT_LIVES = 3, RUSH_SECS = 90, RUSH_PAIRS = 5;
+  const arc = { cats: new Set(CATS.map((c) => c.id)), g: null, handle: null };
+  const bests = () => (saved.arcade = saved.arcade || {});
+  const arcMcqs = () => CASES.filter((c) => arc.cats.has(c.category)).flatMap((c) => c.steps.map((st, s) => ({ c, s, st }))).filter((x) => x.st.type === 'mcq');
+  const arcBoards = () => CASES.filter((c) => arc.cats.has(c.category)).flatMap((c) => c.steps.map((st, s) => ({ c, s, st }))).filter((x) => x.st.type === 'match' && x.st.pairs.length >= 3);
+  const boltMult = (streak) => (streak >= 10 ? 4 : streak >= 6 ? 3 : streak >= 3 ? 2 : 1);
+
+  function arcStop() { if (arc.handle) clearInterval(arc.handle); arc.handle = null; }
+  function arcClock(onTick) { arcStop(); arc.handle = setInterval(onTick, 200); }
+
+  function startBolt() {
+    const queue = shuffled(arcMcqs());
+    if (!queue.length) return;
+    arc.g = { game: 'bolt', queue, i: 0, lives: BOLT_LIVES, score: 0, streak: 0, bestStreak: 0, right: 0, missed: [], last: null, over: false };
+    boltQuestion();
+  }
+  function boltQuestion() {
+    const g = arc.g, q = g.queue[g.i];
+    g.perm = q.st.fixedOrder ? range(q.st.options.length) : shuffled(range(q.st.options.length));
+    g.last = null;
+    g.endsAt = Date.now() + BOLT_SECS * 1000;
+    renderPlay();
+    arcClock(() => {
+      const left = Math.max(0, g.endsAt - Date.now());
+      const bar = document.getElementById('arc-bar'), sec = document.getElementById('arc-sec');
+      if (bar) { bar.style.width = `${(100 * left) / (BOLT_SECS * 1000)}%`; bar.classList.toggle('low', left < 8000); }
+      if (sec) sec.textContent = Math.ceil(left / 1000);
+      if (!left) boltAnswer(null);
+    });
+  }
+  function boltAnswer(pick) {
+    const g = arc.g;
+    if (!g || g.game !== 'bolt' || g.last) return;
+    arcStop();
+    const q = g.queue[g.i], ok = pick === q.st.answer, k = stepKey(q.c, q.s);
+    const secsLeft = Math.ceil(Math.max(0, g.endsAt - Date.now()) / 1000);
+    let gain = 0;
+    saved.seen[k] = 1;
+    if (ok) {
+      g.streak++; g.right++;
+      g.bestStreak = Math.max(g.bestStreak, g.streak);
+      gain = (100 + 5 * secsLeft) * boltMult(g.streak);
+      g.score += gain;
+      delete saved.missed[k];
+    } else {
+      g.streak = 0; g.lives--;
+      g.missed.push({ q, pick });
+      saved.missed[k] = { score: 0, said: pick === null ? 'Ran out of time (lightning round)' : strip(q.st.options[pick]), date: today() };
+    }
+    persist();
+    g.last = { pick, ok, gain };
+    if (g.lives <= 0 || g.i + 1 >= g.queue.length) arcOver();
+    renderPlay();
+  }
+  function boltNext() {
+    const g = arc.g;
+    if (g.over) { g.showEnd = true; renderPlay(); return; }
+    g.i++;
+    boltQuestion();
+  }
+
+  function startRush() {
+    const boards = shuffled(arcBoards());
+    if (!boards.length) return;
+    arc.g = { game: 'rush', boards, b: -1, score: 0, combo: 0, pairs: 0, cleared: 0, missed: [], over: false, endsAt: Date.now() + RUSH_SECS * 1000, flash: '' };
+    rushBoard();
+    arcClock(() => {
+      const g = arc.g;
+      if (!g || g.over) return;
+      const left = Math.max(0, g.endsAt - Date.now());
+      const bar = document.getElementById('arc-bar'), sec = document.getElementById('arc-sec');
+      if (bar) { bar.style.width = `${Math.min(100, (100 * left) / (RUSH_SECS * 1000))}%`; bar.classList.toggle('low', left < 15000); }
+      if (sec) sec.textContent = Math.ceil(left / 1000);
+      if (!left) { arcOver(); renderPlay(); }
+    });
+  }
+  function rushBoard() {
+    const g = arc.g;
+    g.b++;
+    if (g.b >= g.boards.length) { arcOver(); renderPlay(); return; }
+    const { st } = g.boards[g.b];
+    const pairs = shuffled(st.pairs).slice(0, RUSH_PAIRS);
+    g.left = shuffled(pairs.map((p, i) => i));
+    g.rightOrder = shuffled(pairs.map((p, i) => i));
+    g.pairsNow = pairs; g.done = new Set(); g.doneR = new Set(); g.selL = null; g.selR = null; g.wrong = null;
+    renderPlay();
+  }
+  function rushPick(side, i) {
+    const g = arc.g;
+    if (!g || g.game !== 'rush' || g.over || (side === 'L' ? g.done : g.doneR).has(i)) return;
+    if (side === 'L') g.selL = g.selL === i ? null : i; else g.selR = g.selR === i ? null : i;
+    g.wrong = null; g.flash = '';
+    if (g.selL !== null && g.selR !== null) {
+      const L = g.pairsNow[g.selL], R = g.pairsNow[g.selR];
+      // Two items can share an answer, so compare the text rather than the index.
+      if (L.answer === R.answer) {
+        g.done.add(g.selL);
+        g.doneR.add(g.selR);
+        g.combo = Math.min(5, g.combo + 1);
+        const gain = 100 * g.combo;
+        g.score += gain; g.pairs++;
+        g.flash = `+${gain}`;
+      } else {
+        g.combo = 0;
+        g.endsAt -= 5000;
+        g.wrong = [g.selL, g.selR];
+        g.missed.push({ label: L.label, answer: L.answer, chose: R.answer, q: g.boards[g.b] });
+        g.flash = '−5 s';
+      }
+      g.selL = null; g.selR = null;
+      if (g.done.size === g.pairsNow.length) {
+        g.cleared++; g.endsAt += 8000;
+        g.flash = `Board clear! +8 s`;
+        renderPlay();
+        setTimeout(() => { if (arc.g === g && !g.over) rushBoard(); }, 700);
+        return;
+      }
+    }
+    renderPlay();
+  }
+
+  function arcOver() {
+    const g = arc.g;
+    arcStop();
+    g.over = true;
+    const b = bests(), prev = b[g.game] || 0;
+    g.record = g.score > prev;
+    if (g.record) { b[g.game] = g.score; persist(); }
+    g.prevBest = prev;
+  }
+  function arcQuit() { arcStop(); arc.g = null; }
+
+  function renderPlay() {
+    const g = arc.g;
+    if (!g) return playSetup();
+    if (g.over && (g.game === 'rush' || g.showEnd)) return playEnd();
+    return g.game === 'bolt' ? playBolt() : playRush();
+  }
+  function playSetup() {
+    const b = bests(), nQ = arcMcqs().length, nB = arcBoards().length;
+    const chips = CATS.map((c) => `<button class="chip" data-act="arc-cat" data-v="${c.id}" aria-pressed="${arc.cats.has(c.id)}">${c.icon} ${esc(c.title)}</button>`).join('');
+    view.innerHTML = `<div class="fade">
+      <section class="hero"><div><p class="label">Play</p><h1>Learn it the fun way</h1>
+      <p>Two quick games built from the same questions as the simulator. Beat your best score, keep your streak alive, and anything you miss in the lightning round goes on your My mistakes list to revisit.</p></div></section>
+      <div class="row" style="gap:.4rem;margin-bottom:1.2rem"><span class="label" style="margin:0 .3rem 0 0">Topics</span>${chips}
+        <button class="chip" data-act="arc-all">All</button></div>
+      <div class="arc-games">
+        <section class="card arc-game hue-top" style="--h:45">
+          <div class="arc-ico" aria-hidden="true">⚡</div>
+          <h2>Lightning round</h2>
+          <p class="muted">Single-best-answer questions, ${BOLT_SECS} seconds each. You have ${BOLT_LIVES} lives. Answer fast for a time bonus, and chain correct answers to build a multiplier up to ×4.</p>
+          <ul class="arc-rules"><li>❤️ ${BOLT_LIVES} lives: a wrong answer or a timeout costs one</li><li>🔥 Streak 3 → ×2, 6 → ×3, 10 → ×4</li><li>⌨️ Keys 1–4 to answer, Enter for next</li></ul>
+          <div class="arc-best"><span class="label" style="margin:0">Your best</span><b class="mono">${(b.bolt || 0).toLocaleString()}</b></div>
+          <button class="btn primary big" data-act="arc-bolt" ${nQ ? '' : 'disabled'}>Play · ${nQ} questions</button>
+        </section>
+        <section class="card arc-game hue-top" style="--h:170">
+          <div class="arc-ico" aria-hidden="true">🧩</div>
+          <h2>Pair rush</h2>
+          <p class="muted">Tap an item, then its match. ${RUSH_SECS} seconds on the clock; clear a board to win back time. A wrong pair costs 5 seconds and breaks your combo.</p>
+          <ul class="arc-rules"><li>🎯 Each pair scores 100 × your combo (up to ×5)</li><li>⏱ Clear a board: +8 seconds</li><li>✕ Wrong pair: −5 seconds</li></ul>
+          <div class="arc-best"><span class="label" style="margin:0">Your best</span><b class="mono">${(b.rush || 0).toLocaleString()}</b></div>
+          <button class="btn primary big" data-act="arc-rush" ${nB ? '' : 'disabled'}>Play · ${nB} boards</button>
+        </section>
+      </div></div>`;
+  }
+  function hud(g) {
+    const lives = g.game === 'bolt' ? `<span class="arc-lives" aria-label="${g.lives} lives left">${range(BOLT_LIVES).map((i) => `<span class="${i < g.lives ? '' : 'lost'}">❤️</span>`).join('')}</span>` : '';
+    const mult = g.game === 'bolt' ? boltMult(g.streak) : g.combo;
+    const combo = g.game === 'bolt' ? `🔥 ${g.streak} streak${mult > 1 ? ` · ×${mult}` : ''}` : `🎯 combo ×${Math.max(1, g.combo)}`;
+    return `<div class="arc-hud">
+      ${lives}
+      <span class="arc-score mono">${g.score.toLocaleString()}</span>
+      <span class="arc-combo ${mult > 1 ? 'hot' : ''}">${combo}</span>
+      <span class="arc-sec mono" id="arc-sec">${Math.ceil(Math.max(0, g.endsAt - Date.now()) / 1000)}</span>
+      <button class="btn ghost small" data-act="arc-quit">Quit</button>
+    </div>
+    <div class="arc-track"><div class="arc-bar" id="arc-bar" style="width:${Math.min(100, (100 * Math.max(0, g.endsAt - Date.now())) / ((g.game === 'bolt' ? BOLT_SECS : RUSH_SECS) * 1000))}%"></div></div>`;
+  }
+  function playBolt() {
+    const g = arc.g, q = g.queue[g.i], L = g.last;
+    const opts = g.perm.map((oi, n) => {
+      if (!L) return `<button class="opt arc-opt" data-act="arc-pick" data-v="${oi}"><span class="arc-key mono" aria-hidden="true">${n + 1}</span><span>${q.st.options[oi]}</span><span></span></button>`;
+      const cls = oi === q.st.answer ? 'right' : oi === L.pick ? 'wrong' : 'dim';
+      return `<div class="opt arc-opt ${cls}"><span class="arc-key mono" aria-hidden="true">${n + 1}</span><span>${q.st.options[oi]}</span><span class="tag">${oi === q.st.answer ? '✓' : oi === L.pick ? '✕' : ''}</span></div>`;
+    }).join('');
+    const verdict = !L ? '' : L.ok
+      ? `<div class="arc-verdict good"><b>✓ Correct</b><span class="arc-gain mono">+${L.gain.toLocaleString()}</span></div>`
+      : `<div class="arc-verdict bad"><b>${L.pick === null ? '⏱ Time’s up' : '✕ Not quite'}</b><span>−1 ❤️</span></div>`;
+    view.innerHTML = `<div class="fade arc-play">${hud(g)}
+      <section class="card stack">
+        <div class="pills">${catPill(q.c.category)}<span class="pill">Question ${g.i + 1}</span>${q.st.critical ? '<span class="pill bad">Safety-critical</span>' : ''}</div>
+        <p class="arc-ctx muted"><b>${esc(q.c.patient || '')}</b> ${q.c.stem || ''}</p>
+        <h2 class="arc-q">${q.st.question}</h2>
+        <div class="opts">${opts}</div>
+        ${L ? `${verdict}<div class="model"><p class="label">🧑‍⚕️ Why</p><div class="prose">${q.st.explain}</div></div>
+          <div class="row"><button class="btn primary" data-act="arc-next" id="arc-next">${g.over ? 'See results' : 'Next question'} →</button><button class="btn ghost small" data-act="case" data-v="${q.c.id}">Open the full case</button></div>` : ''}
+      </section></div>`;
+    if (L) { const nb = document.getElementById('arc-next'); if (nb) nb.focus({ preventScroll: true }); }
+  }
+  function playRush() {
+    const g = arc.g, { c, st } = g.boards[g.b];
+    const tile = (side, i, text) => {
+      const done = (side === 'L' ? g.done : g.doneR).has(i);
+      const sel = side === 'L' ? g.selL === i : g.selR === i;
+      const bad = g.wrong && g.wrong[side === 'L' ? 0 : 1] === i;
+      return `<button class="arc-tile ${done ? 'done' : ''} ${sel ? 'sel' : ''} ${bad ? 'shake' : ''}" data-act="arc-tile" data-v="${side}${i}" ${done ? 'disabled' : ''} aria-pressed="${sel}">${text}</button>`;
+    };
+    view.innerHTML = `<div class="${g.done.size || g.wrong ? '' : 'fade'} arc-play">${hud(g)}
+      <section class="card stack">
+        <div class="pills">${catPill(c.category)}<span class="pill">Board ${g.b + 1}</span><span class="pill">${g.done.size} / ${g.pairsNow.length} matched</span>${g.flash ? `<span class="arc-flash ${g.flash.startsWith('−') ? 'bad' : 'good'}">${g.flash}</span>` : ''}</div>
+        <h2 class="arc-q">${st.question}</h2>
+        <div class="arc-board">
+          <div class="arc-col">${g.left.map((i) => tile('L', i, g.pairsNow[i].label)).join('')}</div>
+          <div class="arc-col">${g.rightOrder.map((i) => tile('R', i, g.pairsNow[i].answer)).join('')}</div>
+        </div>
+      </section></div>`;
+  }
+  function playEnd() {
+    const g = arc.g;
+    const stats = g.game === 'bolt'
+      ? [['Score', g.score.toLocaleString()], ['Correct', `${g.right} / ${g.i + 1}`], ['Best streak', g.bestStreak]]
+      : [['Score', g.score.toLocaleString()], ['Pairs', g.pairs], ['Boards cleared', g.cleared]];
+    const missed = g.game === 'bolt'
+      ? g.missed.map(({ q, pick }) => `<article class="card arc-miss"><p class="muted" style="margin:0 0 .3rem">${q.st.question}</p>
+          ${pick !== null ? `<p class="no" style="margin:0 0 .2rem">✕ ${q.st.options[pick]}</p>` : '<p class="no" style="margin:0 0 .2rem">⏱ Ran out of time</p>'}
+          <p class="ok" style="margin:0 0 .5rem">✓ ${q.st.options[q.st.answer]}</p>
+          <button class="btn small" data-act="case" data-v="${q.c.id}">Practise this case →</button></article>`).join('')
+      : g.missed.map((m) => `<article class="card arc-miss"><p style="margin:0 0 .2rem"><b>${m.label}</b></p>
+          <p class="no" style="margin:0 0 .2rem">✕ ${m.chose}</p><p class="ok" style="margin:0 0 .5rem">✓ ${m.answer}</p>
+          <button class="btn small" data-act="case" data-v="${m.q.c.id}">Practise this case →</button></article>`).join('');
+    const msg = g.record ? (g.prevBest ? `New personal best! You beat ${g.prevBest.toLocaleString()}.` : 'First score on the board!') : `Your best is ${(bests()[g.game] || 0).toLocaleString()}. Have another go!`;
+    view.innerHTML = `<div class="fade">
+      <section class="hero arc-end ${g.record ? 'record' : ''}"><div><p class="label">${g.game === 'bolt' ? '⚡ Lightning round' : '🧩 Pair rush'} · game over</p>
+        <h1>${g.record ? '🏆 ' : ''}${g.score.toLocaleString()} points</h1><p>${msg}</p></div></section>
+      <div class="arc-stats">${stats.map(([k, v]) => `<div class="card"><p class="label">${k}</p><b class="mono">${v}</b></div>`).join('')}</div>
+      <div class="row" style="margin:1rem 0 1.4rem"><button class="btn primary" data-act="arc-${g.game}">Play again</button><button class="btn" data-act="arc-quit">Back to games</button>${g.game === 'bolt' && g.missed.length ? '<a class="btn ghost" href="#review">My mistakes →</a>' : ''}</div>
+      ${missed ? `<h2 style="font-size:1.15rem;margin-bottom:.7rem">Worth another look</h2><div class="stack" style="gap:.7rem">${missed}</div>` : ''}
+    </div>`;
+  }
+  document.addEventListener('keydown', (ev) => {
+    const g = arc.g;
+    if (route() !== 'play' || !g || g.game !== 'bolt' || ev.ctrlKey || ev.metaKey || ev.altKey) return;
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(ev.target.tagName)) return;
+    if (!g.last && /^[1-9]$/.test(ev.key)) { const oi = g.perm[Number(ev.key) - 1]; if (oi !== undefined) { ev.preventDefault(); boltAnswer(oi); } }
+    else if (g.last && ev.key === 'Enter' && ev.target.tagName !== 'BUTTON') { ev.preventDefault(); boltNext(); }
+  });
+
   // ------------------------------------------------------------------ routing and chrome
-  const ROUTES = { sim: null, review: renderReview, bank: renderBank, audit: renderAudit, guide: renderGuide };
+  const ROUTES = { sim: null, play: renderPlay, review: renderReview, bank: renderBank, audit: renderAudit, guide: renderGuide };
   const route = () => { const r = location.hash.slice(1); return r in ROUTES ? r : 'sim'; };
   function render(opts = {}) {
     const r = route();
@@ -735,6 +986,7 @@
     const n = missedKeys().length;
     missBadge.hidden = !n; missBadge.textContent = n;
     const y = window.scrollY;
+    if (r !== 'play') arcQuit(); // leaving the tab ends a game in progress
     if (r === 'sim') renderSim(); else ROUTES[r]();
     scorePill.hidden = !active();
     if (active()) scorePill.textContent = `Score ${sim.s.score} / ${sim.s.max}`;
@@ -796,6 +1048,14 @@
       }
       case 'submit': submit(); break;
       case 'next': next(); break;
+      case 'arc-cat': arc.cats.has(v) ? arc.cats.delete(v) : arc.cats.add(v); again(); break;
+      case 'arc-all': CATS.forEach((c) => arc.cats.add(c.id)); again(); break;
+      case 'arc-bolt': startBolt(); break;
+      case 'arc-rush': startRush(); break;
+      case 'arc-pick': boltAnswer(Number(v)); break;
+      case 'arc-next': boltNext(); break;
+      case 'arc-tile': rushPick(v[0], Number(v.slice(1))); break;
+      case 'arc-quit': arcQuit(); render(); break;
       case 'theme': {
         const root = document.documentElement;
         const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;

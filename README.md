@@ -11,6 +11,7 @@ Open `index.html` in a browser, or host the folder on GitHub Pages (Settings →
 - **Case record**: beside every question, a panel shows the patient, the presenting story, the exhibit and everything so far in the case (results the examiner revealed and the answers to earlier questions), so moving on is never disorienting.
 - **Answering**: pick an option, then lock it in (nothing submits on a stray tap). Typed notes and dropdown choices are kept if you switch tabs mid-question. Every tab has its own URL, so the browser back button works.
 - **Step types**: `reveal` (the examiner gives you results), `mcq` (single best answer), `multi` (select all that apply), `match` (dropdown matching), `viva` (answer out loud, then tick the key points you covered).
+- **Play**: two quick games built from the case bank, filtered by topic. *Lightning round* serves the single-best-answer questions at 30 seconds each, with 3 lives, a time bonus and a streak multiplier (keys 1–4 answer, Enter moves on); a wrong answer goes on My mistakes like any other. *Pair rush* turns the matching questions into tap-to-pair boards on a 90-second clock (a wrong pair costs 5 seconds, a cleared board wins back 8). Each game keeps your best score, and the game-over screen lists what you missed with a link to the full case.
 - **My mistakes**: every question you scored under 8/10 on (or skipped), with what you said, the correct answer and the examiner notes. Drill them on their own or retry the whole case; a question drops off once you get it right. The end-of-session screen lists the same detail.
 - **Recall bank**: every case by topic and source, with your missed-question count and last score.
 - **Answer audit**: specific student answers from the recalls, checked and corrected against Australian practice. The same corrections appear inside the matching case steps as "Recall check" boxes.
@@ -35,7 +36,7 @@ img/cases/            the photos and printouts themselves
 images/               extra photos added by hand (no source document); case-images.py copies them into img/cases
 tools/case-images.py  rebuilds img/cases and js/data/images.js from the source documents (tools/fields.py draws the schematic fields)
 tools/check-mcq.js    flags multiple-choice questions where the answer stands out by length
-js/app.js             simulator, my mistakes, recall bank, answer audit, exam guide
+js/app.js             simulator, play (games), my mistakes, recall bank, answer audit, exam guide
 ```
 
 ## Adding or editing cases
