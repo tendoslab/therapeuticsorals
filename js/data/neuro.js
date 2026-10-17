@@ -5,7 +5,7 @@ window.CASES.push(
         category: 'neuro',
         title: 'The Post-Chiasmal Defect',
         theme: 'Homonymous Hemianopia',
-        years: ['2019', '2025', 'Peer recalls'],
+        years: ['2019', '2025'],
         patient: '52-year-old man.',
         stem: 'He keeps bumping into things on his right side since a recent head injury.',
         exhibit: 'Fields: right homonymous hemianopia in both eyes, respecting the vertical midline.',
@@ -283,85 +283,6 @@ window.CASES.push(
                 ],
                 answer: 1,
                 explain: 'Stability over time is the key discriminator. Any progression, true vertical-midline respect, pallor or loss of acuity needs further work-up.'
-            }
-        ]
-    },
-    {
-        id: 'cn3-palsy',
-        category: 'neuro',
-        title: 'Third Nerve Palsy: Is the Pupil Involved?',
-        theme: 'Cranial Nerve Palsy',
-        years: ['Peer recalls'],
-        patient: '61-year-old woman with type 2 diabetes and hypertension.',
-        stem: 'Sudden double vision since yesterday and a droopy left eyelid, with an ache above the left eye. The left eye sits down and out.',
-        steps: [
-            {
-                phase: '1. Describe',
-                type: 'viva',
-                question: 'What findings do you expect with a complete left third nerve palsy, and what do you examine?',
-                points: [
-                    'Ptosis (levator palpebrae, superior division of CN III)',
-                    'Eye “down and out” (unopposed lateral rectus CN VI and superior oblique CN IV)',
-                    'Limited elevation, depression and adduction',
-                    'Pupil: is it dilated and poorly reactive? Compare in dim and bright light',
-                    'Check CN IV (intorsion on attempted depression) and CN V, VI and VII to localise (cavernous sinus/orbital apex)',
-                    'Other neurology: headache severity, neck stiffness, other deficits'
-                ],
-                explain: 'The pupil is the single most important finding: it decides whether this is an emergency.'
-            },
-            {
-                phase: '2. Pupil involved',
-                type: 'mcq',
-                question: 'The left pupil is 6 mm and sluggish (right 3 mm). What do you do?',
-                options: [
-                    'Diabetic microvascular palsy: GP review in a week.',
-                    'Emergency: same-day transfer to the emergency department for CT/MR angiography — a posterior communicating artery aneurysm must be excluded (it can rupture and cause a fatal subarachnoid haemorrhage).',
-                    'Prism glasses and review in 3 months.',
-                    'Start pilocarpine to constrict the pupil.'
-                ],
-                answer: 1,
-                critical: true,
-                explain: 'A painful pupil-involving third nerve palsy is an aneurysm until proven otherwise. Phone ED so they expect the patient; don\'t send a routine referral letter.'
-            },
-            {
-                phase: '3. Why the pupil matters',
-                type: 'mcq',
-                question: 'Why does compression involve the pupil while a diabetic (ischaemic) palsy usually spares it?',
-                options: [
-                    'The pupillomotor fibres run on the outside (superficial, dorsomedial) of the nerve, supplied by pial vessels. An aneurysm compresses the outside first; microvascular ischaemia hits the core of the nerve and spares the surface fibres.',
-                    'Diabetes protects the iris sphincter.',
-                    'The pupil fibres travel with CN VI.',
-                    'Ischaemia only affects sympathetic fibres.'
-                ],
-                answer: 0,
-                explain: 'This is the classic exam explanation. The “rule of the pupil” isn\'t absolute: about 1 in 5 microvascular palsies affect the pupil slightly (usually under 1 mm of anisocoria), and an early or partial compressive palsy can spare it.'
-            },
-            {
-                phase: '4. Pupil spared',
-                type: 'mcq',
-                question: 'Instead, the pupils are equal and reactive and the palsy is otherwise complete. She is 61 with diabetes and hypertension. Management?',
-                options: [
-                    'Ignore it — it always recovers.',
-                    'Likely microvascular (ischaemic) palsy: same-day or next-day GP/ophthalmology contact for BP, glucose/HbA1c, lipids (and ESR/CRP if over 50 with GCA symptoms); re-check the pupil daily for the first week; occlude one eye for diplopia; expect recovery over ~3 months. Image urgently if the pupil becomes involved, other nerves are affected, she is young or it doesn\'t recover.',
-                    'Emergency craniotomy.',
-                    'Topical steroid and review in 2 weeks.'
-                ],
-                answer: 1,
-                explain: 'Many clinicians now image all third nerve palsies because MRA/CTA is widely available; saying “I\'d discuss imaging with ophthalmology” is safe. Aberrant regeneration (e.g. lid elevation on down-gaze) suggests compression, not ischaemia, and needs imaging.'
-            },
-            {
-                phase: '5. Localise the ptosis',
-                type: 'match',
-                question: 'Match each cause of ptosis to its other signs.',
-                pairs: [
-                    { label: 'Third nerve palsy', answer: 'Large ptosis with a down-and-out eye ± dilated pupil' },
-                    { label: 'Horner syndrome', answer: 'Mild ptosis (Müller\'s muscle, sympathetic), miosis worse in dim light, ± anhidrosis' },
-                    { label: 'Myasthenia gravis', answer: 'Variable, fatigable ptosis; pupils normal; improves with ice test' },
-                    { label: 'Herpes zoster ophthalmicus', answer: 'Lid swelling and ptosis from inflammation; occasionally CN III involvement' }
-                ],
-                distractors: ['Facial nerve palsy'],
-                explain: 'Levator is CN III (superior division); Müller\'s muscle is sympathetic; orbicularis (eyelid closure) is CN VII — a facial palsy causes lagophthalmos, not ptosis.',
-                recall: 'Old recall questions included “why does herpes cause a lid ptosis?” and “diabetic CN3 palsy with pupil involvement”. Expect quick-fire neuro-anatomy alongside the field cases.'
             }
         ]
     }

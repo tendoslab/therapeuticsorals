@@ -71,7 +71,7 @@ window.CASES.push(
         category: 'allergy',
         title: 'VKC with a Shield Ulcer',
         theme: 'Vernal Keratoconjunctivitis',
-        years: ['2019', '2025', 'Case studies'],
+        years: ['2019', '2025'],
         patient: '12-year-old boy, asthma and eczema.',
         stem: 'Intensely itchy eyes for years, worse in spring and summer. Now blurred and painful in the right eye, photophobic, with stringy mucus.',
         exhibit: 'Everted upper lids: giant cobblestone papillae. Gelatinous limbal nodules with white dots (Horner–Trantas). Right cornea: a superior oval epithelial defect with a translucent base (shield ulcer).',
@@ -356,74 +356,6 @@ window.CASES.push(
                 options: ['Oral antibiotics routinely.', 'Warm compresses and lid massage several times a day, lid hygiene; topical antibiotic only if draining or with conjunctivitis; most resolve within 1–2 weeks. Refer for incision and drainage if persistent (chalazion).', 'IV antibiotics.', 'Steroid injection by the optometrist.'],
                 answer: 1,
                 explain: 'Recurrent lesions in the same place in an older patient — consider sebaceous gland carcinoma and biopsy.'
-            }
-        ]
-    },
-    {
-        id: 'brimonidine-allergy',
-        category: 'allergy',
-        title: 'Red, Itchy Eyes on Glaucoma Drops',
-        theme: 'Drug-induced Blepharoconjunctivitis',
-        years: ['Peer recalls'],
-        patient: '70-year-old woman with POAG on latanoprost nocte OU; brimonidine 0.2% BD OU was added 9 months ago.',
-        stem: 'Both eyes have become red, itchy and watery over the last few weeks, and the lower lids are dry and scaly.',
-        exhibit: 'Slit-lamp photo: bilateral follicles on the inferior tarsal conjunctiva, diffuse hyperaemia, eczematous erythema of the lower lids. Cornea clear.',
-        steps: [
-            {
-                phase: '1. Diagnosis',
-                type: 'mcq',
-                question: 'What is the most likely diagnosis?',
-                options: [
-                    'Adenoviral conjunctivitis.',
-                    'Allergic (delayed type IV) follicular blepharoconjunctivitis to brimonidine.',
-                    'Seasonal allergic conjunctivitis.',
-                    'PGA-induced hyperaemia only.'
-                ],
-                answer: 1,
-                explain: 'Brimonidine allergy typically appears months after starting (often 3–12 months), affects around 1 in 10 patients on 0.2% (fewer with Alphagan P 0.15%), and gives follicles plus periocular contact dermatitis. Apraclonidine causes it even more often. PGA hyperaemia starts early and has no follicles or eczema.',
-                recall: 'Older recall lists mention “blepharoconjunctivitis secondary to alpha-agonists” as an anterior-eye case paired with a glaucoma case.'
-            },
-            {
-                phase: '2. Differentials',
-                type: 'multi',
-                question: 'Which other causes should you consider?',
-                options: [
-                    'Preservative (benzalkonium chloride) toxicity — punctate staining, dry eye, papillae',
-                    'Contact dermatitis to another drop (e.g. dorzolamide) or a cosmetic',
-                    'Viral conjunctivitis — but it would be acute and usually asymmetric',
-                    'Chlamydial conjunctivitis — usually unilateral and in younger, sexually active adults',
-                    'Acute angle closure'
-                ],
-                answers: [0, 1, 2, 3],
-                explain: 'Long-term multi-drop users often have both preservative toxicity and allergy. Timing (when each drop started) is the most useful clue.'
-            },
-            {
-                phase: '3. Management',
-                type: 'mcq',
-                question: 'What do you do?',
-                options: [
-                    'Continue brimonidine and add an antihistamine drop.',
-                    'Stop brimonidine (record the allergy), substitute another class if more lowering is needed (e.g. a topical CAI, or timolol if no respiratory or cardiac contraindication; preservative-free where possible), cold compresses and preservative-free lubricants; a short mild steroid course only if needed. Check IOP in 4–6 weeks after the change and inform the co-managing ophthalmologist.',
-                    'Stop all glaucoma drops for a month.',
-                    'Switch to apraclonidine 0.5%.'
-                ],
-                answer: 1,
-                critical: true,
-                explain: 'The reaction settles over 1–2 weeks once the drug stops. Never stop all drops in a glaucoma patient without a plan. Apraclonidine cross-reacts and has a higher allergy rate. If you use a steroid, keep it brief and watch the IOP (glaucoma patients are frequent steroid responders).'
-            },
-            {
-                phase: '4. Brimonidine pharmacology',
-                type: 'viva',
-                question: 'The examiner moves to pharmacology. Tell them about brimonidine.',
-                points: [
-                    'Selective α2-agonist: reduces aqueous production and increases uveoscleral outflow',
-                    'Brimonidine 0.2% BD–TDS (Alphagan) or 0.15% with Purite (Alphagan P); also in fixed combination with timolol or brinzolamide',
-                    'Contraindications: MAO inhibitor therapy; children under 2 (CNS depression, apnoea)',
-                    'Systemic side effects: dry mouth, fatigue and drowsiness, hypotension',
-                    'TGA category B3; stop before delivery and avoid while breastfeeding',
-                    'LoGTS: fewer NTG patients progressed on brimonidine than timolol, but many dropped out with allergy'
-                ],
-                explain: 'This is a typical bridge from an anterior-eye case into glaucoma pharmacology.'
             }
         ]
     }

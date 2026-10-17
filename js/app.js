@@ -24,7 +24,9 @@
     { id: '2018', label: '2018 orals' },
     { id: 'Mock 2025', label: '2025 mock orals' },
     { id: 'Peer recalls', label: 'Peer recalls' },
-    { id: 'Case studies', label: 'Case-study notes' },
+    { id: 'Case studies 2016', label: '2016 case studies' },
+    { id: 'Case studies 2022', label: '2022 case studies' },
+    { id: 'YO mock', label: 'YO mock orals' },
   ];
   const sourceLabel = (id) => (SOURCES.find((s) => s.id === id) || { label: id }).label;
 
@@ -288,7 +290,7 @@
     <section class="hero"><div>
       <p class="label">Therapeutics oral practice</p>
       <h1>Talk through the case before the panel does</h1>
-      <p>${CASES.length} cases (${totalSteps} examiner questions) from the 2018, 2019 and 2025 recalls, the 2025 mock orals, peer recalls and case-study notes, checked against Australian practice. Pick topics, then practise whole cases or sit a timed mock oral.</p>
+      <p>${CASES.length} cases (${totalSteps} examiner questions) from the 2018, 2019 and 2025 recalls, the 2025 mock orals, peer recalls, the 2016 and 2022 case-study notes and the Young Optometrists mock orals, checked against Australian practice. Each case keeps the questions from the sitting or notes it came from. Pick topics, then practise whole cases or sit a timed mock oral.</p>
     </div></section>
     <div class="grid-2">
       <section class="card stack" aria-labelledby="topics-h">
@@ -587,7 +589,7 @@
       }).join('');
       return `<section class="card hue-top" style="--h:${ct.hue};margin-bottom:1rem">
         <div class="row" style="gap:.5rem;margin-bottom:.6rem"><span style="font-size:1.2rem">${ct.icon}</span><h2 style="font-size:1.1rem">${esc(ct.title)}</h2><span class="muted" style="font-size:.85rem">${cs.length} case${cs.length === 1 ? '' : 's'}</span></div>
-        <div class="tablewrap"><table class="t bank-table"><tr><th>Case</th>${years.map((y) => `<th class="c">${esc(sourceLabel(y).replace(' orals', '').replace('2025 mock', 'Mock'))}</th>`).join('')}<th class="c">Missed Qs</th><th class="c">Last</th><th></th></tr>${rows}</table></div>
+        <div class="tablewrap"><table class="t bank-table"><tr><th>Case</th>${years.map((y) => `<th class="c">${esc(sourceLabel(y).replace(' orals', '').replace('2025 mock', 'Mock 2025').replace(' case studies', ' notes'))}</th>`).join('')}<th class="c">Missed Qs</th><th class="c">Last</th><th></th></tr>${rows}</table></div>
       </section>`;
     }).join('');
     view.innerHTML = `<div class="fade">
@@ -669,6 +671,17 @@
           <li><strong>SCUT</strong>: adjunct steroid (pred phosphate 1%, after 48 h moxifloxacin) gave no overall benefit; possible help in severe central ulcers; avoid in Nocardia.</li>
           <li><strong>MUTT I</strong>: natamycin beat voriconazole for filamentous (esp. Fusarium) keratitis.</li>
           <li><strong>HEDS</strong>: oral aciclovir 400 mg BD halved HSV recurrences; topical steroid + antiviral helps stromal keratitis.</li></ul>`, 290)}
+        ${card('Case combinations from past sittings', `<p>From the 2016–17 Orals notes. Typically case reports, fields, a glaucoma case and 2–3 anterior-eye cases.</p><ul>
+          <li>Hyphaema → blunt trauma → angle recession glaucoma (list consequences front to back)</li>
+          <li>Marginal keratitis + NTG; ocular allergy + NTG; CLPC + PXF</li>
+          <li>Uveitis + steroid-induced IOP rise; AAU + PXG; AAU + steroid response + PXG</li>
+          <li>Herpes zoster + acute angle closure (plus lots of fields, binasal hemianopia)</li>
+          <li>Blepharoconjunctivitis from α-agonists + blunt trauma (hyphaema, angle recession)</li>
+          <li>PDS + NTG + MK; PXG + EKC; PXF + VF differentials + bacterial conjunctivitis</li>
+          <li>Angle recession + chlamydial conjunctivitis; angle closure + MK</li>
+          <li>Stellate KP uveitis + POAG; Fuchs/Possner–Schlossman + PXG</li>
+          <li>NTG (sectoral pallor → rule out compressive causes) + bacterial keratitis</li></ul>
+          <p>Usual anterior cases: CLMK, CLPU, HSV epithelial/stromal, HZO, hyphaema, infiltrative keratitis, AAU. Rarely the obscure ones (SLK, Thygeson’s, unusual viral).</p>`, 330)}
         ${card('Answer framework to practise', `<ol>
           <li>What I see → most likely diagnosis.</li>
           <li>Top 3 differentials + the one sign or test that separates each.</li>
