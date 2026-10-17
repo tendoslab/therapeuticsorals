@@ -1,6 +1,6 @@
 # Therapeutics Orals Simulator
 
-An oral-exam style case simulator for therapeutic prescribing by optometrists in Australia. It is built from candidate recalls (2018, 2019, 2025), the 2025 Young Optometrists mock orals, peer recalls and case-study notes. The layout and fonts match the companion CL Orals Lab site.
+An oral-exam style case simulator for therapeutic prescribing by optometrists in Australia. It is built from candidate recalls (2018, 2019, 2025), the 2025 Young Optometrists mock orals, the 2025 anterior and posterior eye study notes, peer recalls and case-study notes. The layout and fonts match the companion CL Orals Lab site.
 
 Open `index.html` in a browser, or host the folder on GitHub Pages (Settings → Pages → deploy from branch, root). There is no build step to run it.
 
@@ -13,7 +13,7 @@ Open `index.html` in a browser, or host the folder on GitHub Pages (Settings →
 - **My mistakes**: every question you scored under 8/10 on (or skipped), with what you said, the correct answer and the examiner notes. Drill them on their own or retry the whole case; a question drops off once you get it right. The end-of-session screen lists the same detail.
 - **Recall bank**: every case by topic and source, with your missed-question count and last score.
 - **Answer audit**: specific student answers from the recalls, checked and corrected against Australian practice. The same corrections appear inside the matching case steps as "Recall check" boxes.
-- **Source filter**: 2025, 2019 or 2018 orals, the 2025 Young Optometrists mock orals, peer recalls, the 2016 or 2022 case-study notes, the Young Optometrists (MOTHs) mock orals, an undated exam recall, the Mini oral prep notes or the Practice orals slide deck. Every case shows its source badges. Cases from each document are kept as separate cases (even when the topic repeats) so you can see what each sitting or set of notes asked.
+- **Source filter**: sources are listed by year, newest first: 2025 orals, the 2025 Young Optometrists mock orals, the 2025 anterior and posterior study notes, the 2022 case-study notes, the Young Optometrists (MOTHs) mock orals from those 2022 notes, 2019 orals, 2018 orals and the 2016 case-study notes. Undated sources follow: peer recalls (questions other candidates passed on), an undated exam recall, the Mini oral prep notes and the Practice orals slide deck. Every case shows its source badges. Cases from each document are kept as separate cases (even when the topic repeats) so you can see what each sitting or set of notes asked.
 - Sessions are never locked: leave for another tab and come back, go back to setup and resume, skip a question, or end early and see results.
 - Light and dark themes. Progress (case results and missed questions) is stored in the browser's `localStorage`.
 
@@ -26,7 +26,8 @@ css/styles.css        all styling (light and dark theme tokens at the top)
 js/data/<topic>.js    the original cases, by topic (plus the topic list and the answer audit)
 js/data/recalls-2018.js, recalls-2019.js, recalls-2025.js, mock-2025.js,
         peer-recalls.js, case-studies-2016.js, case-studies-2022.js,
-        exam-recall.js, mini-oral-prep.js, practice-orals.js
+        exam-recall.js, mini-oral-prep.js, practice-orals.js,
+        anterior-notes-2025.js, posterior-notes-2025.js
                       cases grouped by the document they came from
 tools/check-mcq.js    flags multiple-choice questions where the answer stands out by length
 js/app.js             simulator, my mistakes, recall bank, answer audit, exam guide

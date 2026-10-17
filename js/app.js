@@ -17,16 +17,19 @@
   const CASES = window.CASES || [];
   const CATS = window.CATEGORIES || [];
   const CORRECTIONS = window.CORRECTIONS || [];
-  // Where each case came from (matches the `years` field on every case).
+  // Where each case came from (matches the `years` field on every case), newest first;
+  // sources with no date sit at the end.
   const SOURCES = [
     { id: '2025', label: '2025 orals' },
+    { id: 'Mock 2025', label: '2025 YO mock orals' },
+    { id: 'Anterior notes', label: '2025 anterior notes' },
+    { id: 'Posterior notes', label: '2025 posterior notes' },
+    { id: 'Case studies 2022', label: '2022 case studies' },
+    { id: 'YO mock', label: 'YO mock orals (2022 notes)' },
     { id: '2019', label: '2019 orals' },
     { id: '2018', label: '2018 orals' },
-    { id: 'Mock 2025', label: '2025 YO mock orals' },
-    { id: 'Peer recalls', label: 'Peer recalls' },
     { id: 'Case studies 2016', label: '2016 case studies' },
-    { id: 'Case studies 2022', label: '2022 case studies' },
-    { id: 'YO mock', label: 'YO mock orals' },
+    { id: 'Peer recalls', label: 'Peer recalls (other candidates)' },
     { id: 'Exam recall', label: 'Undated exam recall' },
     { id: 'Mini oral prep', label: 'Mini oral prep' },
     { id: 'Practice orals', label: 'Practice orals deck' },
@@ -56,7 +59,8 @@
   const range = (n) => Array.from({ length: n }, (_, i) => i);
   const cat = (id) => CATS.find((x) => x.id === id) || { id, title: id, icon: '', hue: 225, half: '' };
   const catPill = (id) => `<span class="pill tint" style="--h:${cat(id).hue}">${esc(cat(id).title)}</span>`;
-  const sourcePills = (c) => (c.years || []).map((y) => `<span class="pill">${esc(sourceLabel(y))}</span>`).join('');
+  const sourceRank = (id) => { const i = SOURCES.findIndex((s) => s.id === id); return i < 0 ? SOURCES.length : i; };
+  const sourcePills = (c) => [...(c.years || [])].sort((a, b) => sourceRank(a) - sourceRank(b)).map((y) => `<span class="pill">${esc(sourceLabel(y))}</span>`).join('');
   const scored = (c) => c.steps.map((s, i) => i).filter((i) => c.steps[i].type !== 'reveal');
   const caseMissed = (c) => c.steps.some((_, i) => saved.missed[stepKey(c, i)]) || (saved.cases[c.id] && saved.cases[c.id].last < PASS_PCT);
   const missedKeys = () => Object.keys(saved.missed).filter((k) => {

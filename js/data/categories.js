@@ -3,6 +3,7 @@
 // `hue` tints the topic's cards and pills.
 window.CATEGORIES = [
     { id: 'glaucoma', title: 'Glaucoma & IOP', subtitle: 'AAC, PSS, POAG staging, OHT, NTG, PXF, PDS, NVG, ARG, steroid response', icon: '🎯', half: 'posterior', hue: 225 },
+    { id: 'retina', title: 'Retina & Vascular', subtitle: 'PVD/RD, CRAO, AMD, diabetic retinopathy, CSCR, hydroxychloroquine', icon: '🩸', half: 'posterior', hue: 95 },
     { id: 'neuro', title: 'Neuro & Visual Fields', subtitle: 'Chiasm, tract vs cortex, altitudinal, centrocaecal, tilted disc, CN III palsy', icon: '🧠', half: 'posterior', hue: 275 },
     { id: 'cornea', title: 'Cornea & Keratitis', subtitle: 'Bacterial MK, CLPU, marginal, fungal, HSV, HZO, Fuchs', icon: '🔬', half: 'anterior', hue: 195 },
     { id: 'uveitis', title: 'Uveitis & Trauma', subtitle: 'AAU, hypopyon, granulomatous, paediatric, chronic, hyphaema', icon: '🔥', half: 'anterior', hue: 15 },
