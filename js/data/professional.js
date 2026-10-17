@@ -41,10 +41,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What is considered “advanced” glaucoma on the field (Hodapp–Parrish–Anderson)?',
                 options: [
-                    'MD better than −2 dB.',
-                    'MD worse than −12 dB, or any point within the central 5° at 0 dB, or both hemifields with points below 15 dB within the central 5°.',
-                    'Any nasal step.',
-                    'PSD above 2 dB.'
+                    'MD worse than −6 dB, or any point within the central 10° below 15 dB, or a GHT outside normal limits in both hemifields.',
+                    'MD worse than −12 dB, or a point within the central 5° at 0 dB, or both hemifields with points below 15 dB within 5°.',
+                    'MD worse than −20 dB, or more than half the points at p<1%, or loss of fixation on the gaze tracker for over 20% of the test.',
+                    'PSD above 2 dB, or any nasal step, or a VFI below 90% — whichever comes first, regardless of central involvement.'
                 ],
                 answer: 1,
                 explain: 'Early: MD better than −6 dB. Moderate: −6 to −12 dB (or a central point below 15 dB in one hemifield). Know which system you are quoting (Hodapp; Mills / Enhanced Glaucoma Staging System).'
@@ -54,10 +54,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: '“Explain the relationship between CCT and IOP in your patient.”',
                 options: [
-                    'CCT doesn\'t affect IOP readings.',
-                    'Goldmann assumes ~520 µm: thinner corneas under-read (true IOP higher) and thicker corneas over-read. Separately, thin CCT is an independent risk factor for conversion (OHTS), possibly reflecting weaker lamina biomechanics. Corneal hysteresis also matters.',
-                    'Thick corneas mean more glaucoma risk.',
-                    'Correct every IOP by exactly 1 mmHg per 10 µm.'
+                    'Goldmann assumes ~600 µm: thin corneas over-read and thick ones under-read. Thick CCT is the independent conversion risk factor in OHTS, because it hides IOP.',
+                    'Goldmann assumes ~520 µm: thin corneas under-read and thick ones over-read. Separately, thin CCT is an independent conversion risk factor (OHTS). Hysteresis also matters.',
+                    'Goldmann is unaffected by CCT; only non-contact tonometry is. CCT matters only as a refractive-surgery consideration, and was not a risk factor in OHTS once IOP was known.',
+                    'Correct every IOP by exactly 1 mmHg per 10 µm from 545 µm; once corrected, CCT has no further meaning for risk, so it is left out of the OHTS calculator.'
                 ],
                 answer: 1,
                 explain: 'Correction nomograms are approximate and not validated for individuals. Use CCT in risk assessment (OHTS/EGPS calculator) rather than “correcting” IOP precisely.',
@@ -80,10 +80,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Under the OBA scheduled medicines guideline (as taught for this exam), what must you do after starting glaucoma treatment?',
                 options: [
-                    'Nothing further.',
-                    'Refer to an ophthalmologist within 4 months of starting treatment, with a plan for ongoing collaborative care (check the current OBA guideline wording).',
-                    'Refer within 24 hours.',
-                    'Ask the GP to take over prescribing.'
+                    'Refer to an ophthalmologist within 24 hours of starting treatment, and stop prescribing until the ophthalmologist has confirmed the diagnosis.',
+                    'Refer to an ophthalmologist within 4 months of starting treatment, with a plan for ongoing collaborative care (check the current wording).',
+                    'Refer to an ophthalmologist only if the target isn’t met within 12 months; otherwise continue managing alone with yearly fields and OCT.',
+                    'Notify the GP within 4 months so they can take over prescribing; ophthalmology referral is needed only for secondary glaucomas.'
                 ],
                 answer: 1,
                 explain: 'Find the rules in the Optometry Board of Australia\'s Guideline for use of scheduled medicines (and Optometry Australia\'s clinical practice guides). Use the RANZCO referral pathway to decide which glaucoma types suit collaborative care: secondary, complex and angle-closure glaucomas, young patients and rapid progression generally need an ophthalmologist.',
@@ -122,10 +122,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Your PXF patient needs fields every 3 months. Medicare limits how often full-threshold perimetry can be claimed. What do you do?',
                 options: [
-                    'Never test more often than Medicare allows.',
-                    'Check the current MBS item rules (frequency limits for computerised perimetry items); if clinically indicated testing exceeds them, explain and agree a private fee, or coordinate with the ophthalmologist who is co-managing.',
-                    'Bill a different item number.',
-                    'Do the test free and don\'t record it.'
+                    'Never test more often than Medicare allows: clinical need doesn’t override MBS frequency limits, so extend the interval to fit the rules and document why.',
+                    'Check the current MBS rules on frequency of perimetry items; if clinically needed testing exceeds them, explain and agree a private fee, or coordinate with the co-managing ophthalmologist.',
+                    'Bill the extra fields under a different MBS item (e.g. a comprehensive consultation) so the patient isn’t out of pocket; the frequency limit only applies to the perimetry item itself.',
+                    'Do the extra fields free of charge and don’t record them in the file, since unbilled tests aren’t subject to MBS rules and documentation would trigger an audit.'
                 ],
                 answer: 1,
                 explain: 'Clinical need decides the testing interval. Be transparent about costs and document consent. A 2025 candidate recalled “2 per year” as the limit — verify against the current MBS.'
@@ -159,10 +159,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What is the specific risk with brimonidine around birth and in infancy?',
                 options: [
-                    'Cleft palate.',
-                    'It crosses the blood–brain barrier in neonates and infants → CNS depression, apnoea, bradycardia, hypotension. Contraindicated under 2 years; stop before delivery and avoid while breastfeeding.',
-                    'Neonatal jaundice.',
-                    'No risk.'
+                    'It causes cleft palate if used in the first trimester (organogenesis); it is safe after 12 weeks and during breastfeeding, and is safe in infants at half the adult dose, given BD.',
+                    'It crosses the immature blood–brain barrier → CNS depression, apnoea, bradycardia, hypotension; contraindicated under 2; stop before delivery and avoid while breastfeeding.',
+                    'It causes neonatal jaundice by competing for bilirubin binding; stop at 36 weeks; safe in infants over 6 months with punctal occlusion.',
+                    'It causes premature labour (uterotonic like PGAs); stop at 20 weeks; no CNS effects in infants, so it is preferred over timolol in children.'
                 ],
                 answer: 1,
                 explain: 'That is why brimonidine is often used earlier in pregnancy but stopped near term.'
@@ -197,10 +197,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'How do topical NSAIDs differ from steroids?',
                 options: [
-                    'NSAIDs inhibit phospholipase A2.',
-                    'NSAIDs inhibit cyclooxygenase (prostaglandins only). Steroids act upstream (lipocortin → phospholipase A2) to block both prostaglandins and leukotrienes and broadly suppress the immune response. NSAIDs don\'t raise IOP or cause cataract but are weaker anti-inflammatories and can cause corneal melts.',
-                    'They are identical.',
-                    'NSAIDs are stronger than prednisolone acetate.'
+                    'NSAIDs inhibit phospholipase A2 (blocking prostaglandins and leukotrienes), while steroids inhibit only cyclooxygenase. NSAIDs raise IOP more than steroids do but never cause corneal melts, so they suit long courses.',
+                    'NSAIDs inhibit cyclooxygenase (prostaglandins only); steroids act upstream (lipocortin → phospholipase A2), blocking prostaglandins and leukotrienes. NSAIDs don’t raise IOP but are weaker and can cause melts.',
+                    'NSAIDs and steroids both inhibit cyclooxygenase; they differ only in potency. NSAIDs are stronger than prednisolone acetate and are first line for uveitis, with the same IOP risk.',
+                    'NSAIDs inhibit lipoxygenase (leukotrienes only); steroids inhibit cyclooxygenase (prostaglandins only). Both raise IOP equally, and neither affects corneal healing.'
                 ],
                 answer: 1,
                 explain: 'Topical NSAIDs (ketorolac, diclofenac, bromfenac, nepafenac) are too weak to treat uveitis alone.'
@@ -230,7 +230,12 @@ window.CASES.push(
                 phase: '4. Steroid substitutions',
                 type: 'mcq',
                 question: '“No Pred Forte available — what next? No Flarex either?” For anterior uveitis, the best substitute is:',
-                options: ['Fluorometholone alcohol 0.1% (FML)', 'Dexamethasone 0.1% (Maxidex) — potent, good penetration (higher IOP risk)', 'Hydrocortisone 1% ointment', 'Ketorolac'],
+                options: [
+                    'Fluorometholone 0.1% (FML) — equal to Pred Forte in active uveitis, with less IOP risk',
+                    'Dexamethasone 0.1% (Maxidex) — potent and penetrating (higher IOP risk)',
+                    'Hydrocortisone 1% ointment — best penetration overnight',
+                    'Ketorolac 0.5% — an NSAID that replaces the steroid in AAU'
+                ],
                 answer: 1,
                 explain: 'Rough potency and penetration order for intraocular inflammation: prednisolone acetate 1% ≈ dexamethasone 0.1% > fluorometholone acetate (Flarex) > FML > loteprednol / hydrocortisone. Prednisolone sodium phosphate is a solution with poorer penetration through an intact epithelium.',
                 recall: 'A 2025 supplementary oral went “no Pred Forte → no Flarex → dexamethasone”.'

@@ -55,10 +55,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'How will you look for progression?',
                 options: [
-                    'Look for any 10 dB drop at any single point.',
-                    'Event analysis (Guided Progression Analysis: the same ≥3 points significantly worse than baseline on 2 consecutive tests = “possible”, on 3 = “likely” progression) and trend analysis (MD or VFI slope over time, in dB or % per year), alongside OCT change. Do ~3 fields a year early on to get a reliable rate.',
-                    'Wait for the patient to notice a change in vision.',
-                    'Repeat the GHT; once it says “outside normal limits” the disease has progressed.'
+                    'Event analysis only (any single point dropping 10 dB from baseline on one test = progression) — trend analysis needs 10 years of fields to mean anything; OCT is only for diagnosis.',
+                    'Event analysis (GPA: ≥3 points worse than baseline on 2 consecutive tests = possible, 3 = likely) plus trend analysis (MD/VFI slope), alongside OCT; ~3 fields a year early on.',
+                    'Trend analysis only (MD slope worse than −0.1 dB/yr = progression after 2 fields) — event analysis is for research; repeat fields once a year from the start.',
+                    'Repeat the GHT each visit: once it changes from ‘borderline’ to ‘outside normal limits’ the disease has progressed; OCT and GPA add nothing once a field defect exists.'
                 ],
                 answer: 1,
                 explain: 'You need a good baseline (two reliable fields) and enough tests to estimate a rate of progression; front-loading fields in the first two years (e.g. three a year) is the recommended approach. Structural change on OCT often comes before field change in early disease; in advanced disease the RNFL floors out and fields (or macular GCL) matter more.'
@@ -68,10 +68,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What is your treatment plan?',
                 options: [
-                    'Treat the left eye only; the right eye is normal.',
-                    'Treat both eyes with a PGA (e.g. latanoprost 0.005% one drop nocte OU), provided there are no contraindications. Left target: at least 30% lower (AGIS suggests keeping advanced eyes below ~18 mmHg); right eye is high risk (IOP 25, early defect, fellow eye with advanced POAG). Review IOP in 4–6 weeks; refer to an ophthalmologist within 4 months, and sooner for the advanced left eye.',
-                    'Start a fixed combination drop on both eyes on day one.',
-                    'Observe both eyes for 12 months to establish a rate before treating.'
+                    'PGA to the left eye only, since the right eye’s MD of −2 dB is within normal limits. Left: 20% lower (the OHTS target). Review in 6 months; refer within 12 months, as advanced POAG can stay in optometric care if stable.',
+                    'PGA (e.g. latanoprost nocte) to both eyes if no contraindications. Left: ≥30% lower (AGIS: keep advanced eyes under ~18); right is high risk. Review in 4–6 weeks; refer within 4 months, sooner for the left.',
+                    'A fixed combination (latanoprost/timolol) to both eyes from day one, since advanced disease needs maximal therapy. Target ≤21 mmHg. Review in 3 months; refer only if the target isn’t met.',
+                    'Observe both eyes for 12 months to measure the rate of progression before treating (EMGT). Target to be set from that rate. Refer now so the ophthalmologist can start treatment.'
                 ],
                 answer: 1,
                 explain: 'Asymmetric POAG often becomes bilateral, and this right eye has high IOP with an early defect — treating both is sensible. Don\'t start with a combination product (step up from monotherapy). Advanced disease threatening fixation warrants earlier ophthalmology involvement; SLT is an alternative or add-on (LiGHT).',
@@ -121,10 +121,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'The left pupil is 6 mm and sluggish (right 3 mm). What do you do?',
                 options: [
-                    'Diabetic microvascular palsy: GP review in a week.',
-                    'Emergency: same-day transfer to the emergency department for CT/MR angiography — a posterior communicating artery aneurysm must be excluded (it can rupture and cause a fatal subarachnoid haemorrhage).',
-                    'Prism glasses and review in 3 months.',
-                    'Start pilocarpine to constrict the pupil.'
+                    'Likely diabetic microvascular palsy (pupil involvement is common in diabetes): GP review within a week for BP and HbA1c, re-check the pupil in a month.',
+                    'Emergency: same-day transfer to ED for CT/MR angiography — a posterior communicating artery aneurysm must be excluded (rupture → subarachnoid haemorrhage).',
+                    'Likely myasthenia (pupil changes are typical): refer to neurology within 2 weeks for antibody tests, and patch one eye for the diplopia meanwhile.',
+                    'Likely Adie’s pupil with a coincidental palsy: confirm with dilute pilocarpine, then routine GP referral, since a dilated pupil isn’t a red flag here.'
                 ],
                 answer: 1,
                 critical: true,
@@ -135,10 +135,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Why does compression involve the pupil while a diabetic (ischaemic) palsy usually spares it?',
                 options: [
-                    'The pupillomotor fibres run on the outside (superficial, dorsomedial) of the nerve, supplied by pial vessels. An aneurysm compresses the outside first; microvascular ischaemia hits the core of the nerve and spares the surface fibres.',
-                    'Diabetes protects the iris sphincter.',
-                    'The pupil fibres travel with CN VI.',
-                    'Ischaemia only affects sympathetic fibres.'
+                    'Pupillomotor fibres run superficially (dorsomedial) on the nerve, supplied by pial vessels: an aneurysm compresses the outside first, while microvascular ischaemia hits the core and spares them.',
+                    'Pupillomotor fibres run in the core of the nerve, supplied by the vasa nervorum: an aneurysm compresses the core of the nerve first, while microvascular ischaemia affects only the outer fibres and so spares the pupil.',
+                    'Pupillomotor fibres leave CN III early and travel with CN VI: an aneurysm reaches CN VI as well, while diabetic ischaemia affects only CN III itself.',
+                    'Diabetes protects the iris sphincter by thickening the pupillomotor fibres, so ischaemia can’t affect them; compression affects any fibre regardless of position.'
                 ],
                 answer: 0,
                 explain: 'This is the classic exam explanation. The “rule of the pupil” isn\'t absolute: about 1 in 5 microvascular palsies affect the pupil slightly (usually under 1 mm of anisocoria), and an early or partial compressive palsy can spare it.'
@@ -148,10 +148,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Instead, the pupils are equal and reactive and the palsy is otherwise complete. She is 61 with diabetes and hypertension. Management?',
                 options: [
-                    'Ignore it — it always recovers.',
-                    'Likely microvascular (ischaemic) palsy: same-day or next-day GP/ophthalmology contact for BP, glucose/HbA1c, lipids (and ESR/CRP if over 50 with GCA symptoms); re-check the pupil daily for the first week; occlude one eye for diplopia; expect recovery over ~3 months. Image urgently if the pupil becomes involved, other nerves are affected, she is young or it doesn\'t recover.',
-                    'Emergency craniotomy.',
-                    'Topical steroid and review in 2 weeks.'
+                    'Likely microvascular: no further action, since pupil-sparing palsies always recover fully; review at 6 months; fit prisms from day one; imaging is never needed in diabetics over 50 with a spared pupil, whatever else develops.',
+                    'Likely microvascular: same/next-day GP contact (BP, HbA1c, lipids; ESR/CRP if GCA symptoms); re-check the pupil daily for a week; occlude for diplopia; expect recovery over ~3 months; image if anything is atypical.',
+                    'Likely compressive despite the spared pupil: emergency craniotomy referral; occlude for diplopia; recovery is unlikely without surgery; the GP doesn’t need to be involved.',
+                    'Likely inflammatory: start topical prednisolone and review in 2 weeks; re-check the pupil then; occlude for diplopia; image only if it hasn’t improved on the steroid.'
                 ],
                 answer: 1,
                 explain: 'Many clinicians now image all third nerve palsies because MRA/CTA is widely available; saying “I\'d discuss imaging with ophthalmology” is safe. Aberrant regeneration (e.g. lid elevation on down-gaze) suggests compression, not ischaemia, and needs imaging.'
@@ -203,10 +203,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What is the pathophysiology?',
                 options: [
-                    'A direct bacterial infection of the conjunctiva.',
-                    'A delayed (type IV) hypersensitivity reaction to microbial antigens — in Australia usually Staphylococcus aureus from blepharitis; historically tuberculosis.',
-                    'An IgE-mediated type I allergy to pollen.',
-                    'A degenerative change caused by UV exposure.'
+                    'An immediate (type I) IgE reaction to pollen and dust mite, like SAC — in Australia usually seasonal; historically from hay fever.',
+                    'A delayed (type IV) hypersensitivity to microbial antigens — in Australia usually Staph aureus from blepharitis; historically TB.',
+                    'A direct bacterial infection of the limbus — in Australia usually Pseudomonas from contact lenses; historically from gonococcus.',
+                    'An immune-complex (type III) reaction to herpes simplex — in Australia usually after cold sores; historically from varicella.'
                 ],
                 answer: 1,
                 explain: 'Because it is immune-mediated, the nodule is sterile. Ask about TB contacts, cough, weight loss and travel or migration from high-prevalence countries; if positive, the GP should arrange TB screening.'
@@ -216,10 +216,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'How would you manage her?',
                 options: [
-                    'Ciprofloxacin q1h around the clock.',
-                    'Treat the blepharitis (warm compresses, lid hygiene, ± chloramphenicol 1% ointment to the lid margins) plus a short course of a mild topical steroid once infection is excluded (e.g. FML 0.1% QID for a week, then taper), with an IOP check at review in about a week. Refer to the GP for oral azithromycin if there is ocular rosacea (doxycycline is avoided under 8).',
-                    'Oral prednisolone via the GP.',
-                    'Excise the nodule.'
+                    'Ciprofloxacin hourly around the clock for a week (phlyctens are infected nodules), no steroid at any stage, and lid hygiene once healed; GP for oral doxycycline, which is first line for ocular rosacea in children of any age.',
+                    'Treat the blepharitis (compresses, lid hygiene ± chloramphenicol ointment to the lid margins) plus a short mild steroid once infection is excluded (e.g. FML QID, taper), IOP check in a week; GP for oral azithromycin if rosacea.',
+                    'Prednisolone acetate hourly for 2 weeks without tapering (phlyctens need potent steroid), no lid treatment; IOP checks aren’t needed in children, who rarely respond to steroids.',
+                    'Refer for excision of the nodule and biopsy (phlyctens can be neoplastic in children), with chloramphenicol QID and lid hygiene meanwhile; steroids are avoided until the histology is back.'
                 ],
                 answer: 1,
                 explain: 'Phlyctens respond quickly to topical steroid. Children are more prone to steroid response, so check IOP and use the mildest effective steroid for the shortest time. Treating the lid disease prevents recurrence.'
@@ -229,10 +229,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Three months later a new phlycten has crept onto the cornea with an epithelial defect and dense infiltrate. What changes?',
                 options: [
-                    'Nothing — use the same steroid.',
-                    'Treat it as possible microbial keratitis until shown otherwise: stop or hold the steroid, start a broad-spectrum antibiotic and review in 24 hours; refer if it is large, central or worsening. Corneal phlyctens can scar and thin.',
-                    'Bandage contact lens.',
-                    'Antiviral ointment.'
+                    'Nothing changes: corneal phlyctens always have a defect and infiltrate, so continue the same steroid and review in a week; antibiotics aren’t needed for sterile nodules.',
+                    'Treat as possible microbial keratitis: hold the steroid, start a broad-spectrum antibiotic, review in 24 h, and refer if large, central or worsening. Corneal phlyctens can scar and thin.',
+                    'Increase the steroid to hourly, since migrating phlyctens are more inflamed, and add a bandage contact lens for comfort; review in 3 days and taper once it stops moving.',
+                    'Treat as herpes simplex: stop the steroid and start aciclovir ointment 5×/day, since a new epithelial defect after steroid use is a dendrite until proven otherwise; review in 1 week and taper the antiviral.'
                 ],
                 answer: 1,
                 critical: true,
@@ -255,10 +255,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What is the most likely diagnosis?',
                 options: [
-                    'Adenoviral conjunctivitis.',
+                    'Adenoviral conjunctivitis caught at a recent clinic visit (from the tonometer prism).',
                     'Allergic (delayed type IV) follicular blepharoconjunctivitis to brimonidine.',
-                    'Seasonal allergic conjunctivitis.',
-                    'PGA-induced hyperaemia only.'
+                    'Preservative (BAK) toxicity from the latanoprost bottle, given nocte.',
+                    'Seasonal allergic (type I) conjunctivitis from spring pollen.'
                 ],
                 answer: 1,
                 explain: 'Brimonidine allergy typically appears months after starting (often 3–12 months), affects around 1 in 10 patients on 0.2% (fewer with Alphagan P 0.15%), and gives follicles plus periocular contact dermatitis. Apraclonidine causes it even more often. PGA hyperaemia starts early and has no follicles or eczema.',
@@ -273,7 +273,7 @@ window.CASES.push(
                     'Contact dermatitis to another drop (e.g. dorzolamide) or a cosmetic',
                     'Viral conjunctivitis — but it would be acute and usually asymmetric',
                     'Chlamydial conjunctivitis — usually unilateral and in younger, sexually active adults',
-                    'Acute angle closure'
+                    'Giant papillary conjunctivitis from CL wear'
                 ],
                 answers: [0, 1, 2, 3],
                 explain: 'Long-term multi-drop users often have both preservative toxicity and allergy. Timing (when each drop started) is the most useful clue.'
@@ -283,10 +283,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What do you do?',
                 options: [
-                    'Continue brimonidine and add an antihistamine drop.',
-                    'Stop brimonidine (record the allergy), substitute another class if more lowering is needed (e.g. a topical CAI, or timolol if no respiratory or cardiac contraindication; preservative-free where possible), cold compresses and preservative-free lubricants; a short mild steroid course only if needed. Check IOP in 4–6 weeks after the change and inform the co-managing ophthalmologist.',
-                    'Stop all glaucoma drops for a month.',
-                    'Switch to apraclonidine 0.5%.'
+                    'Continue brimonidine but add olopatadine BD and a short FML course to control the allergy; the reaction usually settles as the eye adapts to the drop, so swapping classes isn’t needed; recheck the IOP and allergy in 6 months.',
+                    'Stop brimonidine (record the allergy); substitute another class if needed (topical CAI, or timolol if no contraindication; PF where possible); cold compresses, PF lubricants; recheck IOP in 4–6 weeks and inform the ophthalmologist.',
+                    'Stop all glaucoma drops for a month so the conjunctiva can recover fully, then restart latanoprost alone; no substitute is needed short-term because IOP rises only slowly after stopping.',
+                    'Switch brimonidine to apraclonidine 0.5% TDS, a related α2-agonist with less allergy, and add cold compresses; recheck IOP in 4–6 weeks; no need to record the allergy, as it is class-specific.'
                 ],
                 answer: 1,
                 critical: true,
@@ -322,10 +322,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Diagnosis, and which bacteria are most common in children?',
                 options: [
-                    'Bacterial conjunctivitis: Haemophilus influenzae (non-typeable), Streptococcus pneumoniae, Moraxella catarrhalis (more common in children than adults), plus Staphylococcus aureus.',
-                    'Adenovirus; Pseudomonas is most common in children.',
-                    'Allergic conjunctivitis.',
-                    'Fungal conjunctivitis.'
+                    'Bacterial conjunctivitis: non-typeable H. influenzae, Strep pneumoniae, Moraxella catarrhalis (more common in children), plus Staph aureus.',
+                    'Adenoviral conjunctivitis: types 3 and 7 (pharyngoconjunctival fever), which are more common in children than adults, plus secondary Pseudomonas infection.',
+                    'Bacterial conjunctivitis: Pseudomonas aeruginosa and Serratia (more common in children than adults), plus Neisseria gonorrhoeae.',
+                    'Allergic conjunctivitis: crusting is typical of perennial allergy in children, with secondary Staph epidermidis colonisation.'
                 ],
                 answer: 0,
                 explain: 'In adults Staph aureus dominates; in children H. influenzae and Strep pneumoniae (often with otitis media).'
@@ -335,10 +335,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What would you treat it with, how does it work, and what is its spectrum?',
                 options: [
-                    'Chloramphenicol 0.5% drops QID (more often in the first 48 h) for ~5 days ± 1% ointment at night. Binds the 50S ribosomal subunit and inhibits peptidyl transferase (protein synthesis); bacteriostatic; broad spectrum (Gram +/−, but poor against Pseudomonas).',
-                    'Ciprofloxacin q15min: kills fungi.',
-                    'Natamycin.',
-                    'Prednisolone.'
+                    'Chloramphenicol 0.5% QID (more often for 48 h) for ~5 days ± ointment at night; binds 50S, inhibiting peptidyl transferase; bacteriostatic; broad (poor against Pseudomonas).',
+                    'Ciprofloxacin 0.3% q15min then hourly for 7 days; inhibits DNA gyrase; bactericidal; best for children because it covers Haemophilus well and is TGA category A for all ages.',
+                    'Tobramycin 0.3% QID for 5 days; binds 50S, inhibiting peptidyl transferase; bacteriostatic; narrow (Gram-positive only), so it suits H. influenzae.',
+                    'Chloramphenicol 0.5% QID for 14 days; binds 30S, causing misreading; bactericidal; narrow (Gram-negative only), so it suits Pseudomonas.'
                 ],
                 answer: 0,
                 explain: 'Avoid chloramphenicol with a personal or family history of blood dyscrasia. Review in 2–3 days (sooner if severe or very young).',
@@ -349,10 +349,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'At review it is worse. What do you do?',
                 options: [
-                    'Double the chloramphenicol.',
-                    'Refer (GP/paediatric ophthalmology) for conjunctival swabs: culture and sensitivity plus PCR (chlamydia, adenovirus, HSV); reconsider the diagnosis.',
-                    'Add a steroid.',
-                    'Stop all treatment.'
+                    'Double the chloramphenicol to 2-hourly and add the ointment day and night; swabs are only needed after 3 weeks of failed treatment.',
+                    'Refer (GP/paediatric ophthalmology) for swabs: culture and sensitivity plus PCR (chlamydia, adenovirus, HSV); reconsider the diagnosis.',
+                    'Add FML QID to settle the inflammation, since worsening at review usually means an allergic reaction to chloramphenicol.',
+                    'Switch to ciprofloxacin hourly without swabbing, since non-response means Pseudomonas, which chloramphenicol misses.'
                 ],
                 answer: 1,
                 explain: 'Non-responding conjunctivitis should always be swabbed.'
@@ -362,10 +362,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Bacterial culture comes back negative. What now, and what type of organism is chlamydia?',
                 options: [
-                    'It must be viral; reassure.',
-                    'Think chlamydia: send a conjunctival swab for PCR (NAAT). Chlamydia trachomatis is an obligate intracellular Gram-negative bacterium — it can’t grow on routine culture media.',
-                    'Chlamydia is a virus, so treat with aciclovir.',
-                    'Chlamydia is a fungus.'
+                    'Think adenovirus: a negative culture rules out bacteria, so reassure and review in 2 weeks. Chlamydia is a virus, so culture wouldn’t find it anyway.',
+                    'Think chlamydia: swab for PCR (NAAT). Chlamydia trachomatis is an obligate intracellular Gram-negative bacterium, so it won’t grow on routine media.',
+                    'Think chlamydia: repeat the routine bacterial culture on blood agar. Chlamydia is a Gram-positive extracellular bacterium that grows slowly over 7 days.',
+                    'Think fungal: send for Sabouraud culture. Chlamydia is a yeast-like organism and is only diagnosed on fungal media.'
                 ],
                 answer: 1,
                 explain: 'Serotypes A–C cause trachoma; D–K cause inclusion (genital and adult/neonatal) conjunctivitis.'
@@ -388,10 +388,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'How is chlamydia treated? Mechanism, dose and contraindications?',
                 options: [
-                    'Topical chloramphenicol for 2 weeks.',
-                    'Oral azithromycin (via GP/paediatrician): adults 1 g single dose; children 20 mg/kg (max 1 g) single dose. Macrolide: binds the 50S subunit, inhibits protein synthesis. Contraindicated in macrolide hypersensitivity; caution with liver disease and QT prolongation. Doxycycline is avoided under 8 and in pregnancy.',
-                    'Oral aciclovir.',
-                    'Fortified tobramycin.'
+                    'Topical chloramphenicol QID for 2 weeks (it reaches the intracellular organism in the conjunctiva); binds 50S; CI: blood dyscrasia. Oral treatment isn’t needed for eye-only chlamydia in children, and partners needn’t be traced.',
+                    'Oral azithromycin via GP/paediatrician (adults 1 g once; children 20 mg/kg, max 1 g); macrolide binding 50S; CI: macrolide allergy; caution liver disease, QT. Avoid doxycycline under 8 and in pregnancy.',
+                    'Oral doxycycline 100 mg BD for 7 days for all ages (tetracycline binding 30S); CI: pregnancy only; children under 8 tolerate it because the course is short.',
+                    'Oral amoxicillin 25 mg/kg TDS for 10 days (β-lactam blocking cell wall); CI: penicillin allergy; first line because chlamydia has a thick peptidoglycan wall.'
                 ],
                 answer: 1,
                 explain: 'Topical treatment alone doesn’t eradicate the infection.'
@@ -426,10 +426,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'How would you treat the HSV stromal keratitis?',
                 options: [
-                    'Antiviral alone.',
-                    'Topical steroid (e.g. prednisolone acetate 1%, frequency by severity, slow taper over ~10 weeks or longer) under oral antiviral cover (aciclovir 400 mg BD via GP), co-managed with ophthalmology; monitor IOP.',
-                    'Steroid alone without antiviral.',
-                    'Debridement.'
+                    'Topical aciclovir 5×/day alone for 3 weeks: stromal disease is live virus, and steroids are contraindicated in any HSV keratitis because they cause dendrites.',
+                    'Topical steroid (e.g. prednisolone acetate, frequency by severity, slow taper over ~10 weeks or more) under oral aciclovir 400 mg BD cover via GP, co-managed; monitor IOP.',
+                    'Topical steroid (prednisolone acetate hourly) without antiviral cover: HEDS showed antiviral prophylaxis adds nothing for stromal disease, so taper the steroid over 1 week and stop.',
+                    'Debridement of the affected stroma under topical anaesthetic plus oral aciclovir 800 mg 5×/day for 10 days via the GP, avoiding any steroid; review in a month.'
                 ],
                 answer: 1,
                 explain: 'HEDS: steroid plus antiviral cover sped resolution of stromal keratitis (failure 26% vs 73% without steroid). Immune stromal keratitis is T-cell mediated, so the antiviral alone doesn’t treat it.'
@@ -443,7 +443,7 @@ window.CASES.push(
                     'Renal impairment — dose adjustment needed (nephrotoxic, crystal nephropathy); keep hydrated',
                     'Older patients (reduced renal function, neuro side effects)',
                     'Concurrent nephrotoxic drugs',
-                    'Contact lens wear'
+                    'G6PD deficiency (risk of haemolysis)'
                 ],
                 answers: [0, 1, 2, 3],
                 explain: 'Side effects: nausea, diarrhoea, headache, dizziness; rarely confusion. TGA category B3.'
@@ -453,10 +453,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What is classified as a steroid response?',
                 options: [
-                    'Any IOP of 22 mmHg or more.',
-                    'An IOP rise attributable to corticosteroid use, typically appearing 2–6 weeks into treatment: Armaly’s classes are low (<6 mmHg rise), moderate (6–15 mmHg) and high (>15 mmHg). Many clinicians call a rise of ≥10 mmHg, or above 21–24 mmHg, clinically significant.',
-                    'Any rise after one dose.',
-                    'A drop in IOP.'
+                    'Any IOP of 22 mmHg or more while on a steroid, regardless of baseline; it appears within 24 hours of the first drop and resolves within a day of stopping.',
+                    'An IOP rise from steroid use, typically 2–6 weeks in: Armaly low (rise under 6), moderate (6–15) or high (over 15 mmHg); a rise of ≥10 or IOP above ~21–24 is usually treated.',
+                    'A rise of 2 mmHg or more after a single drop; Armaly classes are low (under 2), moderate (2–5) and high (over 5 mmHg); all require stopping the steroid.',
+                    'A fall in IOP from steroid-induced ciliary shutdown, typically within days of starting; Armaly’s classes describe how far IOP falls, and a high responder drops by over 15 mmHg.'
                 ],
                 answer: 1,
                 explain: 'Rule out other causes of raised IOP in an inflamed eye: herpetic trabeculitis (inflammatory), PAS, synechial closure.'
@@ -466,10 +466,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Would you treat the raised IOP, and how?',
                 options: [
-                    'No — just stop the steroid suddenly.',
-                    'Yes if high or damaging: taper or switch to a lower-penetrating steroid (FML or loteprednol) if the keratitis allows, and add an aqueous suppressant (timolol 0.5% BD, brimonidine or a topical CAI). Avoid PGAs (HSV recurrence and inflammation). Co-manage.',
-                    'Start latanoprost.',
-                    'Pilocarpine.'
+                    'Stop the steroid abruptly so the IOP falls within days, and add latanoprost nocte as the most effective drop; the link between PGAs and HSV recurrence is a myth, and co-management isn’t needed for a steroid response.',
+                    'Yes if high or damaging: taper or switch to FML/loteprednol if the keratitis allows, and add an aqueous suppressant (timolol, brimonidine or a CAI); avoid PGAs (HSV recurrence, inflammation); co-manage.',
+                    'Leave the IOP alone: steroid-induced rises never damage the nerve because they reverse when the steroid stops, so continue the same dose and recheck IOP in 3 months.',
+                    'Add pilocarpine 2% QID to increase outflow through the steroid-damaged meshwork, keep the steroid unchanged, and avoid timolol, which reactivates HSV; refer if the IOP stays above 30 mmHg.'
                 ],
                 answer: 1,
                 critical: true,
@@ -528,10 +528,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Treatment? (The recall reminds you: “remember to add cyclo”.)',
                 options: [
-                    'Ciprofloxacin 0.3% loading (q15min for 6 h, then q30min, hourly overnight) + a cycloplegic (cyclopentolate 1% or atropine 1%) for pain and AC reaction; stop CL wear; review in 24 h.',
-                    'Chloramphenicol QID only.',
-                    'Steroid + antibiotic combination drop.',
-                    'Lubricants only.'
+                    'Ciprofloxacin 0.3% loading (q15min for 6 h, q30min, hourly overnight) plus a cycloplegic (cyclopentolate or atropine) for pain and AC reaction; stop CL wear; review in 24 h.',
+                    'Chloramphenicol 0.5% QID for a week plus lubricants; a cycloplegic isn’t needed for MK, and contact lenses can continue once the eye is comfortable; review in a week.',
+                    'A steroid–antibiotic combination drop (dexamethasone/tobramycin) hourly to treat infection and inflammation together, plus a cycloplegic; stop CL wear; review in 3 days.',
+                    'Ciprofloxacin 0.3% QID plus pilocarpine (‘cyclo’ refers to the ciliary muscle being contracted) to relieve spasm; stop CL wear; review in a week.'
                 ],
                 answer: 0,
                 explain: 'Oral analgesia (paracetamol/ibuprofen) helps too.'
@@ -541,10 +541,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What if it gets worse, and when (and why) do you refer?',
                 options: [
-                    'Increase to q5min.',
-                    'Refer the same day for scraping/culture and fortified therapy if it is worse at 24–48 h, or initially large (≥2 mm), central (within 3 mm), with AC ≥1+ cells or hypopyon, thinning, atypical (fungal/Acanthamoeba), monocular, or in an older patient. Large, deep ulcers in the elderly may need admission (perforation risk, can’t manage hourly drops).',
-                    'Add a steroid.',
-                    'Bandage CL.'
+                    'Increase ciprofloxacin to every 5 minutes around the clock if worse at 24–48 h, and refer only at 1 week; the 1-2-3 rule applies only to fungal ulcers, and age doesn’t affect outcomes, so older patients are managed exactly the same way.',
+                    'Same-day referral for culture and fortified therapy if worse at 24–48 h, or large (≥2 mm), central (within 3 mm), AC ≥1+ or hypopyon, thinning, atypical, monocular or older; large deep ulcers in the elderly may need admission.',
+                    'Add a steroid if worse at 24–48 h, since worsening is usually inflammatory; refer only if over 5 mm or perforated; elderly patients are managed at home to avoid hospital infections.',
+                    'Fit a bandage contact lens if worse at 24–48 h to protect the cornea, and refer if there is no improvement after 2 weeks; admission is reserved for children who can’t use drops.'
                 ],
                 answer: 1,
                 critical: true,
@@ -555,10 +555,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What did SCUT find?',
                 options: [
-                    'Steroids cure bacterial keratitis.',
-                    'Adjunctive topical prednisolone phosphate 1% (started after 48 h of moxifloxacin) gave no overall difference in BCVA at 3 months and no increase in perforation. Possible benefit in severe central ulcers with poor presenting vision; worse with Nocardia.',
-                    'Steroids doubled the perforation rate.',
-                    'Only oral steroids were tested.'
+                    'Adjunctive prednisolone acetate 1% started on day 1 of ciprofloxacin halved scarring and improved 3-month BCVA in all ulcers, including Nocardia, so steroids are now started with the first antibiotic dose.',
+                    'Adjunctive prednisolone phosphate 1% (after 48 h of moxifloxacin) made no overall difference in 3-month BCVA and didn’t increase perforation; possible benefit in severe central ulcers; worse with Nocardia.',
+                    'Adjunctive dexamethasone 0.1% from day 1 of ofloxacin doubled the perforation rate and slowed healing, so steroids are now contraindicated for bacterial keratitis at any stage of treatment.',
+                    'Oral prednisolone (not topical) after 48 h of moxifloxacin improved 3-month BCVA in Nocardia ulcers only; topical steroids were not tested, so the oral route is now used in severe central ulcers.'
                 ],
                 answer: 1,
                 explain: 'Quote it accurately: “no overall benefit, possible subgroup benefit”.'
@@ -581,10 +581,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'What is the difference between Gram-positive and Gram-negative bacteria?',
                 options: [
-                    'Gram-positives have a thick peptidoglycan cell wall that holds crystal violet (purple). Gram-negatives have a thin peptidoglycan layer plus an outer lipopolysaccharide membrane (stain pink with safranin); the outer membrane blocks some antibiotics and LPS is an endotoxin.',
-                    'Gram-negatives have no cell wall.',
-                    'Gram-positives are all anaerobes.',
-                    'It refers to their size.'
+                    'Gram-positives: thick peptidoglycan wall that holds crystal violet (purple). Gram-negatives: thin peptidoglycan plus an outer LPS membrane (pink); it blocks some antibiotics and LPS is an endotoxin.',
+                    'Gram-positives: thin peptidoglycan plus an outer LPS membrane that holds crystal violet (purple). Gram-negatives: thick peptidoglycan wall with no outer membrane (pink), so they resist β-lactams.',
+                    'Gram-positives: no cell wall, so they take up the stain inside the cell (purple). Gram-negatives: a thick capsule that repels the stain (pink); the capsule is the endotoxin.',
+                    'Gram-positives are all aerobic cocci (purple) and Gram-negatives are all anaerobic rods (pink); the stain reflects oxygen use rather than the structure of the wall.'
                 ],
                 answer: 0,
                 explain: 'Pseudomonas is Gram-negative; Staph and Strep are Gram-positive.'
@@ -610,7 +610,7 @@ window.CASES.push(
                     'HSV necrotising stromal keratitis',
                     'Sterile/immune infiltrate',
                     'Non-inflammatory: scar, corneal degeneration or deposits (e.g. lipid, calcium), dystrophy',
-                    'Pinguecula'
+                    'Episcleritis'
                 ],
                 answers: [0, 1, 2, 3, 4],
                 explain: 'Fluorescein, AC cells/flare and history separate active inflammation from an old scar or deposit.'
@@ -620,10 +620,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Assume it is bacterial keratitis. Management, and how do you get fortified antibiotics?',
                 options: [
-                    'Ciprofloxacin QID and review in a week.',
-                    'Large and deep → same-day referral, likely admission. Dual fortified therapy (cefazolin 5% + tobramycin 1.3%) is compounded by a hospital pharmacy — you can’t get it from a community pharmacy; start ciprofloxacin while you arrange transfer.',
-                    'Ask the patient to buy fortified drops at the chemist.',
-                    'Oral antibiotics only.'
+                    'Ciprofloxacin QID and review in a week: large deep ulcers heal well on monotherapy, and fortified drops are reserved for ulcers that perforate.',
+                    'Same-day referral, likely admission. Fortified cefazolin 5% + tobramycin 1.3% are compounded by a hospital pharmacy, not a community one; start ciprofloxacin while arranging transfer.',
+                    'Prescribe fortified cefazolin 5% and tobramycin 1.3% yourself and manage at home with daily review; a community pharmacy can compound them within 24 hours if you mark the script urgent.',
+                    'Refer to the GP for oral ciprofloxacin and oral cephalexin: systemic antibiotics reach deep stroma better than topical drops in large ulcers.'
                 ],
                 answer: 1,
                 critical: true,
@@ -660,10 +660,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Once re-epithelialised, would you use a steroid? Which and how much?',
                 options: [
-                    'Dexamethasone hourly.',
-                    'Possibly, to limit scarring if central: a mild-to-moderate steroid (e.g. FML 0.1% QID, or prednisolone phosphate/acetate at low frequency) with continued antibiotic cover, tapering, under ophthalmology. Not if fungal, Acanthamoeba or Nocardia is possible.',
-                    'Never.',
-                    'Oral steroid.'
+                    'Yes, always: dexamethasone 0.1% hourly for a week then stop, without antibiotic cover since the ulcer has healed; it is safe whatever the organism once the epithelium has closed, including fungi and Acanthamoeba.',
+                    'Possibly, to limit scarring if central: a mild-to-moderate steroid (e.g. FML QID or low-frequency prednisolone) with antibiotic cover and a taper, under ophthalmology; not if fungal, Acanthamoeba or Nocardia.',
+                    'Never: once an ulcer has re-epithelialised, steroids can only cause harm, so scarring is accepted and treated later with a corneal graft if it affects vision.',
+                    'Yes, but only oral prednisolone via the GP, as topical steroids reopen the epithelium; continue for 3 months and stop the topical antibiotic once it is started.'
                 ],
                 answer: 1,
                 explain: 'Monitor IOP and watch for recrudescence when tapering.'
@@ -703,7 +703,7 @@ window.CASES.push(
                     'CCT',
                     'Visual field (24-2 ± 10-2)',
                     'Stereo disc assessment and OCT',
-                    'Corneal topography'
+                    'Schirmer test before starting drops'
                 ],
                 answers: [0, 1, 2, 3, 4],
                 explain: 'Plus history: family history, steroids, trauma, systemic disease and medications.'
@@ -713,10 +713,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'How would you grade the glaucoma, and with which scale?',
                 options: [
-                    'By IOP alone.',
-                    'Pick and name a field-based staging system, e.g. Hodapp–Parrish–Anderson (early MD > −6 dB, moderate −6 to −12, severe < −12, plus point and central criteria) or Mills; supplement with structural staging (e.g. DDLS).',
-                    'By C/D ratio only.',
-                    'By age.'
+                    'Stage by IOP: early under 25 mmHg, moderate 25–30, severe over 30 (Hodapp–Parrish–Anderson); the field and disc are used only to confirm the diagnosis, not to stage it, because they vary between visits.',
+                    'Name a field-based system, e.g. Hodapp–Parrish–Anderson (early MD > −6 dB, moderate −6 to −12, severe < −12, plus point and central rules) or Mills; add structural staging (e.g. DDLS).',
+                    'Stage by vertical C/D ratio: early under 0.6, moderate 0.6–0.8, severe over 0.8 (Mills); field indices are too variable to be used for staging.',
+                    'Stage by PSD: early under 2 dB, moderate 2–6 dB, severe over 6 dB (the DDLS system); MD isn’t used for staging because cataract affects it more than glaucoma does.'
                 ],
                 answer: 1,
                 explain: 'Stage drives target IOP and urgency of referral.'
@@ -739,10 +739,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'You start treatment. What else must you do?',
                 options: [
-                    'Nothing.',
-                    'Refer to an ophthalmologist within 4 months of starting treatment for co-management (OBA guideline), using the RANZCO pathway; earlier for advanced or secondary glaucoma.',
-                    'Refer in 2 years.',
-                    'Only refer if IOP > 40.'
+                    'Refer to an ophthalmologist within 2 years of starting treatment (OBA), or sooner only if the IOP target isn’t reached on two drops.',
+                    'Refer to an ophthalmologist within 4 months of starting treatment (OBA), using the RANZCO pathway; earlier for advanced or secondary glaucoma.',
+                    'Nothing further: once treatment starts, glaucoma can be managed by the optometrist alone indefinitely under the OBA guideline.',
+                    'Refer only if IOP exceeds 40 mmHg (OBA); otherwise notify the GP within 4 months, who becomes the co-managing practitioner instead of an ophthalmologist.'
                 ],
                 answer: 1,
                 explain: 'The recall: “remember to refer for co-management”.'
@@ -774,10 +774,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Corneal oedema stops you seeing the angle. How do you tell this from uveitis?',
                 options: [
-                    'You can’t; treat as uveitis.',
-                    'Anterior segment OCT (or ultrasound biomicroscopy) of the angle; van Herick and gonioscopy of the fellow eye (usually also narrow); pupil (mid-dilated in AAC vs small in uveitis); IOP (usually low early in AAU); AC depth.',
-                    'Dilate both eyes.',
-                    'Check blood pressure.'
+                    'You can’t tell them apart without gonioscopy, so treat as uveitis first with prednisolone and atropine, then reassess the angle once the cornea clears in a day or two.',
+                    'AS-OCT (or UBM) of the angle; van Herick and gonioscopy of the fellow eye; pupil (mid-dilated in AAC, small in uveitis); IOP (usually low early in AAU); AC depth.',
+                    'Dilate both eyes: in AAC the affected pupil won’t dilate, whereas a uveitic pupil dilates fully, so the difference confirms the diagnosis.',
+                    'Corneal sensation and BP: reduced sensation and hypertension point to AAC, while normal sensation and BP point to uveitis.'
                 ],
                 answer: 1,
                 explain: 'Glycerin can clear the cornea temporarily for gonioscopy in hospital.'
@@ -801,10 +801,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Why is a systemic CAI a problem in diabetes and lung disease?',
                 options: [
-                    'It raises blood sugar directly by 10 mmol/L.',
-                    'It causes metabolic acidosis and hypokalaemia: dangerous with poorly controlled diabetes (ketoacidosis risk, can worsen glucose control) and with COPD/respiratory acidosis (the patient can’t blow off extra CO₂, so acidosis worsens).',
-                    'It causes bronchospasm like timolol.',
-                    'It is fine in both.'
+                    'It raises blood glucose directly by blocking insulin release, and causes bronchospasm through β2 blockade, like timolol, in COPD and asthma.',
+                    'It causes metabolic acidosis and hypokalaemia: risky in poorly controlled diabetes (ketoacidosis, glucose control) and COPD (can’t blow off extra CO₂, so acidosis worsens).',
+                    'It causes metabolic alkalosis and hyperkalaemia: risky in diabetes (alkalosis masks hypoglycaemia and raises insulin needs) and in COPD (alkalosis suppresses the drive to breathe).',
+                    'It is fine in both: acetazolamide has no metabolic effects at a single 500 mg dose; the warning applies only to long-term methazolamide.'
                 ],
                 answer: 1,
                 explain: 'Also: renal stones, paraesthesia, diuresis, and rare blood dyscrasias (sulfonamide).'
@@ -814,10 +814,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'You can’t reach an ophthalmologist to discuss pilocarpine. Do you use it?',
                 options: [
-                    'Yes, every 5 minutes immediately.',
-                    'Not as the first move. Start aqueous suppressants (and arrange acetazolamide via a GP or ED), send the patient to ED, and only consider pilocarpine 1–2% once IOP is below ~40 mmHg and the picture is clearly phakic pupil block — or straight away if your dilation triggered the attack. At high IOP the sphincter is ischaemic and pilocarpine can push the lens–iris diaphragm forward.',
-                    'Never in angle closure.',
-                    'Use atropine instead.'
+                    'Yes, every 5 minutes straight away: without specialist input, pilocarpine is the only drug that reverses angle closure, and it works best at the highest IOP before ischaemia sets in.',
+                    'Not first. Start aqueous suppressants, arrange acetazolamide via a GP or ED, send to ED, and consider pilocarpine only once IOP is below ~40 with phakic pupil block — or at once if your dilation caused it.',
+                    'Never in angle closure without a specialist’s written approval, even if IOP falls and the patient can’t reach hospital for many hours; keep repeating timolol every 15 minutes instead until someone can be contacted.',
+                    'Use atropine instead of pilocarpine: relaxing the ciliary body pulls the lens back and opens the angle, and it is safer because it doesn’t cause brow ache or myopic shift.'
                 ],
                 answer: 1,
                 explain: 'Call order: ophthalmologist → ED (hospital registrar) → GP for acetazolamide.'
@@ -827,10 +827,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'The attack has broken but the LPI is 2 days away. What therapy in the meantime?',
                 options: [
-                    'Stop all drops.',
-                    'Pilocarpine 1–2% QID in the affected eye (keeps the pupil small), pilocarpine in the fellow eye until its LPI, topical steroid QID for inflammation, and aqueous suppressants as needed for IOP; avoid dilating drugs and anticholinergic medications; return immediately if symptoms recur.',
-                    'Atropine to rest the eye.',
-                    'Latanoprost only.'
+                    'Stop all drops once the attack breaks, since the angle is open again and the drops only add side effects; avoid pilocarpine in the fellow eye (it can trigger closure there) and return only if vision drops.',
+                    'Pilocarpine 1–2% QID in the affected eye, pilocarpine in the fellow eye until its LPI, topical steroid QID, aqueous suppressants as needed; avoid dilating and anticholinergic drugs; return if symptoms recur.',
+                    'Atropine 1% BD to rest the eye and prevent posterior synechiae after the attack, plus timolol BD in the affected eye; avoid steroids, which raise IOP; no fellow-eye treatment; review after the LPI.',
+                    'Latanoprost nocte only in both eyes, since PGAs are the strongest drops and work in closed angles; pilocarpine is avoided after an attack because it causes synechiae; return if symptoms recur.'
                 ],
                 answer: 1,
                 explain: 'The aim is to keep the angle open until the iridotomy bypasses the pupil block.'
@@ -840,10 +840,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'The patient says they will drive themselves to hospital. What do you say?',
                 options: [
-                    'Fine.',
-                    'No: vision is reduced, they may vomit and pilocarpine causes dim, blurred vision and brow ache. Arrange a driver, taxi or ambulance, and send a referral letter listing the drugs and times given.',
-                    'Drive with one eye closed.',
-                    'Wait until tomorrow.'
+                    'Fine, as long as they drive straight to ED: vision in the fellow eye is normal, and the drops don’t affect driving once 15 minutes have passed since the last one.',
+                    'No: vision is reduced, they may vomit, and pilocarpine dims and blurs vision. Arrange a driver, taxi or ambulance, and send a letter listing the drugs and times.',
+                    'Fine if they close the affected eye: monocular driving is legal in an emergency, and pilocarpine only affects the treated eye.',
+                    'Tell them to wait until tomorrow morning and drive in daylight, since the drops will have worn off and the attack will have settled by then.'
                 ],
                 answer: 1,
                 explain: 'Document times of drops, IOPs and who you spoke to.'
@@ -888,10 +888,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Key work-up step?',
                 options: [
-                    'Corneal topography.',
-                    'Gonioscopy (patchy pigment, PXF material, Sampaolesi’s line, and check for narrowing from lax zonules), plus IOP (phasing), CCT, disc, OCT and fields.',
-                    'Blood glucose.',
-                    'Schirmer test.'
+                    'Corneal topography and pachymetry (PXF thins the cornea), plus a single IOP reading; gonioscopy isn’t needed because PXF angles are always wide open.',
+                    'Gonioscopy (patchy pigment, PXF material, Sampaolesi’s line, narrowing from lax zonules), plus IOP phasing, CCT, disc, OCT and fields.',
+                    'Specular microscopy for endothelial PXF flakes, plus blood glucose, since PXF is a diabetic complication; fields only if VA has dropped.',
+                    'Schirmer test and tear break-up, since PXF material blocks the meibomian glands; IOP and gonioscopy only once symptoms of glaucoma appear.'
                 ],
                 answer: 1,
                 explain: 'PXF eyes can have narrower angles because the lens moves forward on weak zonules.'
@@ -901,10 +901,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'When do you start treatment?',
                 options: [
-                    'Never — PXF is benign.',
-                    'Treat PXF glaucoma (any glaucomatous damage) and consider treating PXF with raised IOP (e.g. >21–24 mmHg) or big fluctuations, given its rapid progression (EMGT: PXF progressed fastest, ~−3.1 dB/yr untreated) and high conversion risk.',
-                    'Only if VA drops.',
-                    'Only after cataract surgery.'
+                    'Only once VA drops below 6/12, since PXF progression is slow (EMGT: slowest, ~−0.4 dB/yr untreated) and drops cause more harm than benefit before that.',
+                    'Treat PXF glaucoma, and consider treating PXF with raised IOP (e.g. over 21–24) or large fluctuations, given its fast progression (EMGT: fastest, ~−3.1 dB/yr untreated) and conversion risk.',
+                    'Only after cataract surgery, since removing the lens removes the main source of PXF material (EMGT: progression stops after surgery), so IOP-lowering drops are rarely needed in PXF.',
+                    'Treat every PXF eye at diagnosis whatever the IOP, disc and field, since PXF always becomes glaucoma within a year (EMGT: 100% conversion, ~−3.1 dB/yr untreated).'
                 ],
                 answer: 1,
                 explain: 'A large IOP fluctuation on phasing (e.g. 10 mmHg) is itself a risk factor — a reasonable trigger to treat in PXF.',
@@ -915,10 +915,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Review schedule?',
                 options: [
-                    'Every 2 years.',
-                    'PXF glaucoma: about every 3 months initially (fast progression), with fields 2–3 times a year early on. PXF without glaucoma: every 6–12 months with IOP and disc review.',
-                    'Weekly.',
-                    'Only when symptomatic.'
+                    'PXF glaucoma: every 12 months with yearly fields, since progression is slow. PXF without glaucoma: every 2–3 years, IOP only.',
+                    'PXF glaucoma: about every 3 months initially, with fields 2–3 times a year early on. PXF without glaucoma: every 6–12 months with IOP and disc review.',
+                    'PXF glaucoma: weekly IOP checks for the first year, with fields monthly. PXF without glaucoma: every 3 months, with a full field at each visit.',
+                    'PXF glaucoma and PXF without glaucoma: only when symptomatic, since both progress so slowly that routine review isn’t useful.'
                 ],
                 answer: 1,
                 explain: 'Close review catches the rapid progression typical of PXG.'
@@ -928,10 +928,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'The examiner asks: “How would you do an LPI, and why?”',
                 options: [
-                    'With pilocarpine drops.',
-                    'Ophthalmologist procedure: pilocarpine to thin and stretch the iris, YAG (± argon pre-treatment) laser to make a full-thickness hole in the peripheral iris, ideally in an iris crypt under the upper lid (often 11–1 o’clock or temporal/nasal). It lets aqueous pass from the posterior to the anterior chamber, relieving pupil block so the iris flattens and the angle opens. It doesn’t help plateau iris much (that needs iridoplasty).',
-                    'Through the cornea centrally.',
-                    'It removes the lens.'
+                    'An optometrist can perform it: atropine first to dilate the pupil, then a YAG hole in the central iris near the pupil margin. It lowers IOP by draining aqueous through the iris into the uveoscleral pathway, and it cures plateau iris.',
+                    'An ophthalmologist’s procedure: pilocarpine first, then a YAG (± argon) hole in the peripheral iris, ideally in a crypt under the upper lid. Aqueous bypasses the pupil, relieving pupil block so the angle opens; it helps plateau iris little.',
+                    'An ophthalmologist’s procedure: phenylephrine first, then SLT to the trabecular meshwork rather than the iris. It increases trabecular outflow and is the treatment of choice for PXF glaucoma.',
+                    'An ophthalmologist’s procedure: a laser hole through the peripheral cornea into the anterior chamber, bypassing the angle. It relieves pupil block and removes PXF material from the TM.'
                 ],
                 answer: 1,
                 explain: 'In PXF, LPI is only relevant if there is a coexisting narrow angle.',
@@ -976,10 +976,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Right moderate glaucoma: what do you treat with and why? What precautions?',
                 options: [
-                    'Timolol, because it is cheapest.',
-                    'Latanoprost 0.005% nocte: most effective, once daily, few systemic effects. Precautions: active or past uveitis, HSV keratitis, CMO risk (aphakia, torn posterior capsule); unilateral use causes asymmetric cosmetic effects (lashes, iris darkening, periorbital fat atrophy).',
-                    'Pilocarpine.',
-                    'No treatment.'
+                    'Timolol 0.5% BD: cheapest and as effective as a PGA in PXF. Precautions: none systemic in older adults; one-eye use is preferred because β-blockers cross to the other eye anyway.',
+                    'Latanoprost nocte: most effective, once daily, few systemic effects. Precautions: active/past uveitis, HSV keratitis, CMO risk; one-eye use gives asymmetric lashes, iris darkening and periorbital changes.',
+                    'Pilocarpine 2% QID: increases trabecular outflow, ideal in PXF because it clears PXF material from the angle. Precautions: myopia only; cosmetic effects are symmetric.',
+                    'Latanoprost nocte: most effective, but contraindicated in PXF because it disperses PXF material into the angle. Precautions: asthma and bradycardia; cosmetic effects occur only with bilateral use, so one eye is fine.'
                 ],
                 answer: 1,
                 explain: 'Explain cosmetic asymmetry before starting one eye only.'
@@ -989,10 +989,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Would you treat on just one field?',
                 options: [
-                    'Never — always wait for three fields.',
-                    'Yes, here: there is clear structure–function agreement, a moderate defect and PXF (an aggressive glaucoma). Still repeat the field soon to confirm and set the baseline.',
-                    'Only if IOP is above 30.',
-                    'Only after an MRI.'
+                    'No: glaucoma can never be diagnosed or treated on one field, even with matching disc damage; wait for three reliable fields over 6 months before starting.',
+                    'Yes, here: clear structure–function agreement, a moderate defect and PXF (aggressive). Still repeat the field soon to confirm and set a baseline.',
+                    'Only if IOP is above 30 mmHg: below that, a single field is never enough, whatever the disc or the presence of PXF.',
+                    'Only after an MRI: a unilateral moderate defect must be presumed compressive until imaging is normal, even with matching cupping.'
                 ],
                 answer: 1,
                 explain: 'Matching structural damage makes a single reliable field much more convincing.'
@@ -1002,10 +1002,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'The left eye has just a superior cluster. What do you do, and when would you treat it as it is?',
                 options: [
-                    'Treat immediately in all cases.',
-                    'Get two baseline fields and OCT, then review (e.g. 3–6 months) for repeatable functional or structural change. Treat now if it is ocular hypertensive with high OHTS conversion risk (age, IOP, thin CCT, large VCDR, PSD), or if the cluster is repeatable and matches the disc.',
-                    'Discharge.',
-                    'Only treat when VA drops.'
+                    'Treat immediately in all cases: a superior cluster in the fellow eye of a glaucoma patient is always early glaucoma, so baseline fields and OCT add nothing before starting the PGA in that eye today.',
+                    'Two baseline fields and OCT, then review (3–6 months) for repeatable change; treat now if OHT with high OHTS risk (age, IOP, thin CCT, large VCDR, PSD) or if the cluster is repeatable and matches the disc.',
+                    'Discharge the left eye to routine care: a superior cluster is usually a lid artefact, and OHTS risk factors (age, IOP, CCT, VCDR) only apply to the eye that already has glaucoma.',
+                    'Wait until VA drops before treating, since clusters rarely progress in the fellow eye; repeat the fields in 2 years and use OCT only if the cluster has grown by then or the disc has changed.'
                 ],
                 answer: 1,
                 explain: 'No change on fields? Also check OCT for structural progression.'
@@ -1040,10 +1040,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Epithelial disease: management, palliative therapy, review and expected course?',
                 options: [
-                    'Topical steroid.',
-                    'Topical antiviral (aciclovir 3% ointment or ganciclovir 0.15% gel 5×/day) ± debridement; palliative: cycloplegic for photophobia, preservative-free lubricants, sunglasses; review at 2–7 days; most heal in 1–2 weeks.',
-                    'Bandage CL alone.',
-                    'Oral antibiotics.'
+                    'Topical steroid (prednisolone acetate QID) to limit scarring plus lubricants; antivirals only if it hasn’t healed at 2 weeks; most heal in 4–6 weeks.',
+                    'Topical antiviral (aciclovir 3% or ganciclovir gel 5×/day) ± debridement; palliative cycloplegic, PF lubricants, sunglasses; review at 2–7 days; most heal in 1–2 weeks.',
+                    'Bandage contact lens and chloramphenicol QID until healed; antivirals are reserved for stromal disease; review at 2 weeks; most heal in a month.',
+                    'Oral antibiotics via the GP for secondary infection plus lubricants; topical antivirals are too toxic for the epithelium; review at a week; most epithelial lesions heal in about 3 weeks.'
                 ],
                 answer: 1,
                 explain: 'Stop the topical antiviral once healed to avoid toxicity.'
@@ -1053,10 +1053,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'For stromal disease, what else do you use, and for how long?',
                 options: [
-                    'Topical aciclovir for life.',
-                    'Oral aciclovir 400 mg BD (via GP) as prophylaxis while on steroid and often for ~12 months after (HEDS halved recurrences, mainly benefiting those with previous stromal disease); longer-term in frequent recurrences — not automatically “for the rest of your life”.',
-                    'Chloramphenicol.',
-                    'Nothing.'
+                    'Topical aciclovir 3% BD for life: long-term topical prophylaxis is what HEDS tested, it has no epithelial toxicity at twice-daily dosing, and it works better than oral aciclovir for stromal disease.',
+                    'Oral aciclovir 400 mg BD (via GP) while on steroid and often ~12 months after (HEDS halved recurrences, mainly with previous stromal disease); longer only with frequent recurrences.',
+                    'Oral aciclovir 800 mg 5×/day for 10 days only: HEDS showed a short treatment course prevents recurrence as well as long-term prophylaxis.',
+                    'Nothing beyond the steroid and a short topical antiviral: HEDS found oral prophylaxis made no difference to recurrence of either stromal or epithelial disease.'
                 ],
                 answer: 1,
                 explain: 'HEDS found 400 mg BD for 12 months reduced recurrence of any ocular HSV from 32% to 19%.',
@@ -1106,10 +1106,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'A superior defect disappears when you retest with an extra −3.00 DS lens. Why?',
                 options: [
-                    'The patient was malingering.',
-                    'It is a refractive scotoma from a myopic staphyloma, tilted disc or coloboma region (ectatic retina focused differently). A true neurological defect would not change with a lens.',
-                    'The lens improves retinal function.',
-                    'It proves glaucoma.'
+                    'The patient was malingering: a true defect never changes with a lens, so any change proves non-organic loss and the field should be reported as unreliable.',
+                    'A refractive scotoma from a myopic staphyloma, tilted disc or coloboma region (ectatic retina focused differently); a true neurological defect wouldn’t change with a lens.',
+                    'The lens improves retinal sensitivity in early glaucoma by magnifying the stimulus; true glaucomatous defects shrink with minus lenses and enlarge with plus lenses, so it supports glaucoma.',
+                    'It is a lens-rim artefact: the −3.00 DS lens holder was blocking the superior field, and the defect disappears whenever any lens is removed.'
                 ],
                 answer: 1,
                 explain: 'Common with tilted discs (superotemporal defects that cross the vertical midline).'
@@ -1119,10 +1119,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'How can you separate a maculopathy from an optic neuropathy in the chair?',
                 options: [
-                    'Visual acuity alone.',
-                    'Photostress recovery: usually under ~30–60 s; prolonged (>60–90 s) in maculopathy, normal in optic neuropathy. Plus RAPD, colour vision and red desaturation (worse in optic neuropathy), and Amsler distortion (maculopathy).',
-                    'IOP.',
-                    'Corneal sensation.'
+                    'Photostress recovery (prolonged in optic neuropathy, normal in maculopathy), plus RAPD (present in maculopathy only), colour vision (worse in maculopathy) and Amsler distortion (optic neuropathy).',
+                    'Photostress recovery (normally under ~60 s; prolonged in maculopathy, normal in optic neuropathy), plus RAPD, colour and red desaturation (worse in optic neuropathy) and Amsler distortion (maculopathy).',
+                    'Visual acuity alone: maculopathy reduces VA while optic neuropathy never does at presentation; other tests (colour, RAPD, Amsler) are only needed if the VA is normal.',
+                    'IOP and corneal sensation: raised IOP points to optic neuropathy and reduced sensation to maculopathy; photostress recovery is unreliable over 50, and Amsler can’t separate the two.'
                 ],
                 answer: 1,
                 explain: 'Both reduce acuity; the pattern of other tests separates them.'
@@ -1156,10 +1156,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'How do fluoroquinolones work, and what side effects should you know?',
                 options: [
-                    'They inhibit cell-wall synthesis; no side effects.',
-                    'They inhibit bacterial DNA gyrase (topoisomerase II) and topoisomerase IV, blocking DNA supercoiling and replication (bactericidal). Topical: white crystalline precipitate on the ulcer (ciprofloxacin), bitter taste, stinging, epithelial toxicity. Systemic FQs: tendinopathy/rupture (Achilles), QT prolongation — not an issue with topical use.',
-                    'They bind the 50S subunit.',
-                    'They are antivirals.'
+                    'They inhibit cell-wall synthesis by binding penicillin-binding proteins (bactericidal). Topical: tendon rupture and QT prolongation are common with the eye drops, so avoid them in athletes and anyone on antiarrhythmics.',
+                    'They inhibit DNA gyrase (topoisomerase II) and topoisomerase IV, blocking supercoiling (bactericidal). Topical: white precipitate (cipro), bitter taste, stinging. Systemic: tendinopathy, QT prolongation — not topical issues.',
+                    'They bind the 50S ribosomal subunit and block peptidyl transferase (bacteriostatic). Topical: grey baby syndrome and aplastic anaemia, so avoid in children and blood disorders.',
+                    'They bind the 30S ribosomal subunit and cause mRNA misreading (bactericidal). Topical: corneal epithelial toxicity and pseudo-dendrites only. Systemic: hearing loss and kidney damage.'
                 ],
                 answer: 1,
                 explain: 'Bacterial vs human cells: bacteria have peptidoglycan walls, 70S ribosomes (30S + 50S) and DNA gyrase; human cells don’t — that is why these drugs are selective.'
@@ -1169,10 +1169,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'A patient with episcleritis needs an oral NSAID. Can you prescribe it?',
                 options: [
-                    'Yes, any dose.',
-                    'No: oral NSAIDs at anti-inflammatory doses (e.g. ibuprofen 400 mg TDS–QID; higher for scleritis) are outside optometric prescribing — refer to the GP. Don’t tell the patient to double over-the-counter tablets themselves.',
-                    'Yes, if they are over 18.',
-                    'Only by phone.'
+                    'Yes: endorsed optometrists can prescribe any oral NSAID dose for ocular inflammation, so write a script for ibuprofen 800 mg TDS for 2 weeks and review the stomach at follow-up.',
+                    'No: oral NSAIDs at anti-inflammatory doses (e.g. ibuprofen 400 mg TDS–QID) are outside optometric prescribing — refer to the GP. Don’t tell the patient to double OTC tablets.',
+                    'Yes, but only up to 400 mg QID of ibuprofen (the OTC maximum); above that, tell the patient to take two OTC packs together to reach the dose.',
+                    'No, but you can phone a pharmacist to supply 800 mg ibuprofen without a prescription if you document the episcleritis in the referral.'
                 ],
                 answer: 1,
                 explain: 'Check contraindications the GP will weigh: peptic ulcer, renal impairment, asthma (NSAID-sensitive), anticoagulants, pregnancy.'
@@ -1182,10 +1182,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Which oral/topical combinations most worry you for additive effects?',
                 options: [
-                    'Topical + oral β-blockers (bradycardia, hypotension, reduced extra IOP effect) and topical + oral NSAIDs (GI, renal, bleeding).',
-                    'Lubricants and saline.',
-                    'Antihistamine drops with sunglasses.',
-                    'None exist.'
+                    'Topical + oral β-blockers (bradycardia, hypotension, less extra IOP effect) and topical + oral NSAIDs (GI, renal, bleeding).',
+                    'Topical + oral antihistamines (sedation, dry eye) and topical + oral PGAs (uterine contractions, hyperaemia).',
+                    'Topical + oral antibiotics of any class (resistance only), and a topical steroid + oral paracetamol (additive liver toxicity).',
+                    'None: topical eye drops are absorbed too little to add to any oral drug, so medication history isn’t needed.'
                 ],
                 answer: 0,
                 explain: 'Always take a full medication history.'
@@ -1208,10 +1208,10 @@ window.CASES.push(
                 type: 'mcq',
                 question: 'Name the three ways IOP can be raised.',
                 options: [
-                    'Too much tear film, small cornea, long eye.',
-                    'Reduced outflow (blocked or damaged trabecular meshwork / closed angle), increased aqueous production (rare), and raised episcleral venous pressure (e.g. carotid–cavernous fistula, Sturge–Weber, thyroid eye disease).',
-                    'High blood sugar, low blood pressure, myopia.',
-                    'Only outflow problems.'
+                    'Increased aqueous production (the usual cause in POAG), reduced tear drainage through the puncta, and a thickened cornea (which raises the true IOP, not just the reading).',
+                    'Reduced outflow (blocked or damaged TM, closed angle), increased aqueous production (rare), and raised episcleral venous pressure (e.g. carotid–cavernous fistula, Sturge–Weber).',
+                    'High blood sugar (osmotic swelling of the lens), low blood pressure (reduced ciliary perfusion, so less pressure on the outflow), and axial myopia (stretched sclera).',
+                    'Reduced outflow only: IOP can’t rise from extra production or raised venous pressure, because the trabecular meshwork compensates for both by increasing its own outflow.'
                 ],
                 answer: 1,
                 explain: 'Goldmann equation: IOP = (F − U)/C + Pv.'

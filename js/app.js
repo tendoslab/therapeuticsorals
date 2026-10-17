@@ -22,7 +22,7 @@
     { id: '2025', label: '2025 orals' },
     { id: '2019', label: '2019 orals' },
     { id: '2018', label: '2018 orals' },
-    { id: 'Mock 2025', label: '2025 mock orals' },
+    { id: 'Mock 2025', label: '2025 YO mock orals' },
     { id: 'Peer recalls', label: 'Peer recalls' },
     { id: 'Case studies 2016', label: '2016 case studies' },
     { id: 'Case studies 2022', label: '2022 case studies' },
@@ -290,7 +290,7 @@
     <section class="hero"><div>
       <p class="label">Therapeutics oral practice</p>
       <h1>Talk through the case before the panel does</h1>
-      <p>${CASES.length} cases (${totalSteps} examiner questions) from the 2018, 2019 and 2025 recalls, the 2025 mock orals, peer recalls, the 2016 and 2022 case-study notes and the Young Optometrists mock orals, checked against Australian practice. Each case keeps the questions from the sitting or notes it came from. Pick topics, then practise whole cases or sit a timed mock oral.</p>
+      <p>${CASES.length} cases (${totalSteps} examiner questions) from the 2018, 2019 and 2025 recalls, the 2025 Young Optometrists mock orals, peer recalls, the 2016 and 2022 case-study notes and the Young Optometrists mock orals, checked against Australian practice. Each case keeps the questions from the sitting or notes it came from. Pick topics, then practise whole cases or sit a timed mock oral.</p>
     </div></section>
     <div class="grid-2">
       <section class="card stack" aria-labelledby="topics-h">
@@ -589,7 +589,7 @@
       }).join('');
       return `<section class="card hue-top" style="--h:${ct.hue};margin-bottom:1rem">
         <div class="row" style="gap:.5rem;margin-bottom:.6rem"><span style="font-size:1.2rem">${ct.icon}</span><h2 style="font-size:1.1rem">${esc(ct.title)}</h2><span class="muted" style="font-size:.85rem">${cs.length} case${cs.length === 1 ? '' : 's'}</span></div>
-        <div class="tablewrap"><table class="t bank-table"><tr><th>Case</th>${years.map((y) => `<th class="c">${esc(sourceLabel(y).replace(' orals', '').replace('2025 mock', 'Mock 2025').replace(' case studies', ' notes'))}</th>`).join('')}<th class="c">Missed Qs</th><th class="c">Last</th><th></th></tr>${rows}</table></div>
+        <div class="tablewrap"><table class="t bank-table"><tr><th>Case</th>${years.map((y) => `<th class="c">${esc(sourceLabel(y).replace(' orals', '').replace(' case studies', ' notes'))}</th>`).join('')}<th class="c">Missed Qs</th><th class="c">Last</th><th></th></tr>${rows}</table></div>
       </section>`;
     }).join('');
     view.innerHTML = `<div class="fade">
