@@ -254,6 +254,50 @@ window.CASE_IMAGES = {
    "step": 1
   }
  ],
+ "angle-recession": [
+  {
+   "src": "img/cases/added-angle-recession-glaucoma.jpg",
+   "w": 300,
+   "h": 273,
+   "caption": "Gonioscopy photo, right eye",
+   "credit": "Photo added to the repo (images/angle recession glaucoma.jpeg), not from the exam sources"
+  },
+  {
+   "src": "img/cases/added-hyphema.jpg",
+   "w": 800,
+   "h": 600,
+   "caption": "Photo from the day of the injury",
+   "credit": "Photo added to the repo (images/hyphema.jpg), not from the exam sources (a similar hyphaema)",
+   "step": 1
+  }
+ ],
+ "mp-angle-recession": [
+  {
+   "src": "img/cases/added-angle-recession-glaucoma.jpg",
+   "w": 300,
+   "h": 273,
+   "caption": "Gonioscopy photo",
+   "credit": "Photo added to the repo (images/angle recession glaucoma.jpeg), not from the exam sources"
+  }
+ ],
+ "neovascular-glaucoma": [
+  {
+   "src": "img/cases/added-neovascular-glaucoma.jpg",
+   "w": 717,
+   "h": 632,
+   "caption": "Slit-lamp photo, right eye",
+   "credit": "Photo added to the repo (images/neovascular glaucoma.webp), not from the exam sources (a similar eye)"
+  }
+ ],
+ "peer-lily-glaucoma": [
+  {
+   "src": "img/cases/all-the-case-studies-22-010-007.jpg",
+   "w": 400,
+   "h": 258,
+   "caption": "Disc photos, right and left",
+   "credit": "2022 case studies / YO MOTHs (Past Papers/All_the_case_studies_22.pdf), p. 10 (a similar pair from the YO MOTHs PXF case)"
+  }
+ ],
  "cs16-oht-to-poag": [
   {
    "src": "img/cases/cs16-image11.jpg",
@@ -368,6 +412,15 @@ window.CASE_IMAGES = {
    "h": 184,
    "caption": "Disc photo",
    "credit": "Posterior eye notes 2025 (Posterior Compressed.pdf), p. 61: “Papilloedema”"
+  }
+ ],
+ "tilted-disc": [
+  {
+   "src": "img/cases/added-tilted-disc.jpg",
+   "w": 355,
+   "h": 321,
+   "caption": "Disc photo, one eye",
+   "credit": "Photo added to the repo (images/tilted disc.jpg), not from the exam sources (a similar disc)"
   }
  ],
  "pn-gca": [
@@ -599,6 +652,15 @@ window.CASE_IMAGES = {
    "credit": "Practice Therapeutics Orals deck (Past Papers/Practice-Therapeutics-Orals.pptx), slide 14"
   }
  ],
+ "peer-herpes-types": [
+  {
+   "src": "img/cases/a076-838.jpg",
+   "w": 287,
+   "h": 165,
+   "caption": "Fluorescein photo",
+   "credit": "Anterior eye notes 2025 (Anterior Compressed.pdf), p. 76: “HSV epithelial keratitis”"
+  }
+ ],
  "hzo": [
   {
    "src": "img/cases/a077-848.jpg",
@@ -750,11 +812,27 @@ window.CASE_IMAGES = {
  ],
  "r2019-aau-drugs": [
   {
+   "src": "img/cases/added-keratic-precipitates.jpg",
+   "w": 750,
+   "h": 494,
+   "caption": "Zoomed-in slit-lamp photo, inferior cornea",
+   "credit": "Photo added to the repo (images/keratic precipitates.jpg), not from the exam sources"
+  },
+  {
    "src": "img/cases/ppt-image2.jpg",
    "w": 219,
    "h": 145,
    "caption": "Anterior eye photo",
    "credit": "Practice Therapeutics Orals deck (Past Papers/Practice-Therapeutics-Orals.pptx), slide 4 (a similar case)"
+  }
+ ],
+ "granulomatous-au": [
+  {
+   "src": "img/cases/added-keratic-precipitates.jpg",
+   "w": 750,
+   "h": 494,
+   "caption": "Slit-lamp photo, endothelium",
+   "credit": "Photo added to the repo (images/keratic precipitates.jpg), not from the exam sources (a similar eye)"
   }
  ],
  "cs22-aau": [
@@ -962,6 +1040,15 @@ window.CASE_IMAGES = {
    "h": 308,
    "caption": "Anterior eye photo",
    "credit": "2016 case studies (Past Papers/thera-case-studies.docx): 47-year-old with a red eye"
+  }
+ ],
+ "phlyctenulosis": [
+  {
+   "src": "img/cases/added-phlyctenulosis.jpg",
+   "w": 382,
+   "h": 251,
+   "caption": "Slit-lamp photo",
+   "credit": "Photo added to the repo (images/phlyctenulosis.jpg), not from the exam sources (a similar case)"
   }
  ],
  "an-pterygium": [
