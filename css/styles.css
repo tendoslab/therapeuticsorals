@@ -1,0 +1,59 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f4f7fb;
+    color: #0f172a;
+}
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+.fade-in { animation: fadeIn 0.3s ease-in-out; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.glass-panel {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+/* OcuLearning style range slider */
+input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%;
+    background: #1e3a8a; cursor: pointer; margin-top: -10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); border: 4px solid white;
+}
+input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; cursor: pointer; background: #cbd5e1; border-radius: 4px; }
+
+/* Category cards */
+.cat-glaucoma { border-color: #818cf8; background-color: #eef2ff; color: #3730a3; }
+.cat-glaucoma-active { border-color: #4f46e5; background-color: #e0e7ff; box-shadow: 0 0 0 2px #c7d2fe; }
+.cat-neuro { border-color: #c084fc; background-color: #faf5ff; color: #6b21a8; }
+.cat-neuro-active { border-color: #9333ea; background-color: #f3e8ff; box-shadow: 0 0 0 2px #e9d5ff; }
+.cat-cornea { border-color: #60a5fa; background-color: #eff6ff; color: #1e40af; }
+.cat-cornea-active { border-color: #2563eb; background-color: #dbeafe; box-shadow: 0 0 0 2px #bfdbfe; }
+.cat-uveitis { border-color: #fb923c; background-color: #fff7ed; color: #9a3412; }
+.cat-uveitis-active { border-color: #ea580c; background-color: #ffedd5; box-shadow: 0 0 0 2px #fed7aa; }
+.cat-allergy { border-color: #34d399; background-color: #ecfdf5; color: #065f46; }
+.cat-allergy-active { border-color: #059669; background-color: #d1fae5; box-shadow: 0 0 0 2px #a7f3d0; }
+.cat-conj { border-color: #fb7185; background-color: #fff1f2; color: #9f1239; }
+.cat-conj-active { border-color: #e11d48; background-color: #ffe4e6; box-shadow: 0 0 0 2px #fecdd3; }
+.cat-professional { border-color: #94a3b8; background-color: #f8fafc; color: #334155; }
+.cat-professional-active { border-color: #475569; background-color: #e2e8f0; box-shadow: 0 0 0 2px #cbd5e1; }
+
+.badge-glaucoma { background:#e0e7ff; color:#3730a3; }
+.badge-neuro { background:#f3e8ff; color:#6b21a8; }
+.badge-cornea { background:#dbeafe; color:#1e40af; }
+.badge-uveitis { background:#ffedd5; color:#9a3412; }
+.badge-allergy { background:#d1fae5; color:#065f46; }
+.badge-conj { background:#ffe4e6; color:#9f1239; }
+.badge-professional { background:#e2e8f0; color:#334155; }
+
+.prose-answer ul { list-style: disc; padding-left: 1.25rem; }
+.prose-answer li { margin: 0.15rem 0; }
+.prose-answer strong { color: #0f172a; }
+
+.option-btn:focus-visible, .nav-btn:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; }
