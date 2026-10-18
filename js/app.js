@@ -42,14 +42,17 @@
   const scorePill = document.getElementById('score-pill');
   const timerPill = document.getElementById('timer-pill');
   const missBadge = document.getElementById('miss-badge');
+  const masterBadge = document.getElementById('master-badge');
 
   // ------------------------------------------------------------------ storage (per-viewer convenience only)
-  let saved = { cases: {}, missed: {}, seen: {} };
+  let saved = { cases: {}, missed: {}, seen: {}, mastered: {} };
   try { saved = Object.assign(saved, JSON.parse(localStorage.getItem(STORE_KEY)) || {}); } catch (e) { /* storage unavailable */ }
   try {
     const old = JSON.parse(localStorage.getItem(LEGACY_KEY));
     if (old && !Object.keys(saved.cases).length) saved.cases = old;
   } catch (e) { /* ignore */ }
+  // Answers saved before the Mastered tab existed: a question you've seen that isn't on My mistakes was right last time.
+  Object.keys(saved.seen).forEach((k) => { if (!saved.missed[k] && !saved.mastered[k]) saved.mastered[k] = { score: STEP_PASS, streak: 1 }; });
   const persist = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify(saved)); } catch (e) { /* ignore */ } };
   const stepKey = (c, i) => `${c.id}#${i}`;
   const today = () => new Date().toISOString().slice(0, 10);
@@ -70,6 +73,20 @@
     const c = CASES.find((x) => x.id === id);
     return c && c.steps[Number(i)];
   });
+  const masteredKeys = () => Object.keys(saved.mastered).filter((k) => {
+    const [id, i] = k.split('#');
+    const c = CASES.find((x) => x.id === id);
+    return c && c.steps[Number(i)] && c.steps[Number(i)].type !== 'reveal';
+  });
+  // Store the latest attempt at a question: a pass moves it to Mastered (a miss before it makes it a comeback),
+  // a fail moves it to My mistakes.
+  function track(k, points, said) {
+    saved.seen[k] = 1;
+    const prev = saved.mastered[k];
+    if (points < STEP_PASS) { saved.missed[k] = { score: points, said, date: today() }; delete saved.mastered[k]; return; }
+    saved.mastered[k] = { score: points, date: today(), streak: prev ? (prev.streak || 1) + 1 : 1, comeback: !!(saved.missed[k] || (prev && prev.comeback)) };
+    delete saved.missed[k];
+  }
   const outcomeOf = (pts) => (pts >= STEP_PASS ? 'good' : pts >= 4 ? 'part' : 'bad');
 
   // The correct answer to a step, written out in full (review page, end screen, case record).
@@ -179,9 +196,7 @@
     const s = sim.s, it = cur(), k = stepKey(it.c, it.s);
     s.score += points; s.max += PTS;
     s.results.push({ c: it.c, s: it.s, points, said });
-    saved.seen[k] = 1;
-    if (points < STEP_PASS) saved.missed[k] = { score: points, said, date: today() };
-    else delete saved.missed[k];
+    track(k, points, said);
     persist();
   }
 
@@ -605,6 +620,67 @@
     return missedKeys().filter((k) => review.cat === 'all' || CASES.find((x) => x.id === k.split('#')[0]).category === review.cat);
   }
 
+  // ------------------------------------------------------------------ mastered
+  // One question you got right last time: the model answer stays a tap away for a refresher.
+  function masterItem(c, i) {
+    const st = c.steps[i], k = stepKey(c, i), m = saved.mastered[k];
+    return `<details class="qitem mastered">
+      <summary><div><div class="qtext">${st.question}</div><div class="pills" style="margin-top:.35rem"><span class="pill">${st.phase}</span><span class="pill good">${m.score}/10</span>${m.streak > 1 ? `<span class="pill good">✓ ${m.streak} in a row</span>` : ''}${m.comeback ? '<span class="pill tint" style="--h:270">Comeback</span>' : ''}${st.critical ? '<span class="pill">Safety-critical</span>' : ''}${m.date ? `<span class="muted" style="font-size:.8rem">${esc(m.date)}</span>` : ''}</div></div><span class="muted" aria-hidden="true">▾</span></summary>
+      <div class="body">
+        <div class="model"><p class="label">${st.type === 'viva' ? 'Key points the panel listens for' : 'Correct answer'}</p><div class="prose">${answerHTML(st)}</div></div>
+        <div class="model"><p class="label">🧑‍⚕️ Examiner notes</p><div class="prose">${st.explain}</div></div>
+        <div class="row"><button class="btn small" data-act="drill-one" data-v="${esc(k)}">Test me again</button></div>
+      </div>
+    </details>`;
+  }
+  const mastery = { cat: 'all' };
+  function renderMastered() {
+    const keys = masteredKeys();
+    const caseOf = (k) => CASES.find((x) => x.id === k.split('#')[0]);
+    const counts = {};
+    keys.forEach((k) => { const c = caseOf(k); counts[c.category] = (counts[c.category] || 0) + 1; });
+    const byCase = new Map();
+    keys.forEach((k) => {
+      const c = caseOf(k);
+      if (mastery.cat !== 'all' && c.category !== mastery.cat) return;
+      if (!byCase.has(c)) byCase.set(c, []);
+      byCase.get(c).push(Number(k.split('#')[1]));
+    });
+    const shown = [...byCase.values()].reduce((a, v) => a + v.length, 0);
+    const comebacks = keys.filter((k) => saved.mastered[k].comeback).length;
+    // Progress per topic: questions mastered out of every scored question in that topic.
+    const bars = CATS.map((ct) => {
+      const total = CASES.filter((c) => c.category === ct.id).reduce((a, c) => a + scored(c).length, 0);
+      if (!total) return '';
+      const n = counts[ct.id] || 0, pct = Math.round((100 * n) / total);
+      return `<div class="mastery-row"><span>${ct.icon} ${esc(ct.title)}</span><div class="mastery-bar" style="--h:${ct.hue}" role="img" aria-label="${n} of ${total} mastered"><i style="width:${pct}%"></i></div><span class="mono muted">${n}/${total}</span></div>`;
+    }).join('');
+    const groups = [...byCase.entries()].sort((a, b) => CASES.indexOf(a[0]) - CASES.indexOf(b[0])).map(([c, idx]) => {
+      const full = idx.length === scored(c).length;
+      return `<section class="case-group">
+      <header><div><div class="pills">${catPill(c.category)}${sourcePills(c)}${full ? '<span class="pill good">Whole case mastered</span>' : ''}</div><h3 style="margin-top:.35rem">${c.title}</h3></div>
+        <button class="btn small" data-act="case" data-v="${c.id}">Run whole case →</button></header>
+      ${idx.sort((a, b) => a - b).map((i) => masterItem(c, i)).join('')}
+    </section>`;
+    }).join('');
+    view.innerHTML = `<div class="fade">
+      <section class="hero"><div><p class="label">Mastered</p><h1>What you've got right</h1>
+        <p>Every question you scored ${STEP_PASS}/10 or better on last time you answered it, with the model answer for a quick refresher. <b>Comeback</b> marks one you'd missed before. Miss it again and it moves back to My mistakes.</p>
+        ${keys.length ? `<p style="margin-top:.6rem"><b>${keys.length}</b> question${keys.length === 1 ? '' : 's'} mastered${comebacks ? `, <b>${comebacks}</b> of them comebacks` : ''}.</p>
+        <div class="row" style="margin-top:.9rem"><button class="btn primary" data-act="drill-mastered">Keep them fresh: quiz ${shown === keys.length ? 'all' : 'these'} ${shown}</button></div>` : ''}
+      </div></section>
+      ${keys.length ? `<section class="card stack" style="gap:.5rem;margin-bottom:1.2rem"><p class="label">Progress by topic</p>${bars}</section>
+      <div class="row" style="gap:.4rem;margin-bottom:1.2rem">
+        <button class="chip" data-act="mastered-cat" data-v="all" aria-pressed="${mastery.cat === 'all'}">All topics <small>${keys.length}</small></button>
+        ${CATS.filter((c) => counts[c.id]).map((c) => `<button class="chip" data-act="mastered-cat" data-v="${c.id}" aria-pressed="${mastery.cat === c.id}">${c.icon} ${esc(c.title)} <small>${counts[c.id]}</small></button>`).join('')}
+      </div>` : ''}
+      ${groups || `<div class="card empty"><h2 style="font-size:1.2rem">Nothing mastered${mastery.cat === 'all' ? ' yet' : ' in this topic'}</h2><p class="muted">Questions you score ${STEP_PASS}/10 or better on in practice, mock orals, drills or the lightning round land here automatically.</p><a class="btn primary" href="#sim">Go to the simulator</a></div>`}
+    </div>`;
+  }
+  function shownMasteredKeys() {
+    return masteredKeys().filter((k) => mastery.cat === 'all' || CASES.find((x) => x.id === k.split('#')[0]).category === mastery.cat);
+  }
+
   // ------------------------------------------------------------------ recall bank
   function renderBank() {
     // Only the picked sources get a column, so narrowing the sources also narrows the table.
@@ -767,17 +843,15 @@
     const q = g.queue[g.i], ok = pick === q.st.answer, k = stepKey(q.c, q.s);
     const secsLeft = Math.ceil(Math.max(0, g.endsAt - Date.now()) / 1000);
     let gain = 0;
-    saved.seen[k] = 1;
+    track(k, ok ? PTS : 0, pick === null ? 'Ran out of time (lightning round)' : strip(q.st.options[pick]));
     if (ok) {
       g.streak++; g.right++;
       g.bestStreak = Math.max(g.bestStreak, g.streak);
       gain = (100 + 5 * secsLeft) * boltMult(g.streak);
       g.score += gain;
-      delete saved.missed[k];
     } else {
       g.streak = 0; g.lives--;
       g.missed.push({ q, pick });
-      saved.missed[k] = { score: 0, said: pick === null ? 'Ran out of time (lightning round)' : strip(q.st.options[pick]), date: today() };
     }
     persist();
     g.last = { pick, ok, gain };
@@ -978,13 +1052,15 @@
   });
 
   // ------------------------------------------------------------------ routing and chrome
-  const ROUTES = { sim: null, play: renderPlay, review: renderReview, bank: renderBank, audit: renderAudit, guide: renderGuide };
+  const ROUTES = { sim: null, play: renderPlay, review: renderReview, mastered: renderMastered, bank: renderBank, audit: renderAudit, guide: renderGuide };
   const route = () => { const r = location.hash.slice(1); return r in ROUTES ? r : 'sim'; };
   function render(opts = {}) {
     const r = route();
     document.querySelectorAll('.nav a').forEach((a) => a.setAttribute('aria-current', a.getAttribute('href') === `#${r}` ? 'page' : 'false'));
     const n = missedKeys().length;
     missBadge.hidden = !n; missBadge.textContent = n;
+    const nm = masteredKeys().length;
+    masterBadge.hidden = !nm; masterBadge.textContent = nm;
     const y = window.scrollY;
     if (r !== 'play') arcQuit(); // leaving the tab ends a game in progress
     if (r === 'sim') renderSim(); else ROUTES[r]();
@@ -1013,10 +1089,12 @@
       case 'drill-all': startDrill(missedKeys()); break;
       case 'drill-shown': startDrill(shownReviewKeys()); break;
       case 'drill-one': startDrill([v]); break;
-      case 'learned': delete saved.missed[v]; persist(); again(); break;
+      case 'learned': saved.mastered[v] = { score: PTS, date: today(), streak: 1, comeback: true }; delete saved.missed[v]; persist(); again(); break;
       case 'review-cat': review.cat = v; again(); break;
+      case 'drill-mastered': startDrill(shownMasteredKeys()); break;
+      case 'mastered-cat': mastery.cat = v; again(); break;
       case 'reset':
-        if (confirm('Clear your saved case results and your list of missed questions?')) { saved = { cases: {}, missed: {}, seen: {} }; persist(); try { localStorage.removeItem(LEGACY_KEY); } catch (e) { /* ignore */ } again(); }
+        if (confirm('Clear your saved case results, your missed questions and your mastered list?')) { saved = { cases: {}, missed: {}, seen: {}, mastered: {} }; persist(); try { localStorage.removeItem(LEGACY_KEY); } catch (e) { /* ignore */ } again(); }
         break;
       case 'resume': s.parked = false; render(); break;
       case 'park': s.parked = true; render(); break;
