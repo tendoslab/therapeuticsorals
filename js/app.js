@@ -20,9 +20,8 @@
   const CORRECTIONS = window.CORRECTIONS || [];
   const IMAGES = window.CASE_IMAGES || {};
   // Where each case came from (matches the `years` field on every case), newest first;
-  // sources with no date sit at the end.
+  // sources with no date follow, and your own case report comes last.
   const SOURCES = [
-    { id: 'My case report', label: 'My case report (RCE / EBMD)', short: 'My report' },
     { id: '2025', label: '2025 orals', short: '2025' },
     { id: 'Mock 2025', label: '2025 YO mock orals', short: '2025 YO mock' },
     { id: 'Case studies 2022', label: '2022 case studies', short: '2022 case studies' },
@@ -36,6 +35,7 @@
     { id: 'Exam recall', label: 'Undated exam recall', short: 'Undated recall' },
     { id: 'Mini oral prep', label: 'Mini oral prep', short: 'Mini oral' },
     { id: 'Practice orals', label: 'Practice orals deck', short: 'Practice deck' },
+    { id: 'My case report', label: 'My case report (RCE / EBMD)', short: 'My report' },
   ];
   const sourceLabel = (id) => (SOURCES.find((s) => s.id === id) || { label: id }).label;
 
