@@ -85,6 +85,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .nav a { text-decoration: none; color: var(--muted); padding: .35rem .7rem; border-radius: 999px; font-weight: 600; font-size: .92rem; position: relative; }
 .nav a:hover { color: var(--ink); background: var(--surface-2); }
 .nav a[aria-current="page"] { color: var(--accent-ink); background: var(--accent); }
+.nav .badge.good { background: var(--good); }
 .nav .badge { display: inline-block; min-width: 1.2rem; padding: 0 .3rem; margin-left: .3rem; border-radius: 99px; background: var(--bad); color: #fff; font-size: .7rem; line-height: 1.2rem; text-align: center; }
 .status { margin-left: auto; display: flex; gap: .4rem; align-items: center; }
 .pill-stat { font-family: var(--font-mono); font-size: .82rem; padding: .3rem .7rem; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); white-space: nowrap; }
@@ -282,6 +283,10 @@ table.t td.c, table.t th.c { text-align: center; }
 /* ---------- review / question list ---------- */
 .qitem { border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); padding: .8rem 1rem; }
 .qitem.missed { border-left: 4px solid var(--bad); }
+.qitem.mastered { border-left: 4px solid var(--good); }
+.mastery-row { display: grid; grid-template-columns: minmax(0, 11rem) minmax(0, 1fr) auto; gap: .7rem; align-items: center; font-size: .9rem; }
+.mastery-bar { height: .55rem; border-radius: 99px; background: var(--line); overflow: hidden; }
+.mastery-bar i { display: block; height: 100%; background: hsl(var(--h) 60% 50%); border-radius: inherit; }
 .qitem > summary { cursor: pointer; list-style: none; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .6rem; }
 .qitem > summary::-webkit-details-marker { display: none; }
 .qitem .qtext { font-weight: 600; }
