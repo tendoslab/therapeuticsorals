@@ -3,7 +3,7 @@
  * Step types: 'reveal' (examiner gives info), 'mcq' (single best answer), 'multi' (select all that apply),
  * 'match' (dropdown matching) and 'viva' (say your answer out loud, then tick the key points you covered).
  * Optional step fields: critical (safety-critical), recall (what past candidates said vs what's correct),
- * exhibit (on reveal steps), fixedOrder (mcq/multi options keep their order).
+ * exhibit (on reveal steps), fixedOrder (mcq/multi options keep their order), marker (the case-report marker's comment).
  * Photos and printouts for a case live in js/data/images.js (window.CASE_IMAGES, keyed by case id). */
 (() => {
   'use strict';
@@ -22,6 +22,7 @@
   // Where each case came from (matches the `years` field on every case), newest first;
   // sources with no date sit at the end.
   const SOURCES = [
+    { id: 'My case report', label: 'My case report (RCE / EBMD)', short: 'My report' },
     { id: '2025', label: '2025 orals', short: '2025' },
     { id: 'Mock 2025', label: '2025 YO mock orals', short: '2025 YO mock' },
     { id: 'Case studies 2022', label: '2022 case studies', short: '2022 case studies' },
@@ -159,7 +160,10 @@
     const pick = (half) => shuffled(avail.filter((c) => cat(c.category).half === half));
     const anterior = pick('anterior'), posterior = pick('posterior');
     if (!anterior.length || !posterior.length || !confirmReplace()) return;
-    const warmup = shuffled(CASES.filter((c) => c.warmup))[0];
+    // Panels ask about your own case report, so its cases come first.
+    const warmups = CASES.filter((c) => c.warmup);
+    const own = warmups.filter((c) => (c.years || []).includes('My case report'));
+    const warmup = shuffled(own.length ? own : warmups)[0];
     const order = [...(warmup ? [warmup] : []), anterior[0], posterior[0]];
     // The panel often adds a bonus case when you move quickly.
     const bonus = shuffled([...anterior.slice(1), ...posterior.slice(1)])[0];
@@ -537,6 +541,7 @@
         ${detail}
         <div class="model"><p class="label">🧑‍⚕️ Examiner notes</p><div class="prose">${st.explain}</div></div>
         ${st.recall ? `<div class="recall"><p class="label">⚠️ Recall check: what past candidates said vs what's correct</p><div class="prose">${st.recall}</div></div>` : ''}
+        ${st.marker ? `<div class="marker"><p class="label">📝 Marker's comment on your case report</p><div class="prose">${st.marker}</div></div>` : ''}
         <button class="btn primary big" data-act="next">${nextLabel} →</button>
       </section></div>`;
   }
@@ -579,6 +584,7 @@
         <div class="model"><p class="label">${st.type === 'viva' ? 'Key points the panel listens for' : 'Correct answer'}</p><div class="prose">${answerHTML(st)}</div></div>
         <div class="model"><p class="label">🧑‍⚕️ Examiner notes</p><div class="prose">${st.explain}</div></div>
         ${st.recall ? `<div class="recall"><p class="label">⚠️ Recall check</p><div class="prose">${st.recall}</div></div>` : ''}
+        ${st.marker ? `<div class="marker"><p class="label">📝 Marker's comment</p><div class="prose">${st.marker}</div></div>` : ''}
         ${withActions ? `<div class="row"><button class="btn small" data-act="drill-one" data-v="${esc(k)}">Try this question again</button><button class="btn small ghost" data-act="learned" data-v="${esc(k)}">✓ Got it now, remove</button></div>` : ''}
       </div>
     </details>`;
