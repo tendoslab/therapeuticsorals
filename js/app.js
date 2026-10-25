@@ -1111,7 +1111,6 @@
   // - Rewards accuracy, not volume: a correct answer hits the wild creature, a wrong one hurts your companion.
   //   Fixing a question from My mistakes is a critical hit. Repeating a question you already got right today does
   //   half damage and earns no XP, and XP slows to a quarter after MON_DAILY_XP in a day.
-  // - It can be switched off without losing anything.
   // - Can't break the page: the save is checked on load and import (bad values fall back to defaults), the art is
   //   local (pixel sprites in img/sprites, emoji for wild creatures), and nothing is fetched from elsewhere.
   //   Export / import moves all progress to another device.
@@ -1161,7 +1160,6 @@
     const w = isMap(o.wild) && wildById(o.wild.id);
     const day = typeof o.day === 'string' ? o.day.slice(0, 10) : today();
     const m = {
-      on: o.on !== false,
       party, active: party[o.active] ? o.active : Object.keys(party)[0] || null, // saves from before the party start over
       wild: w ? { id: w.id, hp: num(o.wild.hp, 1, TIER_HP[w.tier], TIER_HP[w.tier]) } : null,
       dex, day, dayXp: num(o.dayXp, 0, 1e6, 0),
@@ -1240,7 +1238,7 @@
     const m = mon();
     const p = partnerById(id);
     if (!p || !p.starter || m.active) return;
-    Object.assign(m, cleanMon({ on: true, dex: m.dex }), { party: { [id]: { level: 1, xp: 0, hp: monMaxHp(1) } }, active: id });
+    Object.assign(m, cleanMon({ dex: m.dex }), { party: { [id]: { level: 1, xp: 0, hp: monMaxHp(1) } }, active: id });
     monSpawn();
     monLog(`${p.name} joined you. A wild ${wildById(m.wild.id).name} appeared!`);
     monUnlock(); // catches from before the team existed still count
@@ -1326,7 +1324,7 @@
   function monChip() {
     const badge = document.getElementById('mon-badge'), link = document.getElementById('mon-link'), m = mon(), pal = companion();
     if (!badge) return;
-    const w = m.on && pal && m.wild && wildById(m.wild.id);
+    const w = pal && m.wild && wildById(m.wild.id);
     badge.hidden = !w;
     link.title = w ? `${pal.name}, Lv ${m.level}, ${m.hp}/${monMaxHp(m.level)} HP. Wild ${w.name}: ${m.wild.hp}/${TIER_HP[w.tier]} HP` : '';
     if (w) { badge.textContent = `${Math.ceil((100 * m.wild.hp) / TIER_HP[w.tier])}%`; badge.setAttribute('aria-label', `: wild ${w.name} at ${badge.textContent} HP`); }
@@ -1378,7 +1376,7 @@
   }
   function huntStart() {
     const m = mon();
-    if (!m.on || !m.active) return;
+    if (!m.active) return;
     monDay();
     if (!m.wild) monSpawn();
     const w = wildById(m.wild.id), c = huntCase(w);
@@ -1754,15 +1752,9 @@
   function renderMon() {
     const m = mon();
     if (!MON.wild.length) { view.innerHTML = '<div class="fade"><section class="card"><p>Ocumon data did not load.</p></section></div>'; return; }
-    if (!m.on) {
-      view.innerHTML = `<div class="fade"><section class="hero"><div><p class="label">Ocumon</p><h1>Ocumon is switched off</h1>
-        <p>Your answers aren’t touching it, and its tab badge is hidden. Your companion and collection are kept for whenever you want them back.</p></div></section>
-        <div class="row" style="gap:.5rem"><button class="btn primary" data-act="mon-on">Switch Ocumon on</button>${saveButtons()}</div></div>`;
-      return;
-    }
     if (!m.active) {
       view.innerHTML = `<div class="fade"><section class="hero"><div><p class="label">Ocumon</p><h1>Pick your first partner</h1>
-        <p>Wild eye conditions turn up here, and each one brings a case from its topic. Fight it by working through the case from start to finish: every question you get right hits it, and every miss lets it hit back. Get enough of the case right to catch it and fill your Ocudex with all ${MON.wild.length}. Every ${MON_UNLOCK} new catches, another Ocumon joins your team (${MON.partners.length} in all), and each one levels up on its own. The common creatures are the topics asked most often in past exams, so they turn up most. It’s separate from the simulator and the games: only fights here count, and you can switch it off at any time.</p></div></section>
+        <p>Wild eye conditions turn up here, and each one brings a case from its topic. Fight it by working through the case from start to finish: every question you get right hits it, and every miss lets it hit back. Get enough of the case right to catch it and fill your Ocudex with all ${MON.wild.length}. Every ${MON_UNLOCK} new catches, another Ocumon joins your team (${MON.partners.length} in all), and each one levels up on its own. The common creatures are the topics asked most often in past exams, so they turn up most. It’s separate from the simulator and the games: only fights here count.</p></div></section>
         <div class="arc-games">${MON.partners.filter((x) => x.starter).map((x, i) => `<section class="card arc-game hue-top mon-starter" style="--h:${x.hue};--i:${i}">
           <div class="mon-pick">${pxSprite(Object.assign({}, x, { rank: 0 }), 'front')}</div>
           <h2>${esc(x.name)}</h2><p class="muted">${esc(x.blurb)}</p>
@@ -1821,7 +1813,7 @@
         ${dex}</section>
       <section class="card stack" style="margin-top:1.4rem"><h2 style="font-size:1.15rem">Settings and your save</h2>
         <p class="muted" style="margin:0">Progress lives in this browser. Export it to a file to keep a backup or load it on another device. The file holds everything: case results, My mistakes, Mastered, game scores and Ocumon.</p>
-        <div class="row" style="gap:.5rem">${saveButtons()}<button class="btn small" data-act="mon-off">Switch Ocumon off</button><button class="btn ghost small" data-act="mon-reset">Start Ocumon again</button></div></section>
+        <div class="row" style="gap:.5rem">${saveButtons()}<button class="btn ghost small" data-act="mon-reset">Start Ocumon again</button></div></section>
     </div>`;
     btIntro();
   }
@@ -1992,8 +1984,6 @@
         break;
       case 'export': exportSave(); break;
       case 'import': document.getElementById('import-file').click(); break;
-      case 'mon-on': mon().on = true; persist(); again(); break;
-      case 'mon-off': mon().on = false; hunt = null; persist(); again(); break;
       case 'mon-starter': monChoose(v); break;
       case 'mon-hunt': huntStart(); break;
       case 'mon-chase': monChase(v); break;
