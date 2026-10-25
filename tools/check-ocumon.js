@@ -28,7 +28,17 @@ for (const w of MON.wild) {
   if (steps.length < MIN_QUESTIONS) fail(`${line}  (needs ${MIN_QUESTIONS}+ questions)`);
   else console.log(`  ${line}`);
 }
-for (const s of MON.starters) if (s.stages.length !== 3) fail(`starter ${s.id}: needs 3 stages`);
+// Partners: unique ids, real topics, a sprite sheet that exists, and at least one starter.
+const fsPath = (f) => path.join(root, 'img', 'sprites', `${f}.png`);
+const pids = new Set();
+for (const p of MON.partners) {
+  if (pids.has(p.id)) fail(`partner ${p.id}: duplicate id`);
+  pids.add(p.id);
+  if (!['animal', 'char'].includes(p.kind)) fail(`partner ${p.id}: kind must be animal or char`);
+  if (!fs.existsSync(fsPath(p.sprite))) fail(`partner ${p.id}: img/sprites/${p.sprite}.png is missing`);
+  for (const c of p.strong) if (!CATS.includes(c)) fail(`partner ${p.id}: unknown topic ${c}`);
+}
+if (!MON.partners.some((p) => p.starter)) fail('no starter partners');
 // Topics with no creature can't be hunted.
 for (const c of CATS) if (!MON.wild.some((w) => w.cat === c)) fail(`topic ${c} has no creature`);
 

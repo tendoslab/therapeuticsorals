@@ -13,7 +13,7 @@ Open `index.html` in a browser, or host the folder on GitHub Pages (Settings →
 - **Answering**: pick an option, then lock it in (nothing submits on a stray tap). Typed notes and dropdown choices are kept if you switch tabs mid-question. Every tab has its own URL, so the browser back button works.
 - **Step types**: `reveal` (the examiner gives you results), `mcq` (single best answer), `multi` (select all that apply), `match` (dropdown matching), `viva` (answer out loud, then tick the key points you covered).
 - **Play**: two quick games built from the case bank, filtered by topic. *Lightning round* serves the single-best-answer questions at 30 seconds each, with 3 lives, a time bonus and a streak multiplier (keys 1–4 answer, Enter moves on); a wrong answer goes on My mistakes like any other. *Pair rush* turns the matching questions into tap-to-pair boards on a 90-second clock (a wrong pair costs 5 seconds, a cleared board wins back 8). Each game keeps your best score, and the game-over screen lists what you missed with a link to the full case.
-- **Ocumon** (inspired by the Anki add-on Ankimon): pick a companion (Hootlet, Kitlet or Chamelet), then catch the 56 wild eye conditions in the Ocudex, from Pressure Golem (angle closure) to Dendrake (HSV). Every scored answer anywhere on the site hits the creature in front of you: questions from its own topic are super effective, fixing a question from My mistakes is a critical hit, and a wrong answer lets it hit back. *Battle with questions* serves single-best-answer questions from its topic, your mistakes first. Your companion levels up and evolves at Lv 8 and 18. Fixes for common Ankimon complaints: it rewards accuracy rather than volume (skips do nothing, a question already right today does half damage and earns no XP, and XP slows after 400 a day); it never pops up mid-question (just an HP badge on the tab and a toast for catches and level-ups); it can be switched off without losing anything; a damaged save falls back to defaults instead of breaking the page; and the art is emoji, with no downloads or outside services.
+- **Ocumon** (inspired by the Anki add-on Ankimon): pick a first partner (Kitlet, Hopticus or Blinkster), then catch the 56 wild eye conditions in the Ocudex, from Pressure Golem (angle closure) to Dendrake (HSV). Every 2 new catches another Ocumon joins your team, 23 in all (pixel animals and characters, each with its own level and favourite topics), and you can send out whichever you like. The tab is drawn like a handheld Pokémon battle (layout and HP-bar colours follow the battle GUI in tendoslab/pokemon): the wild creature slides in, your partner is sent out, and every answer plays out with the partner's own sprite animations: attack, hurt, faint, a thrown ball and its three wobbles on a catch, level-ups and rank-ups (★ at Lv 8, ★★ at Lv 18). Reduced-motion settings skip the animation. Every scored answer anywhere on the site hits the creature in front of you: questions from its own topic are super effective, fixing a question from My mistakes is a critical hit, and a wrong answer lets it hit back. *Fight* serves single-best-answer questions from its topic, your mistakes first; *Run* finds another creature. Each wild creature has a level (Lv 10, 25 or 40) that sets its HP and the XP for catching it; Lv 40 ones turn up half as often. New creatures only turn up in the wild, and ones you've caught can be battled again from the Ocudex. Fixes for common Ankimon complaints: it rewards accuracy rather than volume (skips do nothing, a question already right today does half damage and earns no XP, and XP slows after 400 a day); it never pops up mid-question (just an HP badge on the tab and a toast for catches and level-ups); it can be switched off without losing anything; and a damaged save falls back to defaults instead of breaking the page.
 - **Export / import progress**: download everything (case results, mistakes, mastered, game scores, Ocumon) as a file and load it in another browser or device. Buttons are on the simulator setup screen and the Ocumon tab.
 - **My mistakes**: every question you scored under 8/10 on (or skipped), with what you said, the correct answer and the examiner notes. Drill them on their own or retry the whole case; a question drops off once you get it right. The end-of-session screen lists the same detail.
 - **Mastered**: every question you scored 8/10 or better on the last time you answered it, grouped by case, with the model answer and examiner notes a tap away. It shows how many times in a row you've got each one right, marks *Comebacks* (questions you'd missed before), and has a progress bar per topic. Quiz yourself on them to keep them fresh; miss one and it moves back to My mistakes.
@@ -37,7 +37,8 @@ js/data/recalls-2018.js, recalls-2019.js, recalls-2025.js, mock-2025.js,
                       cases grouped by the document they came from
 js/data/my-case-report.js
                       your case report, with the marker's comments (`marker` field)
-js/data/ocumon.js     Ocumon companions and wild creatures (check with tools/check-ocumon.js)
+js/data/ocumon.js     Ocumon partners and wild creatures (check with tools/check-ocumon.js)
+img/sprites/           partner sprite sheets, cut down from the two asset packs below
 js/data/images.js     photos per case (generated; edit tools/case-images.py instead)
 img/cases/            the photos and printouts themselves
 images/               extra photos added by hand (no source document); case-images.py copies them into img/cases
@@ -56,3 +57,12 @@ Write wrong options that are as long and as specific as the correct one, so the 
 ## Disclaimer
 
 This is a study aid only. Doses, TGA categories, PBS/MBS listings and OBA/RANZCO requirements change. Verify against the current AMH, eTG, product information, the OBA Guideline for use of scheduled medicines and your course notes.
+
+## Credits
+
+Ocumon partner sprites:
+
+- [72 Cute Pixel Character](https://bdragon1727.itch.io/72-cute-pixel-character) by BDragon1727 (free licence).
+- Little Animals Pack V3 (free for commercial and non-commercial use; the assets may be modified but not resold).
+
+`img/sprites/` keeps only the animation rows the battle uses. The wild creatures are emoji.
