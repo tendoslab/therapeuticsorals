@@ -1676,7 +1676,7 @@
     </section>`;
   }
   const btMenu = () => `<div class="bt-cmd" role="group" aria-label="Battle commands">
-    <button class="bt-btn fight" data-act="mon-hunt" title="Battle it with a case from its topic">Fight</button>
+    <button class="bt-btn atk" data-act="mon-hunt" title="Battle it with a case from its topic">Fight</button>
     <button class="bt-btn bag" data-act="mon-bag" title="Open your Ocudex">Ocudex</button>
     <button class="bt-btn party" data-act="mon-party" title="Your team: check on or switch your Ocumon">Ocumon</button>
     <button class="bt-btn run" data-act="mon-reroll" title="Find another creature">Run</button></div>`;
@@ -1770,13 +1770,13 @@
     if (hunt.finished) {
       const pct = Math.round((100 * hunt.got) / hunt.units), w = hunt.w, need = Math.round(100 * MON_NEED[w.tier]);
       const head = { caught: `🎉 You caught ${esc(w.name)}!`, fainted: `💫 ${esc(pal.name)} fainted and ${esc(w.name)} got away`, fled: `${esc(w.name)} got away` }[hunt.over];
-      view.innerHTML = `<div class="fade fight"><div class="fight-side">${scene}${recordPanel(c, c.steps.length, scoreFor)}</div>
+      view.innerHTML = `<div class="fade fight"><div class="fight-side">${scene}</div><div class="fight-main">${recordPanel(c, c.steps.length, scoreFor)}
         <section class="card stack bt-ask"><p class="label">Case complete</p><h2>${head}</h2>
           <p>You got <b>${pct}%</b> of this case right. ${hunt.over === 'caught' ? '' : `A ${wildLv(w)} creature needs ${need}% to catch. It still turns up in the wild, so you’ll get another go.`}</p>
           <div class="mon-meter xp" aria-hidden="true"><span style="width:${Math.min(100, pct)}%"></span></div>
           ${pct < 100 ? '<p class="muted" style="margin:0">Questions under 8/10 are on My mistakes, so fixing them in a later fight is a critical hit.</p>' : ''}
           <div class="row"><button class="btn primary" data-act="mon-next" id="mon-next">Back to Ocumon →</button><button class="btn ghost small" data-act="case" data-v="${c.id}">Run this case in the simulator</button></div>
-        </section></div>`;
+        </section></div></div>`;
       const nb = document.getElementById('mon-next'); if (nb) nb.focus({ preventScroll: true });
       return;
     }
@@ -1820,14 +1820,14 @@
       after += `<div class="row"><button class="btn primary" data-act="mon-next" id="mon-next">${hunt.i >= hunt.turns.length - 1 ? 'Finish the case' : 'Next question'} →</button>${hunt.over ? '<button class="btn ghost small" data-act="mon-stop">Back to Ocumon</button>' : ''}</div>`;
     }
     const k = stepKey(c, t.s);
-    view.innerHTML = `<div class="fade fight"><div class="fight-side">${scene}${recordPanel(c, t.s, scoreFor)}</div>
+    view.innerHTML = `<div class="fade fight"><div class="fight-side">${scene}</div><div class="fight-main">${recordPanel(c, t.s, scoreFor)}
       <section class="card stack bt-ask">
         ${qHead(c, st)}
         <div class="pills">${t.kind === 'reveal' ? '' : `<span class="pill">Question ${qn} of ${asks.length}</span>`}${hunt.fixed[t.s] && !L && t.kind !== 'reveal' ? '<span class="pill warn">On My mistakes: critical hit if right</span>' : ''}</div>
         <h2 class="arc-q">${t.kind === 'reveal' ? (st.question || 'The examiner gives you more information') : st.question}</h2>
         ${body}${after}
         ${L || t.kind === 'reveal' ? '' : `<div class="row"><button class="btn ghost small" data-act="mon-stop">Run from this battle</button><span class="muted" style="font-size:.85rem">${t.kind === 'pick' ? 'Keys 1–4 answer, Enter moves on' : 'Enter moves on'}</span></div>`}
-      </section></div>`;
+      </section></div></div>`;
     const nb = document.getElementById('mon-next'); if (nb && L) nb.focus({ preventScroll: true });
     if (play) { L.played = true; btAnswer(L.before, fx, L.ok); }
   }
