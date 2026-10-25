@@ -44,6 +44,12 @@
   const timerPill = document.getElementById('timer-pill');
   const missBadge = document.getElementById('miss-badge');
   const masterBadge = document.getElementById('master-badge');
+  // The top bar wraps to two rows on narrower screens, so whatever is pinned under it reads its real height
+  // from --topbar-h rather than guessing one.
+  const topbar = document.querySelector('.topbar');
+  const syncTopbar = () => document.documentElement.style.setProperty('--topbar-h', `${topbar.offsetHeight}px`);
+  syncTopbar();
+  if (window.ResizeObserver) new ResizeObserver(syncTopbar).observe(topbar);
 
   // ------------------------------------------------------------------ storage (per-viewer convenience only)
   // A damaged or hand-edited save falls back to empty lists rather than breaking the page.
@@ -1373,7 +1379,7 @@
   function huntScroll() {
     const ask = view.querySelector('.bt-ask'), bt = view.querySelector('.fight .bt');
     if (!ask || !bt) return;
-    const above = getComputedStyle(bt).position === 'sticky' ? bt.offsetHeight : document.querySelector('.topbar').offsetHeight;
+    const above = getComputedStyle(bt).position === 'sticky' ? bt.offsetHeight : topbar.offsetHeight;
     window.scrollTo({ top: Math.max(0, ask.getBoundingClientRect().top + window.scrollY - above - 12) });
   }
   // ---- views: the tab is drawn like a handheld Pokémon battle (layout, HP colours and the intro follow the
