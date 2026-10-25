@@ -13,13 +13,15 @@ Open `index.html` in a browser, or host the folder on GitHub Pages (Settings →
 - **Answering**: pick an option, then lock it in (nothing submits on a stray tap). Typed notes and dropdown choices are kept if you switch tabs mid-question. Every tab has its own URL, so the browser back button works.
 - **Step types**: `reveal` (the examiner gives you results), `mcq` (single best answer), `multi` (select all that apply), `match` (dropdown matching), `viva` (answer out loud, then tick the key points you covered).
 - **Play**: two quick games built from the case bank, filtered by topic. *Lightning round* serves the single-best-answer questions at 30 seconds each, with 3 lives, a time bonus and a streak multiplier (keys 1–4 answer, Enter moves on); a wrong answer goes on My mistakes like any other. *Pair rush* turns the matching questions into tap-to-pair boards on a 90-second clock (a wrong pair costs 5 seconds, a cleared board wins back 8). Each game keeps your best score, and the game-over screen lists what you missed with a link to the full case.
+- **Ocumon** (inspired by the Anki add-on Ankimon): pick a companion (Hootlet, Kitlet or Chamelet), then catch the 56 wild eye conditions in the Ocudex, from Pressure Golem (angle closure) to Dendrake (HSV). Every scored answer anywhere on the site hits the creature in front of you: questions from its own topic are super effective, fixing a question from My mistakes is a critical hit, and a wrong answer lets it hit back. *Battle with questions* serves single-best-answer questions from its topic, your mistakes first. Your companion levels up and evolves at Lv 8 and 18. Fixes for common Ankimon complaints: it rewards accuracy rather than volume (skips do nothing, a question already right today does half damage and earns no XP, and XP slows after 400 a day); it never pops up mid-question (just an HP badge on the tab and a toast for catches and level-ups); it can be switched off without losing anything; a damaged save falls back to defaults instead of breaking the page; and the art is emoji, with no downloads or outside services.
+- **Export / import progress**: download everything (case results, mistakes, mastered, game scores, Ocumon) as a file and load it in another browser or device. Buttons are on the simulator setup screen and the Ocumon tab.
 - **My mistakes**: every question you scored under 8/10 on (or skipped), with what you said, the correct answer and the examiner notes. Drill them on their own or retry the whole case; a question drops off once you get it right. The end-of-session screen lists the same detail.
 - **Mastered**: every question you scored 8/10 or better on the last time you answered it, grouped by case, with the model answer and examiner notes a tap away. It shows how many times in a row you've got each one right, marks *Comebacks* (questions you'd missed before), and has a progress bar per topic. Quiz yourself on them to keep them fresh; miss one and it moves back to My mistakes.
 - **Recall bank**: every case by topic and source, with your missed-question count and last score.
 - **Answer audit**: specific student answers from the recalls, checked and corrected against Australian practice. The same corrections appear inside the matching case steps as "Recall check" boxes.
 - **Source filter**: sources by year, newest first: 2025 orals, the 2025 Young Optometrists mock orals, the 2025 anterior and posterior study notes, the 2022 case-study notes, the Young Optometrists (MOTHs) mock orals from those 2022 notes, 2019 orals, 2018 orals and the 2016 case-study notes. Undated sources follow: peer recalls (questions other candidates passed on), an undated exam recall, the Mini oral prep notes and the Practice orals slide deck. Your own case report comes last. Every case shows its source badges. Cases from each document are kept as separate cases (even when the topic repeats) so you can see what each sitting or set of notes asked.
 - Sessions are never locked: leave for another tab and come back, go back to setup and resume, skip a question, or end early and see results.
-- Light and dark themes. Progress (case results, missed and mastered questions) is stored in the browser's `localStorage`.
+- Light and dark themes. Progress (case results, missed and mastered questions, Ocumon) is stored in the browser's `localStorage`; use Export / Import to move it.
 
 ## Files
 
@@ -35,12 +37,14 @@ js/data/recalls-2018.js, recalls-2019.js, recalls-2025.js, mock-2025.js,
                       cases grouped by the document they came from
 js/data/my-case-report.js
                       your case report, with the marker's comments (`marker` field)
+js/data/ocumon.js     Ocumon companions and wild creatures (check with tools/check-ocumon.js)
 js/data/images.js     photos per case (generated; edit tools/case-images.py instead)
 img/cases/            the photos and printouts themselves
 images/               extra photos added by hand (no source document); case-images.py copies them into img/cases
 tools/case-images.py  rebuilds img/cases and js/data/images.js from the source documents (tools/fields.py draws the schematic fields)
+tools/check-ocumon.js checks every Ocumon creature matches enough questions in the case bank
 tools/check-mcq.js    flags multiple-choice questions where the answer stands out by length
-js/app.js             simulator, play (games), my mistakes, mastered, recall bank, answer audit, exam guide
+js/app.js             simulator, play (games), Ocumon, my mistakes, mastered, recall bank, answer audit, exam guide
 ```
 
 ## Adding or editing cases
