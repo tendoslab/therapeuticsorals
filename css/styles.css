@@ -506,14 +506,20 @@ table.t td.c, table.t th.c { text-align: center; }
   .fight { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
   .fight-side, .fight-main { display: contents; }
   .fight .bt { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 21; }
-  .fight .bt-stage { height: clamp(9rem, 44cqw, 18rem); }
-  .fight .bt-mon.foe { font-size: clamp(2.2rem, 10cqw, 5rem); }
-  .fight .bt-mon.pal { --fw: clamp(6.5rem, calc(26cqw * (1 + .08 * var(--rank, 0))), 14rem); }
-  .fight .bt-mon.pal.animal { --fw: clamp(5rem, calc(20cqw * (1 + .08 * var(--rank, 0))), 11rem); }
-  .fight .bt-name { font-size: clamp(1rem, 3.6cqw, 1.5rem); }
-  .fight .bt-hpnum { font-size: clamp(.95rem, 3.2cqw, 1.3rem); }
-  .fight .bt-bar { padding: .35rem; }
-  .fight .bt-msg { min-height: 0; padding: .3rem .7rem; border-width: 3px; font-size: clamp(1.05rem, 3.6cqw, 1.5rem); }
+  .fight .bt { border-width: 2px; border-radius: 0 0 12px 12px; }
+  .fight .bt-stage { height: clamp(6.5rem, 30cqw, 9.5rem); }
+  .fight .bt-mon.foe { font-size: clamp(1.8rem, 8cqw, 4rem); }
+  .fight .bt-mon.pal { --fw: clamp(5rem, calc(20cqw * (1 + .08 * var(--rank, 0))), 11rem); }
+  .fight .bt-mon.pal.animal { --fw: clamp(4rem, calc(16cqw * (1 + .08 * var(--rank, 0))), 9rem); }
+  .fight .bt-box { padding-top: .2rem; padding-bottom: .3rem; width: 52%; }
+  .fight .bt-box.foe { top: 3%; }
+  .fight .bt-box.pal { bottom: 4%; }
+  .fight .bt-name { font-size: clamp(.95rem, 3.4cqw, 1.4rem); }
+  .fight .bt-hp { margin-top: .1rem; }
+  .fight .bt-hpnum { display: none; }
+  .fight .bt-xp { margin-bottom: -.3rem; height: 4px; }
+  .fight .bt-bar { padding: .25rem; }
+  .fight .bt-msg { min-height: 0; padding: .1rem .55rem; border-width: 2px; box-shadow: inset 0 0 0 2px #f2c0a8; border-radius: 8px; font-size: clamp(.95rem, 3.4cqw, 1.35rem); }
 }
 /* Pixel sprites: one frame of a sheet, stepped through with background-position. --fw is the frame size on screen. */
 .px { --fw: 6rem; display: block; width: var(--fw); height: var(--fw); background-repeat: no-repeat; image-rendering: pixelated;
