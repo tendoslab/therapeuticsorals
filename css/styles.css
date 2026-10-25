@@ -245,6 +245,11 @@ button.opt:hover { border-color: var(--accent); }
 .opt.wrong { border-color: var(--bad); background: var(--bad-soft); }
 .opt.wrong .tag { color: var(--bad); }
 .opt.dim { opacity: .7; cursor: default; }
+.opt .why { display: block; margin-top: .35rem; font-size: .85rem; color: var(--muted); }
+.opt .why.mine { color: var(--bad); }
+.opt.dim:has(.why) { opacity: .85; }
+.why-box { border-left: 3px solid var(--bad); background: var(--bad-soft); border-radius: 0 var(--r) var(--r) 0; padding: .6rem .8rem; }
+.why-box p:last-child { margin-bottom: 0; }
 .matchrow { display: grid; grid-template-columns: minmax(0, 13rem) minmax(0, 1fr); gap: .6rem; align-items: center; padding: .6rem 0; border-bottom: 1px solid var(--line); }
 @media (max-width: 560px) { .matchrow { grid-template-columns: minmax(0, 1fr); } }
 .matchrow:last-child { border-bottom: 0; }
@@ -435,6 +440,11 @@ table.t td.c, table.t th.c { text-align: center; }
 .mon-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin: .4rem 0 1rem; }
 .mon-head h1 { font-size: 1.6rem; }
 .mon-lv { font-size: .75rem; color: var(--muted); }
+.mon-rarity { font-size: .7rem; font-weight: 600; padding: .05rem .45rem; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+.mon-rarity.t1 { color: var(--good); }
+.mon-rarity.t2 { color: var(--accent); }
+.mon-rarity.t3 { color: var(--violet); }
+.mon-card p.mon-asked { font-size: .75rem; margin-top: .15rem; }
 .bt { width: 100%; container-type: inline-size; border-radius: 14px; overflow: hidden; background: #2b3040; box-shadow: var(--shadow); border: 3px solid #2b3040; font-family: "Jersey 10", var(--font-body); color: #303030; letter-spacing: .02em; }
 .bt + * { margin-top: 1.2rem; }
 .bt-stage { position: relative; height: clamp(15.5rem, 56cqw, 26rem); width: 100%; overflow: hidden; border-radius: 10px 10px 0 0; cursor: default; isolation: isolate; }
