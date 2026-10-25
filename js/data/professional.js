@@ -241,5 +241,198 @@ window.CASES.push(
                 recall: 'A 2025 supplementary oral went “no Pred Forte → no Flarex → dexamethasone”.'
             }
         ]
+    },
+    {
+        id: 'drug-interactions',
+        category: 'professional',
+        title: 'Drug Interactions: Starting Glaucoma Drops',
+        theme: 'Drug Interactions',
+        years: ['Exam guidelines'],
+        patient: '74-year-old woman, newly diagnosed POAG (IOP 27 / 25 mmHg). Medicines: metoprolol 50 mg BD (atrial fibrillation), phenelzine 15 mg TDS (depression), aspirin 100 mg daily.',
+        stem: '“You have decided to treat. Before you write anything, talk us through her medicines.”',
+        steps: [
+            {
+                phase: '1. Medication history',
+                type: 'viva',
+                question: 'What do you check in her medicines and medical history before choosing a drop?',
+                points: [
+                    'The full medication list, including over-the-counter, herbal and other eye drops, and who prescribes them',
+                    'Respiratory history: asthma or COPD (any β-blocker drop)',
+                    'Cardiac history: bradycardia, heart block, heart failure, hypotension; take her pulse and BP',
+                    'Antidepressants and CNS depressants: an MAOI or tricyclic changes what you can use (brimonidine, phenylephrine)',
+                    'Allergies: sulfonamides (carbonic anhydrase inhibitors), preservatives (BAK)',
+                    'Kidney and liver disease, kidney stones (CAIs), and how well she can instil drops'
+                ],
+                explain: 'The guidelines ask for contraindications, precautions, adverse effects and drug interactions. Saying “provided there are no contraindications” only earns marks if you then name what you checked.'
+            },
+            {
+                phase: '2. Drop choice',
+                type: 'mcq',
+                critical: true,
+                question: 'Given her medicines, which is the best first-line drop?',
+                options: [
+                    'Timolol 0.5% BD: she already tolerates oral β-blockade, so adding a topical β-blocker is safe, and it gives the largest IOP fall of any class in her.',
+                    'Latanoprost 0.005% at night: once daily, nothing to add to her metoprolol or interact with her phenelzine, and about a 25–30% IOP fall.',
+                    'Brimonidine 0.2% BD: an α2-agonist adds no cardiac load, and its only important interaction is with SSRIs, which she isn’t taking.',
+                    'Betaxolol 0.25% BD: being β1-selective, it has no further effect on heart rate when it is added to oral metoprolol.'
+                ],
+                answer: 1,
+                explain: 'Drops absorbed through the nasolacrimal mucosa skip first-pass metabolism, so a topical β-blocker adds to oral metoprolol: bradycardia, hypotension and heart block. Patients already on a systemic β-blocker also get less IOP lowering from a topical one. Brimonidine is contraindicated with MAOIs (product information).'
+            },
+            {
+                phase: '3. Interactions to know',
+                type: 'multi',
+                question: 'Which of these are drug interactions you must check for before prescribing?',
+                options: [
+                    'Brimonidine with an MAOI (phenelzine, tranylcypromine): contraindicated',
+                    'Brimonidine with tricyclic antidepressants or CNS depressants (alcohol, sedatives): caution',
+                    'Timolol with verapamil or diltiazem: additive AV block, bradycardia and hypotension',
+                    'Timolol with CYP2D6 inhibitors (fluoxetine, paroxetine, quinidine): stronger systemic β-blockade',
+                    'Oral acetazolamide with high-dose aspirin: salicylate toxicity and metabolic acidosis',
+                    'Latanoprost with an oral statin: the statin blocks the PGA, so the IOP doesn’t fall',
+                    'Latanoprost with warfarin: the PGA raises the INR, so bleeding risk goes up',
+                    'Pilocarpine with paracetamol: the combination causes liver toxicity'
+                ],
+                answers: [0, 1, 2, 3, 4],
+                explain: 'Also avoid a topical and an oral carbonic anhydrase inhibitor together (more systemic effects, no extra IOP benefit) and two prostaglandin analogues together (the IOP can rise). Check the product information and AMH for anything you are unsure of.'
+            },
+            {
+                phase: '4. Dilating her',
+                type: 'mcq',
+                critical: true,
+                question: 'You want a dilated fundus exam. She is still taking phenelzine. What do you use?',
+                options: [
+                    'Tropicamide 1% alone: phenylephrine with an MAOI, or within 2–3 weeks of stopping one, risks a hypertensive crisis.',
+                    'Phenylephrine 10% with tropicamide 1%: the MAOI interaction only matters for oral sympathomimetics, not eye drops.',
+                    'Phenylephrine 2.5% with cyclopentolate 1%: the lower strength removes the interaction, so no BP check is needed.',
+                    'Nothing: every mydriatic is contraindicated with an MAOI, so image her undilated and refer her for a dilated exam.'
+                ],
+                answer: 0,
+                explain: 'Phenylephrine (both 2.5% and 10%) is contraindicated with MAOIs and for a period after stopping them; take care with tricyclics too. Tropicamide alone usually gives an adequate view. Check BP before and after any phenylephrine.'
+            },
+            {
+                phase: '5. Systemic effects of ocular drugs',
+                type: 'viva',
+                question: '“Turn it round: what systemic effects can eye drops have, and how do you reduce them?”',
+                points: [
+                    'β-blockers (timolol): bronchospasm, bradycardia, heart block, hypotension, fatigue, depression, masked hypoglycaemia',
+                    'Brimonidine: dry mouth, fatigue, drowsiness; contraindicated under 2 years (CNS depression, apnoea) and with MAOIs',
+                    'Phenylephrine 10%: hypertension, tachycardia, arrhythmia; avoid in cardiac disease, with MAOIs or tricyclics, and in infants',
+                    'Cyclopentolate and atropine: anticholinergic toxicity, worst in children (flushing, fever, tachycardia, ataxia, hallucinations); use the lowest strength',
+                    'Topical CAIs (dorzolamide, brinzolamide): bitter taste; caution with sulfonamide allergy and severe kidney disease',
+                    'Reduce absorption: one drop, then close the eyes and press on the inner canthus (punctal occlusion) for 2–3 minutes, and wipe off the excess'
+                ],
+                explain: 'The guidelines list both directions: ocular effects of systemic drugs and systemic effects of ocular drugs.'
+            },
+            {
+                phase: '6. Follow-up',
+                type: 'mcq',
+                question: 'She starts latanoprost. What is your follow-up plan?',
+                options: [
+                    'Review in 4–6 weeks: IOP against target, adherence, technique and side effects; refer to an ophthalmologist within 4 months (OBA guideline).',
+                    'Review in 12 months with fields and OCT: latanoprost takes a year to reach full effect, and you only refer if the target still isn’t met by then.',
+                    'Review in 24 hours: a prostaglandin analogue reaches its full effect after the first dose, so a next-day IOP decides whether she should continue.',
+                    'No review: hand her back to the GP, who monitors IOP and side effects, because optometrists can’t follow glaucoma once treatment has begun.'
+                ],
+                answer: 0,
+                explain: 'Prostaglandin analogues reach their full effect over a few weeks. At review, also ask about redness, lash growth and iris colour change, and whether her GP has changed any of her medicines.'
+            }
+        ]
+    },
+    {
+        id: 'systemic-drugs-eye',
+        category: 'professional',
+        title: 'Medication Review: Ocular Effects of Systemic Drugs',
+        theme: 'Systemic Drugs & the Eye',
+        years: ['Exam guidelines'],
+        patient: 'Quick-fire pharmacology: patients whose general medicines affect the eye.',
+        stem: '“Your patients bring long medication lists. Which of these medicines worry you, and why?”',
+        steps: [
+            {
+                phase: '1. Drug → ocular effect',
+                type: 'match',
+                question: 'Match each systemic drug to its best-known ocular effect.',
+                pairs: [
+                    { label: 'Hydroxychloroquine', answer: 'Parafoveal outer retinal toxicity (bull’s-eye maculopathy; pericentral in Asian patients)' },
+                    { label: 'Topiramate', answer: 'Bilateral angle closure from ciliochoroidal effusion, with an acute myopic shift' },
+                    { label: 'Tamsulosin', answer: 'Intraoperative floppy iris syndrome at cataract surgery' },
+                    { label: 'Ethambutol', answer: 'Optic neuropathy: central or centrocaecal scotoma and red–green colour loss' },
+                    { label: 'Amiodarone', answer: 'Vortex keratopathy (and, rarely, optic neuropathy)' },
+                    { label: 'Long-term oral corticosteroids', answer: 'Posterior subcapsular cataract and raised IOP' },
+                    { label: 'Bisphosphonates (alendronate, zoledronic acid)', answer: 'Anterior uveitis, scleritis or episcleritis' }
+                ],
+                distractors: ['Cyanopsia (blue-tinted vision) for a few hours after a dose', 'Reduced night vision and dry eye from meibomian gland atrophy'],
+                explain: 'The two distractors are sildenafil (cyanopsia) and isotretinoin (night vision and dry eye). Ask about these medicines in every history: patients rarely link a tablet to their eyes.'
+            },
+            {
+                phase: '2. Topiramate',
+                type: 'mcq',
+                critical: true,
+                question: 'A 34-year-old started topiramate for migraine 10 days ago. Both eyes are suddenly blurred and sore, she is 2 D more myopic, IOPs are 44 and 46 mmHg and both anterior chambers are shallow. What do you do?',
+                options: [
+                    'Same-day referral, topiramate stopped by the prescriber; meanwhile aqueous suppressants and a cycloplegic, not pilocarpine (not pupil block).',
+                    'Pilocarpine 2% every 15 minutes in both eyes, then arrange bilateral laser iridotomy, exactly as for any acute primary angle closure attack.',
+                    'Continue topiramate, start latanoprost at night in both eyes and review in a week, as drug-induced closure settles once the eye adapts.',
+                    'Routine referral: the myopic shift shows a cataract change, and the IOP falls without any treatment once the swollen lens has settled down.'
+                ],
+                answer: 0,
+                explain: 'Topiramate (a sulfonamide) causes ciliochoroidal effusion, which rotates the ciliary body and lens–iris diaphragm forward. Miotics can make it worse and an iridotomy doesn’t help. It settles once the drug is stopped. The same mechanism applies to other sulfonamides, such as acetazolamide and hydrochlorothiazide.'
+            },
+            {
+                phase: '3. Hydroxychloroquine screening',
+                domain: 'followup',
+                type: 'mcq',
+                question: 'A 52-year-old woman (70 kg) starts hydroxychloroquine 400 mg daily for rheumatoid arthritis. What screening plan follows current guidance?',
+                options: [
+                    'Baseline within a year; 400 mg is 5.7 mg/kg real weight, a major risk factor, so tell the prescriber and screen yearly (not from year 5): SD-OCT, 10-2 fields, FAF.',
+                    'An Amsler grid at baseline, then review at 10 years: toxicity needs a cumulative dose of over 1000 g, so testing any earlier than that can’t find anything useful.',
+                    'No baseline needed; start yearly 24-2 fields at 5 years, since OCT can’t show hydroxychloroquine toxicity until a bull’s-eye is visible on fundoscopy anyway.',
+                    'Six-monthly dilated fundoscopy from the first month, because a bull’s-eye on the fundus is the earliest sign and fundus photos are all you need to record.'
+                ],
+                answer: 0,
+                explain: 'RANZCO and AAO guidance: keep the dose at or below 5 mg/kg/day of real body weight; baseline within a year; yearly screening after 5 years, or sooner with risk factors (higher dose, kidney disease, tamoxifen, existing maculopathy). Use SD-OCT and 10-2 fields; in Asian patients toxicity is often pericentral, so use a wider field (24-2 or 30-2) and wider OCT scans. A visible bull’s-eye is a late sign.'
+            },
+            {
+                phase: '4. Ethambutol',
+                type: 'mcq',
+                critical: true,
+                question: 'A 60-year-old on ethambutol for tuberculosis says his vision has faded over a month. VA 6/18 in each eye, red–green errors, central scotomas, normal discs. What do you do?',
+                options: [
+                    'Contact his TB physician urgently so they can consider stopping ethambutol, and refer to an ophthalmologist: vision often recovers if the drug is stopped early.',
+                    'Reassure him that ethambutol toxicity is permanent but stable; he continues the drug and you recheck his fields and colour vision again in 12 months.',
+                    'Stop the ethambutol yourself today and tell him to take only his other TB drugs, then review the vision and the fields in 6 months to see if it recovers.',
+                    'Start topical prednisolone acetate 1% QID for presumed optic neuritis and review in a week; the TB medicines themselves don’t need to change.'
+                ],
+                answer: 0,
+                explain: 'Ethambutol optic neuropathy is dose-related (risk rises above about 15 mg/kg/day and with kidney impairment) and often reversible if caught early. Optometrists don’t stop systemic medicines: the prescriber does. Baseline and regular VA, colour vision and fields are advised while on ethambutol.'
+            },
+            {
+                phase: '5. Tamsulosin',
+                type: 'mcq',
+                question: 'A 70-year-old man on tamsulosin for prostate symptoms is being referred for cataract surgery. What goes in your referral?',
+                options: [
+                    'That he takes tamsulosin, and for how long, so the surgeon can plan for floppy iris; stopping it first doesn’t reliably remove the risk.',
+                    'Nothing: advise him to stop tamsulosin a week before surgery, which removes the floppy iris risk, so the surgeon doesn’t need to be told.',
+                    'Nothing: tamsulosin only acts on the bladder and prostate, and α1-blockers have no effect at all on the iris dilator muscle.',
+                    'Ask the GP to swap it for oxybutynin first, because anticholinergics dilate the pupil well and so protect against floppy iris syndrome.'
+                ],
+                answer: 0,
+                explain: 'Tamsulosin blocks α1A receptors in the iris dilator, so the pupil dilates poorly, billows and prolapses during surgery. The risk persists after stopping. Oxybutynin, as an anticholinergic, can itself precipitate angle closure in narrow angles.'
+            },
+            {
+                phase: '6. Drugs and angle closure',
+                type: 'viva',
+                question: 'Which systemic medicines can precipitate angle closure, and how do you protect patients at risk?',
+                points: [
+                    'Pupil block (dilation): anticholinergics (oxybutynin, tricyclics, antihistamines, nebulised ipratropium) and adrenergics (nebulised salbutamol, pseudoephedrine)',
+                    'Antidepressants: SSRIs and SNRIs (paroxetine, venlafaxine)',
+                    'Non-pupil-block (ciliochoroidal effusion, often bilateral with a myopic shift): topiramate and other sulfonamides (acetazolamide, hydrochlorothiazide)',
+                    'At risk: hyperopes, older patients, women, East Asian ancestry, known narrow angles; check with gonioscopy',
+                    'Occludable angles: refer for laser iridotomy before high-risk medicines, tell the prescriber, and warn the patient about the symptoms of an attack',
+                    'A “glaucoma warning” on a medicine refers to angle closure; most people with open-angle glaucoma can take it'
+                ],
+                explain: 'Patients often ask whether a medicine “safe for glaucoma” applies to them. Know their angle and say so in your letter to the GP.'
+            }
+        ]
     }
 );

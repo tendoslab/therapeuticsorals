@@ -117,6 +117,7 @@ window.OCUMON = {
     { id: 'bump-guardian', name: 'Bump Guardian', icon: '🤰', cat: 'professional', match: 'pregnan|breastfeed|children|myope', hint: 'Guards the safe drug choices for pregnancy, breastfeeding and children.' },
     { id: 'fieldreader', name: 'Fieldreader', icon: '📈', cat: 'professional', match: 'field printout', hint: 'Reads reliability indices, MD, PSD and the GHT before the plot.' },
     { id: 'pharmakon', name: 'Pharmakon', icon: '⚗️', cat: 'professional', match: 'drug class|mechanism|nsaid', hint: 'Knows every mechanism, onset time and contraindication.' },
+    { id: 'polypharm', name: 'Polypharm', icon: '🧪', cat: 'professional', match: 'interaction|systemic drug', hint: 'Hides behind the medication list: an MAOI, a β-blocker, a tablet that closes the angle.' },
     { id: 'erodon', name: 'Erodon', icon: '🪞', cat: 'professional', match: 'RCE|EBMD', hint: 'Tears the epithelium off on waking. The boss of your own case report.' },
   ],
 };
