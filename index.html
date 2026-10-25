@@ -26,6 +26,7 @@
       <a href="#audit">Answer audit</a>
       <a href="#guide">Exam guide</a>
       <a href="#play">Play</a>
+      <a href="#mon" id="mon-link">Ocumon<span class="badge mon" id="mon-badge" hidden></span></a>
     </nav>
     <div class="status">
       <span class="pill-stat timer" id="timer-pill" hidden></span>
@@ -35,6 +36,8 @@
   </div>
 </header>
 <main id="view" aria-live="polite"></main>
+<input type="file" id="import-file" accept=".json,application/json" hidden>
+<div class="mon-toast" id="mon-toast" role="status" hidden></div>
 <footer class="foot">Study aid only. Doses, scheduling, PBS listings and OBA/RANZCO requirements change. Verify against the current AMH, eTG, product information, OBA guidelines and your course notes.</footer>
 
 <!-- Case bank: the original cases split by topic -->
@@ -62,6 +65,7 @@
 <script src="js/data/my-case-report.js"></script>
 <script src="js/data/corrections.js"></script>
 <script src="js/data/images.js"></script>
+<script src="js/data/ocumon.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

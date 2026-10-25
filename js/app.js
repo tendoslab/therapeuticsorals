@@ -46,8 +46,15 @@
   const masterBadge = document.getElementById('master-badge');
 
   // ------------------------------------------------------------------ storage (per-viewer convenience only)
-  let saved = { cases: {}, missed: {}, seen: {}, mastered: {} };
-  try { saved = Object.assign(saved, JSON.parse(localStorage.getItem(STORE_KEY)) || {}); } catch (e) { /* storage unavailable */ }
+  // A damaged or hand-edited save falls back to empty lists rather than breaking the page.
+  const isMap = (v) => !!v && typeof v === 'object' && !Array.isArray(v);
+  function cleanSaved(o) {
+    const s = { cases: {}, missed: {}, seen: {}, mastered: {} };
+    if (isMap(o)) Object.keys(o).forEach((k) => { if (!(k in s) || isMap(o[k])) s[k] = o[k]; });
+    return s;
+  }
+  let saved = cleanSaved();
+  try { saved = cleanSaved(JSON.parse(localStorage.getItem(STORE_KEY))); } catch (e) { /* storage unavailable */ }
   try {
     const old = JSON.parse(localStorage.getItem(LEGACY_KEY));
     if (old && !Object.keys(saved.cases).length) saved.cases = old;
@@ -80,13 +87,16 @@
     return c && c.steps[Number(i)] && c.steps[Number(i)].type !== 'reveal';
   });
   // Store the latest attempt at a question: a pass moves it to Mastered (a miss before it makes it a comeback),
-  // a fail moves it to My mistakes.
+  // a fail moves it to My mistakes. Every answer also lands a hit in the Ocumon battle (if it's switched on).
   function track(k, points, said) {
     saved.seen[k] = 1;
-    const prev = saved.mastered[k];
-    if (points < STEP_PASS) { saved.missed[k] = { score: points, said, date: today() }; delete saved.mastered[k]; return; }
-    saved.mastered[k] = { score: points, date: today(), streak: prev ? (prev.streak || 1) + 1 : 1, comeback: !!(saved.missed[k] || (prev && prev.comeback)) };
-    delete saved.missed[k];
+    const prev = saved.mastered[k], wasMissed = !!saved.missed[k];
+    if (points < STEP_PASS) { saved.missed[k] = { score: points, said, date: today() }; delete saved.mastered[k]; }
+    else {
+      saved.mastered[k] = { score: points, date: today(), streak: prev ? (prev.streak || 1) + 1 : 1, comeback: !!(wasMissed || (prev && prev.comeback)) };
+      delete saved.missed[k];
+    }
+    return monHit(k, points, said, wasMissed);
   }
   const outcomeOf = (pts) => (pts >= STEP_PASS ? 'good' : pts >= 4 ? 'part' : 'bad');
 
@@ -383,7 +393,7 @@
             <div><p class="label">My mistakes</p><p style="margin:0">${nMissed ? `<b>${nMissed}</b> question${nMissed === 1 ? '' : 's'} to revisit` : 'No missed questions yet.'}</p></div>
             ${nMissed ? '<div class="row" style="gap:.5rem"><button class="btn small" data-act="drill-all">Drill them</button><a class="btn small ghost" href="#review">Review →</a></div>' : ''}
           </div>
-          ${Object.keys(saved.cases).length || nMissed ? '<button class="btn ghost small" data-act="reset" style="margin-top:.6rem">Reset my progress</button>' : ''}
+          <div class="row" style="gap:.5rem;margin-top:.6rem">${saveButtons()}${Object.keys(saved.cases).length || nMissed ? '<button class="btn ghost small" data-act="reset">Reset my progress</button>' : ''}</div>
         </div>
       </section>
     </div>`;
@@ -1057,8 +1067,384 @@
     else if (g.last && ev.key === 'Enter' && ev.target.tagName !== 'BUTTON') { ev.preventDefault(); boltNext(); }
   });
 
+  // ------------------------------------------------------------------ Ocumon: raise a companion by catching eye conditions
+  // Inspired by Ankimon, with its problems designed out:
+  // - Rewards accuracy, not volume: a correct answer hits the wild creature, a wrong one hurts your companion, a skip
+  //   does nothing. Fixing a question from My mistakes is a critical hit. Repeating a question you already got right
+  //   today does half damage and earns no XP, and XP slows to a quarter after MON_DAILY_XP in a day.
+  // - Out of the way: answers anywhere count, but nothing pops up mid-question (an HP badge on the Ocumon
+  //   tab, and a toast for catches and level-ups only). It can be switched off without losing anything.
+  // - Can't break the page: the save is checked on load and import (bad values fall back to defaults), the art is
+  //   emoji, and nothing is downloaded. Export / import moves all progress to another device.
+  const MON = window.OCUMON || { starters: [], wild: [] };
+  const MON_MAX_LV = 40, MON_EVOLVE = [8, 18], MON_DAILY_XP = 400, MON_LOG = 8;
+  const TIER_HP = [0, 40, 70, 110];
+  const monMaxHp = (lv) => 40 + 4 * lv;
+  const xpNeed = (lv) => 40 + 20 * lv;
+  const wildById = (id) => MON.wild.find((w) => w.id === id);
+  const starterById = (id) => MON.starters.find((s) => s.id === id);
+  const stageOf = (lv) => (lv >= MON_EVOLVE[1] ? 2 : lv >= MON_EVOLVE[0] ? 1 : 0);
+  const companion = (m = mon()) => { const s = starterById(m.starter); return s && Object.assign({ hue: s.hue, strong: s.strong }, s.stages[stageOf(m.level)]); };
+  const wildRe = {};
+  const inPool = (w, c) => c.category === w.cat && (wildRe[w.id] = wildRe[w.id] || new RegExp(w.match, 'i')).test(`${c.title} ${c.theme || ''}`);
+  const stars = (tier) => '★'.repeat(tier) + '☆'.repeat(3 - tier);
+  let hunt = null, lastCat = null;
+
+  // Keeps only values that make sense, so an old, damaged or edited save can never stop the page loading.
+  function cleanMon(o) {
+    o = isMap(o) ? o : {};
+    const num = (v, lo, hi, d) => (Number.isFinite(v) ? Math.min(hi, Math.max(lo, Math.round(v))) : d);
+    const level = num(o.level, 1, MON_MAX_LV, 1);
+    const dex = {};
+    if (isMap(o.dex)) Object.keys(o.dex).forEach((id) => { const d = o.dex[id]; if (wildById(id) && isMap(d)) dex[id] = { n: num(d.n, 1, 1e6, 1), first: typeof d.first === 'string' ? d.first.slice(0, 10) : today() }; });
+    const w = isMap(o.wild) && wildById(o.wild.id);
+    const day = typeof o.day === 'string' ? o.day.slice(0, 10) : today();
+    return {
+      on: o.on !== false,
+      starter: starterById(o.starter) ? o.starter : null,
+      level, xp: num(o.xp, 0, xpNeed(level) - 1, 0), hp: num(o.hp, 1, monMaxHp(level), monMaxHp(level)),
+      wild: w ? { id: w.id, hp: num(o.wild.hp, 1, TIER_HP[w.tier], TIER_HP[w.tier]) } : null,
+      dex, day, dayXp: num(o.dayXp, 0, 1e6, 0),
+      done: isMap(o.done) && day === today() ? o.done : {},
+      log: Array.isArray(o.log) ? o.log.filter((x) => isMap(x) && typeof x.msg === 'string').slice(0, MON_LOG) : [],
+    };
+  }
+  saved.mon = cleanMon(saved.mon);
+  const mon = () => saved.mon;
+  const monLog = (msg, kind = '') => { mon().log.unshift({ msg, kind, date: today() }); mon().log.length = Math.min(mon().log.length, MON_LOG); };
+
+  // A new day: your companion wakes up healed, and the XP pace and the repeat list start over.
+  function monDay() {
+    const m = mon();
+    if (m.day === today()) return;
+    Object.assign(m, { day: today(), dayXp: 0, done: {}, hp: monMaxHp(m.level) });
+  }
+  // Uncaught creatures, topics with open mistakes and the topic you're studying turn up more often; rare ones less.
+  function monSpawn(id) {
+    const m = mon();
+    let w = wildById(id);
+    if (!w) {
+      const open = new Set(missedKeys().map((k) => (CASES.find((c) => c.id === k.split('#')[0]) || {}).category));
+      const weights = MON.wild.map((x) => (m.dex[x.id] ? 1 : 3) * (open.has(x.cat) ? 2 : 1) * (x.cat === lastCat ? 2 : 1) * (x.tier === 3 ? 0.5 : 1));
+      let r = Math.random() * weights.reduce((a, b) => a + b, 0);
+      w = MON.wild.find((x, i) => (r -= weights[i]) < 0) || MON.wild[0];
+    }
+    m.wild = w ? { id: w.id, hp: TIER_HP[w.tier] } : null;
+  }
+  function monChoose(id) {
+    const m = mon();
+    if (!starterById(id) || m.starter) return;
+    Object.assign(m, cleanMon({ on: true }), { starter: id });
+    monSpawn();
+    monLog(`${companion().name} joined you. A wild ${wildById(m.wild.id).name} appeared!`);
+    persist(); render();
+  }
+  function monChase(id) {
+    if (!wildById(id) || !mon().starter) return;
+    monSpawn(id); hunt = null; persist();
+    location.hash === '#mon' ? render() : (location.hash = '#mon');
+  }
+  function monReroll() {
+    const prev = mon().wild && mon().wild.id;
+    for (let i = 0; i < 5 && mon().wild && mon().wild.id === prev; i++) monSpawn();
+    hunt = null; persist(); render();
+  }
+
+  // Called for every scored answer (simulator, drills, lightning round, hunts). Returns what happened.
+  function monHit(k, points, said, fixed) {
+    const m = mon();
+    if (!m.on || !m.starter || said === 'Skipped' || !MON.wild.length) return null;
+    const c = CASES.find((x) => x.id === k.split('#')[0]);
+    if (!c) return null;
+    monDay();
+    if (!m.wild) monSpawn();
+    const w = wildById(m.wild.id), pal = companion();
+    const fx = { w, dmg: 0, hurt: 0, xp: 0, crit: false, eff: false, strong: false, repeat: false, tired: false };
+    lastCat = c.category;
+    if (points >= 4) {
+      const pass = points >= STEP_PASS;
+      fx.repeat = pass && !!m.done[k];
+      fx.crit = pass && fixed;
+      fx.eff = inPool(w, c);
+      fx.strong = pal.strong.includes(c.category);
+      let d = ((10 + m.level) * points) / PTS;
+      if (fx.crit) d *= 2;
+      if (fx.eff) d *= 1.5;
+      if (fx.strong) d *= 1.25;
+      if (fx.repeat) d *= 0.5;
+      fx.dmg = Math.max(1, Math.round(d));
+      m.wild.hp -= fx.dmg;
+      if (!fx.repeat) fx.xp = pass ? (fx.crit ? 20 : 10) : 4;
+      if (pass) m.done[k] = 1;
+    } else {
+      fx.hurt = 5 + 4 * w.tier;
+      m.hp -= fx.hurt;
+    }
+    if (m.wild.hp <= 0) {
+      fx.caught = w;
+      const d = m.dex[w.id];
+      m.dex[w.id] = { n: d ? d.n + 1 : 1, first: d ? d.first : today() };
+      fx.firstCatch = !d;
+      fx.xp += 25 * w.tier;
+      m.hp = Math.min(monMaxHp(m.level), Math.max(m.hp, 0) + Math.round(monMaxHp(m.level) / 4));
+      monLog(`Caught ${w.name}${d ? ` (×${d.n + 1})` : ' (new!)'}`, 'good');
+    } else if (m.hp <= 0) {
+      fx.fainted = w;
+      m.hp = monMaxHp(m.level);
+      monLog(`${pal.name} fainted and ${w.name} got away. No XP lost.`, 'bad');
+    } else if (fx.dmg) monLog(`${w.name} −${fx.dmg}${fx.crit ? ' · critical: mistake fixed' : ''}${fx.eff ? ' · super effective' : ''}${fx.repeat ? ' · repeat today' : ''}`);
+    else monLog(`${w.name} hit ${pal.name} −${fx.hurt}`, 'bad');
+    if (fx.caught || fx.fainted) monSpawn();
+    monXp(fx);
+    monChip();
+    if (route() !== 'mon') {
+      if (fx.evolved) monToast(`✨ ${fx.evolvedFrom} evolved into ${fx.evolved.icon} ${fx.evolved.name}!`);
+      else if (fx.caught) monToast(`${fx.caught.icon} Caught ${fx.caught.name}!${fx.lvUp ? ` ${pal.name} reached Lv ${fx.lvUp}.` : ''}`);
+      else if (fx.lvUp) monToast(`⬆️ ${pal.name} reached Lv ${fx.lvUp}`);
+      else if (fx.fainted) monToast(`💫 ${pal.name} fainted. ${fx.fainted.name} got away.`);
+    }
+    return fx;
+  }
+  // XP slows to a quarter once the day's allowance is used, so a long grind is never the best way to level.
+  function monXp(fx) {
+    const m = mon();
+    if (!fx.xp) return;
+    const room = Math.max(0, MON_DAILY_XP - m.dayXp), full = Math.min(fx.xp, room);
+    fx.tired = fx.xp > room;
+    fx.xp = full + Math.ceil((fx.xp - full) / 4);
+    m.dayXp += fx.xp; m.xp += fx.xp;
+    while (m.level < MON_MAX_LV && m.xp >= xpNeed(m.level)) {
+      const before = companion();
+      m.xp -= xpNeed(m.level); m.level++;
+      m.hp = monMaxHp(m.level);
+      fx.lvUp = m.level;
+      if (MON_EVOLVE.includes(m.level)) { fx.evolvedFrom = before.name; fx.evolved = companion(); monLog(`${before.name} evolved into ${fx.evolved.name}!`, 'good'); }
+    }
+    if (m.level >= MON_MAX_LV) m.xp = Math.min(m.xp, xpNeed(m.level) - 1);
+    if (fx.lvUp) monLog(`${companion().name} reached Lv ${fx.lvUp}`, 'good');
+  }
+
+  // The Ocumon tab's badge: how much HP the wild creature has left (details on hover).
+  function monChip() {
+    const badge = document.getElementById('mon-badge'), link = document.getElementById('mon-link'), m = mon(), pal = companion();
+    if (!badge) return;
+    const w = m.on && pal && m.wild && wildById(m.wild.id);
+    badge.hidden = !w;
+    link.title = w ? `${pal.name}, Lv ${m.level}, ${m.hp}/${monMaxHp(m.level)} HP. Wild ${w.name}: ${m.wild.hp}/${TIER_HP[w.tier]} HP` : '';
+    if (w) { badge.textContent = `${Math.ceil((100 * m.wild.hp) / TIER_HP[w.tier])}%`; badge.setAttribute('aria-label', `: wild ${w.name} at ${badge.textContent} HP`); }
+  }
+  let toastHandle = null;
+  function monToast(msg) {
+    const t = document.getElementById('mon-toast');
+    if (!t) return;
+    t.textContent = msg; t.hidden = false;
+    clearTimeout(toastHandle);
+    toastHandle = setTimeout(() => { t.hidden = true; }, 4500);
+  }
+
+  // ---- hunt: answer questions from the wild creature's topic until it's caught
+  function huntPick() {
+    const w = wildById(mon().wild.id), mine = [], topic = [];
+    CASES.filter((c) => c.category === w.cat).forEach((c) => c.steps.forEach((st, s) => { if (st.type === 'mcq') (inPool(w, c) ? mine : topic).push({ c, s, st }); }));
+    const fresh = (xs) => xs.filter((q) => !hunt.asked.has(stepKey(q.c, q.s)));
+    let xs = fresh(mine);
+    if (!xs.length) xs = fresh(topic);
+    if (!xs.length) { hunt.asked.clear(); xs = mine.length ? mine : topic; }
+    // Your mistakes first, then questions you haven't seen, then the rest.
+    const rank = (q) => { const k = stepKey(q.c, q.s); return saved.missed[k] ? 0 : saved.seen[k] ? 2 : 1; };
+    const top = Math.min(...xs.map(rank));
+    const q = shuffled(xs.filter((x) => rank(x) === top))[0];
+    hunt.asked.add(stepKey(q.c, q.s));
+    Object.assign(hunt, { q, perm: q.st.fixedOrder ? range(q.st.options.length) : shuffled(range(q.st.options.length)), last: null });
+  }
+  function huntStart() {
+    const m = mon();
+    if (!m.on || !m.starter) return;
+    monDay();
+    if (!m.wild) monSpawn();
+    hunt = { asked: new Set(), n: 0 };
+    huntPick(); render();
+  }
+  function huntAnswer(pick) {
+    if (!hunt || hunt.last || !hunt.q) return;
+    const { q } = hunt, ok = pick === q.st.answer;
+    hunt.last = { pick, ok, fx: track(stepKey(q.c, q.s), ok ? PTS : 0, strip(q.st.options[pick])) };
+    hunt.n++;
+    persist(); render({ keepScroll: true });
+  }
+  function huntNext() {
+    if (!hunt) return;
+    const fx = hunt.last && hunt.last.fx;
+    if (fx && (fx.caught || fx.fainted)) { hunt = null; render(); return; }
+    huntPick(); render();
+  }
+
+  // ---- views
+  const hpBar = (hp, max, label) => {
+    const pct = Math.max(0, Math.min(100, (100 * hp) / max));
+    return `<div class="mon-meter" role="img" aria-label="${esc(label)}: ${Math.max(0, hp)} of ${max}"><span class="${pct < 25 ? 'low' : pct < 55 ? 'mid' : ''}" style="width:${pct}%"></span></div>`;
+  };
+  function monSide(kind) {
+    const m = mon();
+    if (kind === 'pal') {
+      const p = companion();
+      return `<div class="mon-side" style="--h:${p.hue}">
+        <div class="mon-art" aria-hidden="true">${p.icon}</div>
+        <div class="mon-info"><p class="label">Your companion</p><h3>${esc(p.name)} <span class="mono muted">Lv ${m.level}</span></h3>
+          <p class="mon-num mono">HP ${m.hp} / ${monMaxHp(m.level)}</p>${hpBar(m.hp, monMaxHp(m.level), 'HP')}
+          <p class="mon-num mono">XP ${m.level >= MON_MAX_LV ? 'max level' : `${m.xp} / ${xpNeed(m.level)}`}</p><div class="mon-meter xp" aria-hidden="true"><span style="width:${(100 * m.xp) / xpNeed(m.level)}%"></span></div></div></div>`;
+    }
+    const w = wildById(m.wild.id), caught = m.dex[w.id];
+    return `<div class="mon-side wild" style="--h:${cat(w.cat).hue}">
+      <div class="mon-art" aria-hidden="true">${w.icon}</div>
+      <div class="mon-info"><p class="label">Wild · <span title="Rarity">${stars(w.tier)}</span></p><h3>${esc(w.name)}</h3>
+        <div class="pills">${catPill(w.cat)}${caught ? `<span class="pill good">Caught ×${caught.n}</span>` : '<span class="pill">Not caught yet</span>'}</div>
+        <p class="mon-num mono">HP ${m.wild.hp} / ${TIER_HP[w.tier]}</p>${hpBar(m.wild.hp, TIER_HP[w.tier], 'Wild HP')}</div></div>`;
+  }
+  const saveButtons = () => '<button class="btn small" data-act="export">⬇️ Export progress</button><button class="btn small" data-act="import">⬆️ Import progress</button>';
+
+  function renderMon() {
+    const m = mon();
+    if (!MON.wild.length) { view.innerHTML = '<div class="fade"><section class="card"><p>Ocumon data did not load.</p></section></div>'; return; }
+    if (!m.on) {
+      view.innerHTML = `<div class="fade"><section class="hero"><div><p class="label">Ocumon</p><h1>Ocumon is switched off</h1>
+        <p>Your answers aren’t touching it, and its tab badge is hidden. Your companion and collection are kept for whenever you want them back.</p></div></section>
+        <div class="row" style="gap:.5rem"><button class="btn primary" data-act="mon-on">Switch Ocumon on</button>${saveButtons()}</div></div>`;
+      return;
+    }
+    if (!m.starter) {
+      view.innerHTML = `<div class="fade"><section class="hero"><div><p class="label">Ocumon</p><h1>Pick a companion</h1>
+        <p>Wild eye conditions turn up while you study. Every question you get right hits the one in front of you, and every miss lets it hit back. Beat it to catch it, fill your Ocudex with all ${MON.wild.length}, and watch your companion grow and evolve. It runs quietly beside the simulator, drills and lightning round, and you can switch it off at any time.</p></div></section>
+        <div class="arc-games">${MON.starters.map((s) => `<section class="card arc-game hue-top" style="--h:${s.hue}">
+          <div class="mon-evo" aria-label="Evolves: ${s.stages.map((x) => x.name).join(', then ')}">${s.stages.map((x, i) => `<span class="${i ? 'mon-sil' : ''}" title="${i ? '?' : esc(x.name)}">${x.icon}</span>`).join('<span class="muted">›</span>')}</div>
+          <h2>${esc(s.stages[0].name)}</h2><p class="muted">${esc(s.blurb)}</p>
+          <button class="btn primary big" data-act="mon-starter" data-v="${s.id}">Choose ${esc(s.stages[0].name)}</button></section>`).join('')}</div></div>`;
+      return;
+    }
+    if (m.day !== today() || !m.wild) { monDay(); if (!m.wild) monSpawn(); persist(); }
+    if (hunt) return monHunt();
+    const total = MON.wild.length, got = MON.wild.filter((w) => m.dex[w.id]).length;
+    const tired = m.dayXp >= MON_DAILY_XP;
+    const log = m.log.length ? `<ul class="mon-log">${m.log.map((l) => `<li class="${l.kind}">${esc(l.msg)}</li>`).join('')}</ul>` : '<p class="muted">Nothing yet. Answer a question anywhere on the site.</p>';
+    const dex = CATS.map((c) => {
+      const ws = MON.wild.filter((w) => w.cat === c.id);
+      if (!ws.length) return '';
+      const n = ws.filter((w) => m.dex[w.id]).length;
+      return `<section class="mon-dex-group"><h3>${c.icon} ${esc(c.title)} <span class="muted mono">${n} / ${ws.length}</span></h3><div class="mon-dex">${ws.map((w) => {
+        const d = m.dex[w.id], now = m.wild.id === w.id;
+        return `<article class="mon-card ${d ? '' : 'unknown'} ${now ? 'now' : ''}" style="--h:${c.hue}">
+          <div class="mon-art small" aria-hidden="true"><span class="${d ? '' : 'mon-sil'}">${w.icon}</span></div>
+          <div><b>${d ? esc(w.name) : '???'}</b> <span class="mon-stars" title="Rarity">${stars(w.tier)}</span>
+          <p>${d ? `${esc(w.hint)}<span class="muted"> · caught ×${d.n}</span>` : 'Catch it to log its notes.'}</p>
+          ${now ? '<span class="pill">In front of you</span>' : `<button class="btn ghost small" data-act="mon-chase" data-v="${w.id}" aria-label="Track ${d ? esc(w.name) : `an unknown ${esc(c.title)} creature`}">Track</button>`}</div></article>`;
+      }).join('')}</div></section>`;
+    }).join('');
+    view.innerHTML = `<div class="fade">
+      <section class="hero"><div><p class="label">Ocumon</p><h1>Catch the conditions you know</h1>
+        <p>Every answer in the simulator, drills, the lightning round or a hunt here hits the wild creature. Questions from its own topic are super effective, fixing an old mistake is a critical hit, and a wrong answer lets it hit back.</p></div></section>
+      <section class="card stack mon-battle">
+        <div class="mon-vs">${monSide('pal')}<span class="mon-vs-mark" aria-hidden="true">VS</span>${monSide('wild')}</div>
+        <div class="row" style="gap:.5rem"><button class="btn primary" data-act="mon-hunt">⚔️ Battle with questions</button><button class="btn" data-act="mon-reroll">🏃 Find another</button></div>
+        <div class="mon-today"><span class="label" style="margin:0">Today’s XP</span><span class="mono">${m.dayXp} / ${MON_DAILY_XP}</span><div class="mon-meter xp" aria-hidden="true"><span style="width:${Math.min(100, (100 * m.dayXp) / MON_DAILY_XP)}%"></span></div>
+          ${tired ? `<p class="warn-text" style="margin:0">${esc(companion().name)} is tired: XP is at a quarter for the rest of today. Catches and damage still count. Come back tomorrow, when spaced practice sticks better anyway.</p>` : ''}</div>
+      </section>
+      <div class="grid-2" style="margin-top:1.2rem">
+        <section class="card stack"><h2 style="font-size:1.15rem">Recent</h2>${log}</section>
+        <section class="card stack"><h2 style="font-size:1.15rem">How it works</h2>
+          <ul class="arc-rules">
+            <li>✅ Right answer: damage, and 10 XP</li>
+            <li>💥 Fix a question from My mistakes: critical hit, double damage and XP</li>
+            <li>🎯 Question from the creature’s topic: ×1.5 damage; your companion’s favourite topics: ×1.25</li>
+            <li>❌ Wrong answer: it hits back. If your companion faints the creature escapes, but you lose nothing</li>
+            <li>⏭️ Skipping does nothing either way</li>
+            <li>🔁 Got it right already today? Half damage, no XP. New questions beat repeats</li>
+            <li>🌙 XP slows after ${MON_DAILY_XP} a day; HP is restored each morning</li>
+            <li>🌱 Evolves at Lv ${MON_EVOLVE[0]} and Lv ${MON_EVOLVE[1]}</li>
+          </ul></section>
+      </div>
+      <section style="margin-top:1.4rem"><div class="row" style="justify-content:space-between;margin-bottom:.7rem"><h2 style="font-size:1.3rem">Ocudex</h2><span class="mono muted">${got} / ${total} caught</span></div>
+        <div class="mon-meter xp" aria-hidden="true" style="margin-bottom:1rem"><span style="width:${(100 * got) / total}%"></span></div>
+        ${dex}</section>
+      <section class="card stack" style="margin-top:1.4rem"><h2 style="font-size:1.15rem">Settings and your save</h2>
+        <p class="muted" style="margin:0">Progress lives in this browser. Export it to a file to keep a backup or load it on another device. The file holds everything: case results, My mistakes, Mastered, game scores and Ocumon.</p>
+        <div class="row" style="gap:.5rem">${saveButtons()}<button class="btn small" data-act="mon-off">Switch Ocumon off</button><button class="btn ghost small" data-act="mon-reset">Start Ocumon again</button></div></section>
+    </div>`;
+  }
+  function monHunt() {
+    const { q, last: L } = hunt, fx = L && L.fx;
+    const opts = hunt.perm.map((oi, n) => {
+      if (!L) return `<button class="opt arc-opt" data-act="mon-pick" data-v="${oi}"><span class="arc-key mono" aria-hidden="true">${n + 1}</span><span>${q.st.options[oi]}</span><span></span></button>`;
+      const cls = oi === q.st.answer ? 'right' : oi === L.pick ? 'wrong' : 'dim';
+      return `<div class="opt arc-opt ${cls}"><span class="arc-key mono" aria-hidden="true">${n + 1}</span><span>${q.st.options[oi]}</span><span class="tag">${oi === q.st.answer ? '✓' : oi === L.pick ? '✕' : ''}</span></div>`;
+    }).join('');
+    let verdict = '';
+    if (fx) {
+      const tags = [fx.crit && 'critical: mistake fixed', fx.eff && 'super effective', fx.strong && `${companion().name}’s topic`, fx.repeat && 'repeat today: half damage, no XP', fx.tired && 'tired: quarter XP'].filter(Boolean);
+      verdict = L.ok
+        ? `<div class="arc-verdict good"><b>✓ ${fx.w.icon} ${esc(fx.w.name)} −${fx.dmg}</b><span class="arc-gain mono">${fx.xp ? `+${fx.xp} XP` : ''}</span></div>`
+        : `<div class="arc-verdict bad"><b>✕ ${esc(fx.w.name)} hit back</b><span class="mono">−${fx.hurt} HP</span></div>`;
+      if (tags.length) verdict += `<p class="mon-tags">${tags.map((t) => `<span class="pill">${esc(t)}</span>`).join('')}</p>`;
+      if (fx.caught) verdict += `<div class="mon-catch"><div class="mon-art" aria-hidden="true">${fx.caught.icon}</div><div><h2>Caught ${esc(fx.caught.name)}!${fx.firstCatch ? ' <span class="pill good">New</span>' : ''}</h2><p>${esc(fx.caught.hint)}</p></div></div>`;
+      if (fx.evolved) verdict += `<div class="mon-catch"><div class="mon-art" aria-hidden="true">${fx.evolved.icon}</div><div><h2>✨ ${esc(fx.evolvedFrom)} evolved into ${esc(fx.evolved.name)}!</h2></div></div>`;
+      else if (fx.lvUp) verdict += `<p class="mon-up">⬆️ ${esc(companion().name)} reached Lv ${fx.lvUp}</p>`;
+      if (fx.fainted) verdict += `<div class="arc-verdict bad"><b>💫 ${esc(companion().name)} fainted and ${esc(fx.fainted.name)} got away.</b><span>No XP lost</span></div>`;
+    }
+    const ended = fx && (fx.caught || fx.fainted);
+    view.innerHTML = `<div class="fade arc-play">
+      <div class="mon-vs compact">${monSide('pal')}<span class="mon-vs-mark" aria-hidden="true">VS</span>${ended ? '' : monSide('wild')}</div>
+      <section class="card stack">
+        <div class="pills">${catPill(q.c.category)}${sourcePills(q.c)}<span class="pill">Question ${hunt.n + (L ? 0 : 1)}</span>${q.st.critical ? '<span class="pill bad">Safety-critical</span>' : ''}${saved.missed[stepKey(q.c, q.s)] && !L ? '<span class="pill warn">On My mistakes: critical hit if right</span>' : ''}</div>
+        <p class="arc-ctx muted"><b>${esc(q.c.patient || '')}</b> ${q.c.stem || ''}</p>
+        <h2 class="arc-q">${q.st.question}</h2>
+        <div class="opts">${opts}</div>
+        ${L ? `${verdict}<div class="model"><p class="label">🧑‍⚕️ Why</p><div class="prose">${q.st.explain}</div></div>
+          <div class="row"><button class="btn primary" data-act="mon-next" id="mon-next">${ended ? 'Back to Ocumon' : 'Next question'} →</button><button class="btn ghost small" data-act="case" data-v="${q.c.id}">Open the full case</button></div>`
+        : '<div class="row"><button class="btn ghost small" data-act="mon-stop">Stop hunting</button><span class="muted" style="font-size:.85rem">Keys 1–4 answer, Enter moves on</span></div>'}
+      </section></div>`;
+    if (L) { const nb = document.getElementById('mon-next'); if (nb) nb.focus({ preventScroll: true }); }
+  }
+  document.addEventListener('keydown', (ev) => {
+    if (route() !== 'mon' || !hunt || ev.ctrlKey || ev.metaKey || ev.altKey || /^(INPUT|TEXTAREA|SELECT)$/.test(ev.target.tagName)) return;
+    if (!hunt.last && /^[1-9]$/.test(ev.key)) { const oi = hunt.perm[Number(ev.key) - 1]; if (oi !== undefined) { ev.preventDefault(); huntAnswer(oi); } }
+    else if (hunt.last && ev.key === 'Enter' && ev.target.tagName !== 'BUTTON') { ev.preventDefault(); huntNext(); }
+  });
+
+  // ---- export / import: the whole save as a file, to back it up or move it to another device
+  function exportSave() {
+    let theme = null;
+    try { theme = localStorage.getItem(STORE_KEY + ':theme'); } catch (e) { /* ignore */ }
+    const blob = new Blob([JSON.stringify({ app: 'thera-orals', format: 1, exported: new Date().toISOString(), theme, data: saved }, null, 1)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `thera-orals-progress-${today()}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+  function importSave(file) {
+    if (!file) return;
+    const r = new FileReader();
+    r.onload = () => {
+      let o = null;
+      try { o = JSON.parse(r.result); } catch (e) { /* handled below */ }
+      if (!isMap(o) || o.app !== 'thera-orals' || !isMap(o.data)) { alert('That file isn’t a Thera Orals progress file. Nothing was changed.'); return; }
+      const next = cleanSaved(o.data);
+      next.mon = cleanMon(next.mon);
+      const when = typeof o.exported === 'string' ? new Date(o.exported).toLocaleString() : 'an unknown date';
+      const n = (x) => Object.keys(x).length;
+      if (!confirm(`Replace the progress in this browser with the file exported ${when}?\n\nThe file has ${n(next.cases)} case results, ${n(next.missed)} mistakes, ${n(next.mastered)} mastered questions and ${n(next.mon.dex)} Ocumon caught.`)) return;
+      saved = next;
+      if (typeof o.theme === 'string' && /^(light|dark)$/.test(o.theme)) {
+        document.documentElement.dataset.theme = o.theme;
+        try { localStorage.setItem(STORE_KEY + ':theme', o.theme); } catch (e) { /* ignore */ }
+      }
+      hunt = null; persist(); render();
+    };
+    r.onerror = () => alert('Could not read that file. Nothing was changed.');
+    r.readAsText(file);
+  }
+
   // ------------------------------------------------------------------ routing and chrome
-  const ROUTES = { sim: null, play: renderPlay, review: renderReview, mastered: renderMastered, bank: renderBank, audit: renderAudit, guide: renderGuide };
+  const ROUTES = { sim: null, play: renderPlay, mon: renderMon, review: renderReview, mastered: renderMastered, bank: renderBank, audit: renderAudit, guide: renderGuide };
   const route = () => { const r = location.hash.slice(1); return r in ROUTES ? r : 'sim'; };
   function render(opts = {}) {
     const r = route();
@@ -1067,6 +1453,7 @@
     missBadge.hidden = !n; missBadge.textContent = n;
     const nm = masteredKeys().length;
     masterBadge.hidden = !nm; masterBadge.textContent = nm;
+    monChip();
     const y = window.scrollY;
     if (r !== 'play') arcQuit(); // leaving the tab ends a game in progress
     if (r === 'sim') renderSim(); else ROUTES[r]();
@@ -1100,7 +1487,21 @@
       case 'drill-mastered': startDrill(shownMasteredKeys()); break;
       case 'mastered-cat': mastery.cat = v; again(); break;
       case 'reset':
-        if (confirm('Clear your saved case results, your missed questions and your mastered list?')) { saved = { cases: {}, missed: {}, seen: {}, mastered: {} }; persist(); try { localStorage.removeItem(LEGACY_KEY); } catch (e) { /* ignore */ } again(); }
+        if (confirm('Clear your saved case results, your missed questions and your mastered list? Your Ocumon is kept.')) { saved = Object.assign(cleanSaved(), { mon: saved.mon }); persist(); try { localStorage.removeItem(LEGACY_KEY); } catch (e) { /* ignore */ } again(); }
+        break;
+      case 'export': exportSave(); break;
+      case 'import': document.getElementById('import-file').click(); break;
+      case 'mon-on': mon().on = true; persist(); again(); break;
+      case 'mon-off': mon().on = false; hunt = null; persist(); again(); break;
+      case 'mon-starter': monChoose(v); break;
+      case 'mon-hunt': huntStart(); break;
+      case 'mon-chase': monChase(v); break;
+      case 'mon-reroll': monReroll(); break;
+      case 'mon-pick': huntAnswer(Number(v)); break;
+      case 'mon-next': huntNext(); break;
+      case 'mon-stop': hunt = null; again(); break;
+      case 'mon-reset':
+        if (confirm('Start Ocumon again? Your companion, its level and your collection are cleared. Your questions, mistakes and mastered list are not touched.')) { saved.mon = cleanMon({}); hunt = null; persist(); again(); }
         break;
       case 'resume': s.parked = false; render(); break;
       case 'park': s.parked = true; render(); break;
@@ -1166,6 +1567,7 @@
     if (ev.target.id === 'count-range') { sim.count = Number(ev.target.value); updateCount(); }
   });
   document.addEventListener('change', (ev) => {
+    if (ev.target.id === 'import-file') { importSave(ev.target.files[0]); ev.target.value = ''; return; }
     remember(ev.target);
     const t = ev.target.dataset && ev.target.dataset.tick;
     if (t !== undefined && sim.s && sim.s.last && sim.s.last.viva) {

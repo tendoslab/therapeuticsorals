@@ -380,3 +380,50 @@ table.t td.c, table.t th.c { text-align: center; }
   @keyframes arc-shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
   @keyframes arc-pop { from { transform: scale(.85); opacity: 0; } to { transform: none; opacity: 1; } }
 }
+
+/* ---------- Ocumon ---------- */
+.nav .badge.mon { background: var(--violet); color: var(--accent-ink); min-width: 2rem; }
+.mon-toast { position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 30; max-width: min(22rem, calc(100vw - 32px)); padding: .7rem 1rem; border-radius: var(--r); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); font-weight: 600; pointer-events: none; }
+.mon-vs { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 1rem; align-items: center; }
+.mon-vs.compact { margin-bottom: 1rem; }
+.mon-vs-mark { font-weight: 800; color: var(--muted); font-size: .9rem; }
+@media (max-width: 640px) { .mon-vs { grid-template-columns: minmax(0, 1fr); } .mon-vs-mark { text-align: center; } }
+.mon-side { display: flex; gap: .9rem; align-items: center; padding: .9rem; border-radius: var(--r); background: hsl(var(--h) var(--tint-s) var(--tint-bg)); min-width: 0; }
+.mon-side h3 { margin-bottom: .3rem; }
+.mon-info { flex: 1; min-width: 0; }
+.mon-info .label { margin: 0 0 .15rem; }
+.mon-info .pills { margin-bottom: .2rem; }
+.mon-art { font-size: 3.2rem; line-height: 1; width: 4.4rem; height: 4.4rem; display: grid; place-items: center; border-radius: 50%; background: var(--surface); flex: none; }
+.mon-art.small { font-size: 1.9rem; width: 2.8rem; height: 2.8rem; }
+.mon-num { font-size: .76rem; color: var(--muted); margin: .25rem 0 .15rem; }
+.mon-meter { height: 8px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.mon-side .mon-meter { background: var(--surface); }
+.mon-meter > span { display: block; height: 100%; border-radius: inherit; background: var(--good); transition: width .4s ease-out; }
+.mon-meter > span.mid { background: var(--warn); }
+.mon-meter > span.low { background: var(--bad); }
+.mon-meter.xp > span { background: linear-gradient(90deg, var(--mint), var(--accent)); }
+.mon-today { display: grid; grid-template-columns: auto 1fr; gap: .4rem .8rem; align-items: center; }
+.mon-today .mon-meter, .mon-today .warn-text { grid-column: 1 / -1; }
+.mon-sil { filter: grayscale(1) brightness(0); opacity: .35; }
+.mon-evo { display: flex; align-items: center; gap: .5rem; font-size: 2.2rem; line-height: 1; }
+.mon-evo .muted { font-size: 1.2rem; }
+.mon-log { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: .3rem; font-size: .9rem; }
+.mon-log li { padding: .35rem .6rem; border-radius: 7px; background: var(--surface-2); }
+.mon-log li.good { background: var(--good-soft); color: var(--good); }
+.mon-log li.bad { background: var(--bad-soft); color: var(--bad); }
+.mon-dex-group { margin-bottom: 1.2rem; }
+.mon-dex-group h3 { font-size: 1rem; margin-bottom: .6rem; }
+.mon-dex { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); gap: .7rem; }
+.mon-card { display: flex; gap: .7rem; align-items: flex-start; padding: .75rem; border-radius: var(--r); border: 1px solid var(--line); background: var(--surface); font-size: .88rem; }
+.mon-card p { margin: .2rem 0 .4rem; color: var(--muted); }
+.mon-card.unknown { background: var(--surface-2); }
+.mon-card.now { border-color: hsl(var(--h) var(--tint-s) var(--tint-mid)); box-shadow: 0 0 0 2px hsl(var(--h) var(--tint-s) var(--tint-mid)); }
+.mon-stars { color: var(--warn); font-size: .75rem; letter-spacing: .05em; }
+.mon-tags { display: flex; flex-wrap: wrap; gap: .3rem; margin: 0; }
+.mon-catch { display: flex; gap: 1rem; align-items: center; padding: .9rem 1rem; border-radius: var(--r); background: linear-gradient(120deg, var(--good-soft), var(--hero-b)); }
+.mon-catch h2 { font-size: 1.2rem; margin-bottom: .2rem; }
+.mon-catch p { margin: 0; color: var(--muted); }
+.mon-up { margin: 0; font-weight: 700; color: var(--good); }
+@media (prefers-reduced-motion: no-preference) {
+  .mon-catch, .mon-toast:not([hidden]) { animation: arc-pop .4s ease-out; }
+}
