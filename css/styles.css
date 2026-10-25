@@ -383,7 +383,6 @@ table.t td.c, table.t th.c { text-align: center; }
 
 /* ---------- Ocumon ---------- */
 .nav .badge.mon { background: var(--violet); color: var(--accent-ink); min-width: 2rem; }
-.mon-toast { position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 30; max-width: min(22rem, calc(100vw - 32px)); padding: .7rem 1rem; border-radius: var(--r); background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); font-weight: 600; pointer-events: none; }
 .mon-vs { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 1rem; align-items: center; }
 .mon-vs.compact { margin-bottom: 1rem; }
 .mon-vs-mark { font-weight: 800; color: var(--muted); font-size: .9rem; }
@@ -425,7 +424,7 @@ table.t td.c, table.t th.c { text-align: center; }
 .mon-catch p { margin: 0; color: var(--muted); }
 .mon-up { margin: 0; font-weight: 700; color: var(--good); }
 @media (prefers-reduced-motion: no-preference) {
-  .mon-catch, .mon-toast:not([hidden]) { animation: arc-pop .4s ease-out; }
+  .mon-catch { animation: arc-pop .4s ease-out; }
 }
 
 /* ---------- Ocumon battle scene ----------
@@ -493,6 +492,28 @@ table.t td.c, table.t th.c { text-align: center; }
 .bt-pop.hurt { right: auto; left: 22%; top: 46%; }
 .bt-throw { position: absolute; left: 74%; top: 34%; width: 1.6rem; height: 1.6rem; margin: -.8rem 0 0 -.8rem; z-index: 2; }
 .bt-ask { margin-top: 1rem; }
+.bt-sub { margin: 0; font-weight: 600; }
+.bt-sub .label { display: block; margin-bottom: .2rem; }
+/* A fight: the battle and the case record on the left (pinned while you scroll), the question on the right.
+   On a phone the battle is pinned to the top of the screen instead, cut down, so a hit is never off screen. */
+.fight { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+.fight-side { display: flex; flex-direction: column; gap: 1rem; }
+.fight .bt { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 4.6rem); z-index: 2; }
+.fight-side .bt + *, .fight .bt-ask { margin-top: 0; }
+.fight-side .record { position: static; max-height: none; overflow: visible; }
+@media (max-width: 899px) {
+  .fight { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  .fight-side { display: contents; }
+  .fight .bt { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 21; }
+  .fight .bt-stage { height: clamp(9rem, 44cqw, 18rem); }
+  .fight .bt-mon.foe { font-size: clamp(2.2rem, 10cqw, 5rem); }
+  .fight .bt-mon.pal { --fw: clamp(6.5rem, calc(26cqw * (1 + .08 * var(--rank, 0))), 14rem); }
+  .fight .bt-mon.pal.animal { --fw: clamp(5rem, calc(20cqw * (1 + .08 * var(--rank, 0))), 11rem); }
+  .fight .bt-name { font-size: clamp(1rem, 3.6cqw, 1.5rem); }
+  .fight .bt-hpnum { font-size: clamp(.95rem, 3.2cqw, 1.3rem); }
+  .fight .bt-bar { padding: .35rem; }
+  .fight .bt-msg { min-height: 0; padding: .3rem .7rem; border-width: 3px; font-size: clamp(1.05rem, 3.6cqw, 1.5rem); }
+}
 /* Pixel sprites: one frame of a sheet, stepped through with background-position. --fw is the frame size on screen. */
 .px { --fw: 6rem; display: block; width: var(--fw); height: var(--fw); background-repeat: no-repeat; image-rendering: pixelated;
   background-size: calc(var(--cols) * var(--fw)) calc(var(--rows) * var(--fw)); background-position: 0 calc(var(--row) * var(--fw) * -1); }
@@ -595,4 +616,5 @@ table.t td.c, table.t th.c { text-align: center; }
   @keyframes bt-wobble { 0%, 30%, 60%, 90%, 100% { rotate: 0deg; } 8%, 38%, 68% { rotate: -22deg; } 18%, 48%, 78% { rotate: 22deg; } }
 }
 /* End states that also hold with reduced motion. */
+@media (prefers-reduced-motion: reduce) { .bt.fled .bt-mon.foe { visibility: hidden; } }
 .bt.caught .bt-mon.foe, .bt.fainted .bt-mon.pal { visibility: hidden; }
