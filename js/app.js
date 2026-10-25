@@ -1146,6 +1146,8 @@
   const askedLine = (w) => (w.report ? 'On your case report: asked every time' : w.asked ? `Asked in ${w.asked} exam sitting${w.asked === 1 ? '' : 's'}` : 'Only in the study notes so far');
   let hunt = null, lastCat = null;
 
+  // The partner sent out when the one in battle faints: the highest level of those still standing.
+  const healthiest = (party, not) => Object.keys(party).filter((id) => id !== not && party[id].hp > 0).sort((a, b) => party[b].level - party[a].level)[0];
   // Keeps only values that make sense, so an old, damaged or edited save can never stop the page loading.
   function cleanMon(o) {
     o = isMap(o) ? o : {};
@@ -1155,10 +1157,10 @@
       const v = o.party[id];
       if (!partnerById(id) || !isMap(v)) return;
       const lv = num(v.level, 1, MON_MAX_LV, 1);
-      party[id] = { level: lv, xp: num(v.xp, 0, xpNeed(lv) - 1, 0), hp: num(v.hp, 1, monMaxHp(lv), monMaxHp(lv)) };
+      party[id] = { level: lv, xp: num(v.xp, 0, xpNeed(lv) - 1, 0), hp: num(v.hp, 0, monMaxHp(lv), monMaxHp(lv)) };
     });
     const dex = {};
-    if (isMap(o.dex)) Object.keys(o.dex).forEach((id) => { const d = o.dex[id]; if (wildById(id) && isMap(d)) dex[id] = { n: num(d.n, 1, 1e6, 1), first: typeof d.first === 'string' ? d.first.slice(0, 10) : today() }; });
+    if (isMap(o.dex)) Object.keys(o.dex).forEach((id) => { const d = o.dex[id]; if (wildById(id) && isMap(d)) dex[id] = Object.assign({ n: num(d.n, 1, 1e6, 1), first: typeof d.first === 'string' ? d.first.slice(0, 10) : today() }, d.perfect ? { perfect: 1 } : {}); });
     const w = isMap(o.wild) && wildById(o.wild.id);
     const day = typeof o.day === 'string' ? o.day.slice(0, 10) : today();
     // The order partners join in: shuffled once per save. Partners missing from it (an old save, or new ones
@@ -1166,7 +1168,7 @@
     const order = Array.isArray(o.order) ? [...new Set(o.order.filter((id) => partnerById(id)))] : [];
     order.push(...shuffled(MON.partners.map((p) => p.id).filter((id) => !order.includes(id))));
     const m = {
-      party, active: party[o.active] ? o.active : Object.keys(party)[0] || null, order, // saves from before the party start over
+      party, active: party[o.active] && party[o.active].hp > 0 ? o.active : healthiest(party) || Object.keys(party)[0] || null, order, // saves from before the party start over
       wild: w ? { id: w.id, hp: num(o.wild.hp, 1, TIER_HP[w.tier], TIER_HP[w.tier]) } : null,
       dex, day, dayXp: num(o.dayXp, 0, 1e6, 0),
       recent: Array.isArray(o.recent) ? o.recent.filter((id) => wildById(id)).slice(0, MON_RECENT) : [],
@@ -1216,7 +1218,7 @@
   }
   function monSwitch(id) {
     const m = mon();
-    if (!m.party[id] || m.active === id) return false;
+    if (!m.party[id] || m.active === id || m.party[id].hp <= 0) return false;
     m.active = id; persist();
     return true;
   }
@@ -1294,16 +1296,29 @@
       m.dex[w.id] = { n: d ? d.n + 1 : 1, first: d ? d.first : today() };
       fx.firstCatch = !d;
       fx.xp += 25 * w.tier;
+      // A perfect case doubles the catch XP and marks the creature Mastered in the Ocudex.
+      if (o.share >= 1 - 1e-9) { fx.perfect = true; fx.xp += 25 * w.tier; m.dex[w.id].perfect = 1; }
       m.hp = Math.min(monMaxHp(m.level), Math.max(m.hp, 0) + Math.round(monMaxHp(m.level) / 4));
-      monLog(`Caught ${w.name}${d ? ` (×${d.n + 1})` : ' (new!)'}`, 'good');
+      monLog(`Caught ${w.name}${d ? ` (×${d.n + 1})` : ' (new!)'}${fx.perfect ? ' · perfect case' : ''}`, 'good');
     } else if (m.hp <= 0) {
-      fx.fainted = w;
-      m.hp = monMaxHp(m.level);
-      monLog(`${pal.name} fainted and ${w.name} got away. No XP lost.`, 'bad');
+      // Fainted partners rest at 0 HP until the morning. The next one standing comes out and the fight goes on;
+      // only when the whole team is down does the creature get away, and then everyone is healed.
+      m.hp = 0;
+      const next = healthiest(m.party, m.active);
+      fx.down = pal;
+      if (next) {
+        fx.tagIn = partnerById(next);
+        monLog(`${pal.name} fainted. Go, ${fx.tagIn.name}!`, 'bad');
+      } else {
+        fx.fainted = w;
+        Object.values(m.party).forEach((v) => { v.hp = monMaxHp(v.level); });
+        monLog(`${Object.keys(m.party).length > 1 ? 'Your whole team' : pal.name} fainted and ${w.name} got away. No XP lost.`, 'bad');
+      }
     } else if (fx.dmg) monLog(`${w.name} −${fx.dmg}${fx.crit ? ' · critical: mistake fixed' : ''}${fx.eff ? ' · favourite topic' : ''}${fx.repeat ? ' · repeat today' : ''}`);
     else monLog(`${w.name} hit ${pal.name} −${fx.hurt}`, 'bad');
     if (fx.caught || fx.fainted) monSpawn();
     monXp(fx);
+    if (fx.tagIn) m.active = fx.tagIn.id;
     if (fx.caught) fx.joined = monUnlock();
     monChip();
     return fx;
@@ -1596,7 +1611,7 @@
     const K = btKit(), m = mon(), wMax = TIER_HP[P.w.tier];
     if (!K.root || !fx) return;
     const left = fx.dmg ? `${P.w.name} has ${Math.max(0, P.wHp - fx.dmg)} HP left.` : `${P.pal.name} has ${m.hp} HP left.`;
-    const end = fx.caught ? `Gotcha! ${P.w.name} was caught!` : fx.fainted ? `${P.pal.name} fainted! ${P.w.name} got away.` : fx.fled ? `${left} The case is over… ${P.w.name} got away!` : left;
+    const end = fx.caught ? `Gotcha! ${P.w.name} was caught!${fx.perfect ? ' A perfect case: bonus XP!' : ''}` : fx.tagIn ? `${P.pal.name} fainted! Go, ${fx.tagIn.name}!` : fx.fainted ? `${P.pal.name} fainted! ${P.w.name} got away.` : fx.fled ? `${left} The case is over… ${P.w.name} got away!` : left;
     const side = K.q('.bt-side'), sideHTML = side ? side.outerHTML : '';
     if (calm()) {
       // No motion: draw the end state and say what happened in one line.
@@ -1623,13 +1638,20 @@
       K.px(P.pal, 'hurt');
       await K.act('.bt-mon.pal .bt-fx', 'hit', 650);
       await K.drain('pal', P.hp, Math.max(0, P.hp - fx.hurt), monMaxHp(P.lv));
-      if (fx.fainted) {
+      if (fx.down) {
         await K.px(P.pal, 'faint', true);
         await K.act('.bt-mon.pal', 'faint', 700);
         if (!K.live()) return;
         K.q('.bt-mon.pal').classList.add('gone');
+        if (fx.tagIn) {
+          await K.say(`${P.pal.name} fainted!`);
+          if (!K.live()) return;
+          K.root.outerHTML = btScene(btAfter(P, fx), sideHTML, 'hunt');
+          await btSwapIn(btKit(), fx.tagIn, fx.fled ? `That was the last question… ${P.w.name} got away!` : `The fight goes on. What will ${fx.tagIn.name} do?`);
+          return;
+        }
         await K.say(`${P.pal.name} fainted! ${P.w.name} got away.`);
-        await K.say('No XP lost. HP is restored for the next one.');
+        await K.say('No XP lost. Your team is healed for the next one.');
         return;
       }
     }
@@ -1650,6 +1672,7 @@
       if (!K.live()) return;
       K.q('.bt-throw').classList.add('click');
       await K.say(`Gotcha! ${P.w.name} was caught!`);
+      if (fx.perfect) { K.act('.bt-stage', 'flash', 500); await K.say(`A perfect case! Bonus XP, and ${P.w.name} is marked Mastered.`); }
     }
     if (fx.xp) {
       await K.say(`${P.pal.name} gained ${fx.xp} XP!${fx.tired ? ' (tired: quarter XP)' : ''}`, 200);
@@ -1703,7 +1726,7 @@
     swapIn = true;
     render({ keepScroll: true });
   }
-  async function btSwapIn(K, pal) {
+  async function btSwapIn(K, pal, then) {
     K.root.classList.add('swap');
     void K.root.offsetWidth;
     K.root.classList.add('go');
@@ -1711,7 +1734,7 @@
     await K.say(`Go! ${pal.name}!`, 600);
     if (!K.live()) return;
     K.root.classList.remove('swap', 'go');
-    await K.say(`What will ${pal.name} do?`, 0);
+    await K.say(then || `What will ${pal.name} do?`, 0);
   }
 
   async function btRun() {
@@ -1745,7 +1768,7 @@
           <div class="mon-mate-info"><b>${esc(p.name)}</b>${rankStars(q)} <span class="mono muted">Lv ${v.level}</span>
             ${btHp(v.hp, monMaxHp(v.level), p.name)}
             <p class="muted">Strong on ${esc(topicsOf(p))}</p>
-            ${now ? '<span class="pill good">In battle</span>' : `<button class="btn small" data-act="mon-switch" data-v="${p.id}">Send out</button>`}</div></article>`;
+            ${now ? '<span class="pill good">In battle</span>' : v.hp <= 0 ? '<span class="pill bad">Fainted: rests until tomorrow</span>' : `<button class="btn small" data-act="mon-switch" data-v="${p.id}">Send out</button>`}</div></article>`;
       }).join('')}
       ${cards.slice(0, 4).map(({ p, at }) => `<article class="mon-mate locked" title="Joins at ${at} team points">
           <div class="mon-mate-art">${pxSprite(Object.assign({}, p, { rank: 0 }), 'front', 'mon-sil')}</div>
@@ -1788,7 +1811,7 @@
         return `<article class="mon-card ${d ? '' : 'unknown'} ${now ? 'now' : ''}" style="--h:${c.hue}">
           <div class="mon-art small" aria-hidden="true"><span class="${d ? '' : 'mon-sil'}">${w.icon}</span></div>
           <div><b>${d ? esc(w.name) : '???'}</b> <span class="mon-lv mono" title="Level: higher means more HP and more XP when caught">${wildLv(w)}</span> <span class="mon-rarity t${w.tier}" title="${esc(askedLine(w))}">${TIER_NAME[w.tier]}</span>
-          <p>${d ? `${esc(w.hint)}<span class="muted"> · caught ×${d.n}</span>` : `Turns up in the wild${w.tier === 3 ? ', rarely' : ''}. Catch it to log its notes.`}</p>
+          <p>${d ? `${esc(w.hint)}<span class="muted"> · caught ×${d.n}</span>${d.perfect ? ' <span class="pill good" title="You got one of its cases 100% right">🌟 Mastered</span>' : ''}` : `Turns up in the wild${w.tier === 3 ? ', rarely' : ''}. Catch it to log its notes.`}</p>
           <p class="mon-asked muted">${esc(askedLine(w))}</p>
           ${now ? '<span class="pill">In front of you</span>' : d ? `<button class="btn ghost small" data-act="mon-chase" data-v="${w.id}" aria-label="Battle ${esc(w.name)} again">Battle again</button>` : ''}</div></article>`;
       }).join('')}</div></section>`;
@@ -1809,7 +1832,8 @@
             <li>🔤 Every question is a pick: select-all questions become “which one is right?” (or “which one isn’t?”), matching asks one pair at a time, and out-loud viva questions are a special move: think, reveal the key points, tick what you said</li>
             <li>✅ Right answer: damage, and 10 XP</li>
             <li>💥 Fix a question from My mistakes: critical hit, double XP. Your companion’s favourite topics give ×1.25 XP, and each rank +10%. Bonuses never change damage, so only your answers decide a catch</li>
-            <li>❌ Wrong answer: it hits back. If your companion faints the creature escapes, but you lose nothing and can finish the case for practice</li>
+            <li>🌟 Get the whole case right for a perfect catch: double the catch XP, and the creature is marked Mastered in your Ocudex</li>
+            <li>❌ Wrong answer: it hits back. If your companion faints, your strongest teammate still standing takes over and the fight goes on. Fainted Ocumon rest until tomorrow, so share the fights out. If your whole team faints the creature escapes, but you lose nothing, your team is healed and you can finish the case for practice</li>
             <li>🏃 <b>Run</b> finds another creature. New ones only turn up in the wild; ones you’ve caught can be battled again from the Ocudex</li>
             <li>🎓 Rarity follows the exam. <b>Common</b> creatures (Lv ${TIER_LV[1]}) are the topics asked in 3 or more past sittings, or on your case report, so they turn up most and are the best ones to drill. <b>Uncommon</b> (Lv ${TIER_LV[2]}) were asked once or twice. <b>Rare</b> (Lv ${TIER_LV[3]}) are only in the study notes: tougher, worth more XP, and less likely to come up</li>
             <li>🎲 Creatures you haven’t caught, topics with open mistakes and the topic you’re on turn up more often; ones you’ve just seen turn up less, and so do cases you’ve just done</li>
@@ -1843,7 +1867,7 @@
     const scoreFor = (j) => hunt.scores[j];
     if (hunt.finished) {
       const pct = Math.round((100 * hunt.got) / hunt.units), w = hunt.w, need = Math.round(100 * MON_NEED[w.tier]);
-      const head = { caught: `🎉 You caught ${esc(w.name)}!`, fainted: `💫 ${esc(pal.name)} fainted and ${esc(w.name)} got away`, fled: `${esc(w.name)} got away` }[hunt.over];
+      const head = { caught: `🎉 You caught ${esc(w.name)}!`, fainted: `💫 ${Object.keys(mon().party).length > 1 ? 'Your whole team' : esc(pal.name)} fainted and ${esc(w.name)} got away`, fled: `${esc(w.name)} got away` }[hunt.over];
       view.innerHTML = `<div class="fade fight"><div class="fight-side">${scene}</div><div class="fight-main">${recordPanel(c, c.steps.length, scoreFor)}
         <section class="card stack bt-ask"><p class="label">Case complete</p><h2>${head}</h2>
           <p>You got <b>${pct}%</b> of this case right. ${hunt.over === 'caught' ? '' : `A ${wildLv(w)} creature needs ${need}% to catch. It still turns up in the wild, so you’ll get another go.`}</p>
@@ -1884,7 +1908,9 @@
         (fx.joined || []).forEach((j) => { after += `<div class="mon-catch"><div class="mon-mate-art">${pxSprite(Object.assign({}, j, { rank: 0 }), 'front')}</div><div><h2>${esc(j.name)} joined your team!</h2><p>${esc(j.blurb)}</p></div></div>`; });
         if (fx.ranked) after += `<p class="mon-up">✨ ${esc(pal.name)} reached Lv ${fx.lvUp} and ranked up to ${'★'.repeat(fx.ranked)}</p>`;
         else if (fx.lvUp) after += `<p class="mon-up">⬆️ ${esc(pal.name)} reached Lv ${fx.lvUp}</p>`;
-        if (fx.fainted) after += `<div class="arc-verdict bad"><b>💫 ${esc(pal.name)} fainted and ${esc(fx.fainted.name)} got away.</b><span>No XP lost</span></div>`;
+        if (fx.tagIn) after += `<div class="arc-verdict bad"><b>💫 ${esc(fx.down.name)} fainted. ${esc(fx.tagIn.name)} takes over.</b><span>${esc(fx.down.name)} rests until tomorrow</span></div>`;
+        if (fx.fainted) after += `<div class="arc-verdict bad"><b>💫 ${esc(fx.down.name)} fainted and ${esc(fx.fainted.name)} got away.</b><span>No XP lost</span></div>`;
+        if (fx.perfect) after += `<div class="arc-verdict good"><b>🌟 Perfect case: ${esc(fx.caught.name)} is Mastered</b><span class="arc-gain mono">+${25 * fx.caught.tier} bonus XP</span></div>`;
         if (fx.fled) after += `<div class="arc-verdict bad"><b>${esc(fx.fled.name)} got away.</b><span>Needed ${Math.round(100 * MON_NEED[fx.fled.tier])}% of the case</span></div>`;
       } else after += `<div class="arc-verdict ${L.ok ? 'good' : 'bad'}"><b>${L.ok ? '✓ Right' : '✕ Not quite'}</b><span class="mono">${L.points} / 10</span></div>`;
       // A select-all or matching question was cut down to fit, so its last turn shows the whole answer.
