@@ -45,4 +45,44 @@ Object.assign(window.WHY, {
     2: 'Hydrocortisone is one of the weakest ocular steroids, and an ointment doesn’t give better intraocular penetration.',
     3: 'Topical NSAIDs can’t replace a steroid in AAU. They’re far too weak.',
   },
+  'drug-interactions#1': {
+    0: 'A topical β-blocker adds to oral metoprolol (bradycardia, hypotension, heart block), and it lowers IOP less in someone already β-blocked.',
+    2: 'Brimonidine is contraindicated with MAOIs such as phenelzine. Its key interaction isn’t with SSRIs.',
+    3: 'β1-selective means it acts on the heart, so it adds to metoprolol’s slowing of the heart rate.',
+  },
+  'drug-interactions#2': {
+    5: 'Statins don’t interfere with prostaglandin analogues.',
+    6: 'Latanoprost has no known effect on warfarin or the INR.',
+    7: 'Topical pilocarpine and paracetamol don’t interact.',
+  },
+  'drug-interactions#3': {
+    1: 'Phenylephrine eye drops are absorbed systemically and are contraindicated with MAOIs.',
+    2: 'Phenylephrine 2.5% is also contraindicated with MAOIs, and BP still needs checking.',
+    3: 'Tropicamide is safe with MAOIs; only the sympathomimetic (phenylephrine) is the problem.',
+  },
+  'drug-interactions#5': {
+    1: 'Prostaglandin analogues reach full effect within weeks, and the OBA guideline requires referral within 4 months of starting.',
+    2: 'A prostaglandin analogue takes a few weeks, not one dose, to reach its full effect.',
+    3: 'Endorsed optometrists do monitor treated glaucoma, in collaboration with an ophthalmologist.',
+  },
+  'systemic-drugs-eye#1': {
+    1: 'Topiramate closure is from ciliochoroidal effusion, not pupil block, so pilocarpine can worsen it and an iridotomy doesn’t help.',
+    2: 'The drug must stop. A pressure in the 40s in both eyes needs same-day referral.',
+    3: 'A sudden bilateral myopic shift with high IOP and shallow chambers is drug-induced angle closure, an emergency.',
+  },
+  'systemic-drugs-eye#2': {
+    1: 'Toxicity can appear well before 10 years, and an Amsler grid is not an adequate screening test.',
+    2: 'SD-OCT shows damage before a fundus bull’s-eye, which is a late sign; a baseline is needed.',
+    3: 'Fundoscopy finds toxicity late. Screening uses SD-OCT, fields and FAF.',
+  },
+  'systemic-drugs-eye#3': {
+    1: 'Ethambutol toxicity is often reversible if the drug is stopped early, so continuing it risks permanent loss.',
+    2: 'Optometrists don’t stop systemic medicines; changing TB treatment is the physician’s decision.',
+    3: 'This is drug toxicity, not optic neuritis, and topical steroids don’t treat optic neuropathy.',
+  },
+  'systemic-drugs-eye#4': {
+    1: 'Stopping tamsulosin doesn’t reliably remove the risk, and the surgeon must know either way.',
+    2: 'Tamsulosin blocks α1A receptors in the iris dilator, which causes floppy iris.',
+    3: 'Oxybutynin can precipitate angle closure and doesn’t prevent floppy iris syndrome.',
+  },
 });

@@ -286,6 +286,17 @@ table.t td.c, table.t th.c { text-align: center; }
 .big-score { font-family: var(--font-mono); font-size: 3.2rem; font-weight: 800; color: var(--accent); }
 .result { border: 1px solid var(--line); border-radius: var(--r); padding: .9rem 1rem; }
 .result-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .6rem; align-items: start; }
+.says.flag { border-left-color: var(--bad); background: var(--bad-soft); }
+.says.flag .who { color: var(--bad); }
+.rubric { border: 1px solid var(--line); border-radius: var(--r); padding: .9rem 1rem; display: flex; flex-direction: column; gap: .55rem; }
+.rubric-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(7.5rem, auto); gap: .7rem; align-items: center; font-size: .92rem; }
+.rubric-bar { display: inline-flex; gap: 3px; }
+.rubric-bar i { width: .9rem; height: .55rem; border-radius: 2px; background: var(--line); }
+.rubric-bar i.on { background: var(--good); }
+.rubric-bar i.on.b1, .rubric-bar i.on.b2 { background: var(--warn); }
+.redflag { border: 1px solid color-mix(in srgb, var(--bad) 40%, transparent); background: var(--bad-soft); border-radius: 9px; padding: .7rem 1rem; font-size: .92rem; }
+.redflag ul { margin: .35rem 0 0; padding-left: 1.2rem; }
+@media (max-width: 560px) { .rubric-row { grid-template-columns: minmax(0, 1fr) auto; } .rubric-row > .mono { grid-column: 1 / -1; } }
 
 /* ---------- review / question list ---------- */
 .qitem { border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); padding: .8rem 1rem; }

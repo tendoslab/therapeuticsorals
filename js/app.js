@@ -5,6 +5,7 @@
  * Optional step fields: critical (safety-critical), recall (what past candidates said vs what's correct),
  * exhibit (on reveal steps), fixedOrder (mcq/multi options keep their order), marker (the case-report marker's comment),
  * why (mcq/multi: why each wrong option is wrong, by option index; most live in js/data/why-*.js, keyed "caseId#step").
+ * domain (the exam-rubric area: 'interpretation', 'diagnosis', 'management' or 'followup'; worked out from the phase if left out).
  * Photos and printouts for a case live in js/data/images.js (window.CASE_IMAGES, keyed by case id). */
 (() => {
   'use strict';
@@ -25,7 +26,7 @@
     if (st) st.why = Object.assign({}, window.WHY[k], st.why);
   });
   // Where each case came from (matches the `years` field on every case), newest first;
-  // sources with no date follow, and your own case report comes last.
+  // sources with no date follow, then cases written for topics the exam guidelines list, and your own case report last.
   const SOURCES = [
     { id: '2025', label: '2025 orals', short: '2025' },
     { id: 'Mock 2025', label: '2025 YO mock orals', short: '2025 YO mock' },
@@ -40,6 +41,7 @@
     { id: 'Exam recall', label: 'Undated exam recall', short: 'Undated recall' },
     { id: 'Mini oral prep', label: 'Mini oral prep', short: 'Mini oral' },
     { id: 'Practice orals', label: 'Practice orals deck', short: 'Practice deck' },
+    { id: 'Exam guidelines', label: 'Written for the 2026 exam guidelines', short: 'Exam guidelines' },
     { id: 'My case report', label: 'My case report (RCE / EBMD)', short: 'My report' },
   ];
   const sourceLabel = (id) => (SOURCES.find((s) => s.id === id) || { label: id }).label;
@@ -100,6 +102,28 @@
   const sourceRank = (id) => { const i = SOURCES.findIndex((s) => s.id === id); return i < 0 ? SOURCES.length : i; };
   const sourcePills = (c) => [...(c.years || [])].sort((a, b) => sourceRank(a) - sourceRank(b)).map((y) => `<span class="pill">${esc(sourceLabel(y))}</span>`).join('');
   const scored = (c) => c.steps.map((s, i) => i).filter((i) => c.steps[i].type !== 'reveal');
+  // The exam's marking rubric: four areas, each marked 0–5, for a total out of 20 (OPTM8523 exam guidelines).
+  // A step can set `domain`; otherwise its phase label (then its question) decides, first matching rule wins.
+  const DOMAINS = [
+    { id: 'interpretation', label: 'Clinical interpretation & work-up' },
+    { id: 'diagnosis', label: 'Diagnosis & clinical reasoning' },
+    { id: 'management', label: 'Management & therapeutic prescribing' },
+    { id: 'followup', label: 'Follow-up, prognosis & ongoing care' },
+  ];
+  const DOMAIN_RULES = [
+    ['interpretation', /review of systems|\bhistory|\bwork.?up|\binvestigat|\btests?\b|\btesting|\bdescribe|what do you see|\binterpret|gonioscop|printout|reliab|perimetry|colour vision|\bassess (the|iop)|angle assessment/i],
+    ['followup', /follow.?up|\breview|prognos|recurr|natural history|long.?term|what now|\bmonitor|endpoint|escalat|adherence|maintenance|not respond|non.?respon|treatment fail|worsen|twist|expected course|months later|weeks later|progress(ing|ion)? despite|look for progression|at review|once it heals|still stuck|isn.t (enough|working)|haven.t broken|conver(t|sion)|fellow eye has an attack|prevention|worse or better|has it worked|if it recurs|after lpi|complications|timeline/i],
+    ['management', /\bmanag|\btreat|\bdrugs?\b|\bdrops?\b|\bdos(e|ing)|regimen|prescri|\bmoa\b|mechanism of action|contraindic|precaution|interact|pregnan|breastfeed|\brefer|urgen|triage|\bscope|\bpbs\b|medicare|legislat|\boba\b|\btaper|steroid|antibiot|antivir|β-blocker|β1|pilocarpine|acetazolamide|\bslt\b|laser|surgery|first aid|\bplan\b|therap|pharmacolog|side effect|adverse|atropine|phenylephrine|cyclopentolate|timolol|betaxolol|latanoprost|\bpgas?\b|cipro|oflox|chloramphenicol|nsaid|mast.cell|pred forte|flarex|what do you do|what next|next step|options|advice|what changes|in the chair|interim|wait|gp or ophthalmologist|safeguard|\btarget|\bscut\b|\bmutt\b|studies|trial|iop.lowering|break them|handle|prophylaxis|alternatives|vaccination|counsel|supplements|fenofibrate|letter|communication|script|safety|first step|getting to hospital|hyperosmotic|irrigation/i],
+    ['diagnosis', /differenti|diagnos|classif|grad(e|ing)|\bstag|locali[sz]|cause|pathophys|pathogen|mechanism|aetiolog|\bvs\b|versus|associat|risk|organism|profile|material|red flags|look different|tell (it|this|them) (apart|from)|distinguish|why is it tricky|pattern|refine|why does|how does .* form|sterile or infectious|or kps|uveitis or closure|pds or pg|what can high iop do|what could be damaged|systemic conditions|theories/i],
+    ['interpretation', /\bsigns?\b|symptom|\bfield|\boct\b|\bcct\b|examin|measure|\bimage|photo|\bask\b|fluctuation|dilate|assessment|findings to record|other injuries|reduced va|vision|\bkps\b/i],
+  ];
+  const domainOf = (st) => st.domain || (DOMAIN_RULES.find(([, re]) => re.test(st.phase || ''))
+    || DOMAIN_RULES.find(([, re]) => re.test(strip(st.question || ''))) || ['diagnosis'])[0];
+  // Rubric band from the share of marks in an area: 5 Excellent, 3–4 Satisfactory, 1–2 Borderline, 0 Unsatisfactory.
+  const band = (pct) => (pct >= 90 ? 5 : pct >= 80 ? 4 : pct >= 70 ? 3 : pct >= 55 ? 2 : pct >= 40 ? 1 : 0);
+  const bandName = (m) => (m === 5 ? 'Excellent' : m >= 3 ? 'Satisfactory' : m >= 1 ? 'Borderline' : 'Unsatisfactory');
+  // Red flag principle: a sight- or life-threatening plan can fail the oral whatever the other marks.
+  const redFlags = (results) => results.filter((r) => r.c.steps[r.s].critical && r.points < STEP_PASS);
   const caseMissed = (c) => c.steps.some((_, i) => saved.missed[stepKey(c, i)]) || (saved.cases[c.id] && saved.cases[c.id].last < PASS_PCT);
   const missedKeys = () => Object.keys(saved.missed).filter((k) => {
     const [id, i] = k.split('#');
@@ -591,12 +615,38 @@
       </section></div>`;
   }
 
+  // The session marked the way the panel marks: each rubric area out of 5, and (for a mock) a total out of 20.
+  function rubricPanel(results, mock) {
+    if (!results.length) return '';
+    const areas = DOMAINS.map((d) => {
+      const rs = results.filter((r) => domainOf(r.c.steps[r.s]) === d.id);
+      const pct = rs.length ? (100 * rs.reduce((a, r) => a + r.points, 0)) / (rs.length * PTS) : null;
+      return { ...d, n: rs.length, pct, mark: pct === null ? null : band(pct) };
+    });
+    const asked = areas.filter((a) => a.mark !== null);
+    const total = Math.round((20 * asked.reduce((t, a) => t + a.mark, 0)) / (5 * asked.length));
+    const flags = redFlags(results);
+    const rowsHtml = areas.map((a) => `<div class="rubric-row">
+        <span>${a.label}<span class="muted"> · ${a.n ? `${a.n} question${a.n === 1 ? '' : 's'}` : 'not asked'}</span></span>
+        <span class="rubric-bar" aria-hidden="true">${range(5).map((i) => `<i class="${a.mark !== null && i < a.mark ? `on b${a.mark}` : ''}"></i>`).join('')}</span>
+        <span class="mono">${a.mark === null ? '–' : `${a.mark}/5 <span class="muted">${bandName(a.mark)}</span>`}</span></div>`).join('');
+    return `<div class="rubric">
+      <div class="row" style="justify-content:space-between;align-items:baseline"><p class="label" style="margin:0">Exam rubric · each area 25%</p>
+        ${mock ? `<span class="mono"><b>${total}</b> / 20${asked.length < 4 ? ' <span class="muted">(scaled to the areas asked)</span>' : ''}</span>` : ''}</div>
+      ${rowsHtml}
+      ${flags.length ? `<div class="redflag"><b>🚩 Red flag${flags.length === 1 ? '' : 's'}</b>${mock ? ': these alone could fail the oral' : ''}<ul>${flags.map((r) => `<li>${esc(r.c.title)}: ${r.c.steps[r.s].question}</li>`).join('')}</ul></div>` : ''}
+      <p class="muted" style="font-size:.82rem;margin:0">Bands follow the rubric (5 Excellent, 3–4 Satisfactory, 1–2 Borderline, 0 Unsatisfactory), taken from your share of marks in each area. The guidelines don't publish a pass mark; Satisfactory (3+) in every area with no red flag is the safe target.</p>
+    </div>`;
+  }
+
   function viewEnd() {
     const s = sim.s;
     const pct = s.max ? Math.round((100 * s.score) / s.max) : 0;
-    const msg = pct >= 90 ? 'Excellent. Safe, structured and you could justify your choices: exactly what the panel wants.'
-      : pct >= PASS_PCT ? 'A solid pass. Tighten up the weaker steps below, especially contraindications, doses and referral timing.'
-        : 'Not there yet. Work through the missed questions, the Answer audit and the safety-critical red flags before the real thing.';
+    const flags = redFlags(s.results);
+    const msg = flags.length && s.mode === 'mock' ? `Red flag. You missed ${flags.length === 1 ? 'a safety-critical question' : `${flags.length} safety-critical questions`} (listed below). Under the red flag principle, a sight- or life-threatening plan can fail the oral whatever your other marks.`
+      : pct >= 90 ? 'Excellent. Safe, structured and you could justify your choices: exactly what the panel wants.'
+        : pct >= PASS_PCT ? 'A solid pass. Tighten up the weaker steps below, especially contraindications, doses and referral timing.'
+          : 'Not there yet. Work through the missed questions, the Answer audit and the safety-critical red flags before the real thing.';
     const cases = [...new Set(s.items.map((x) => x.c))];
     const rows = cases.map((c) => {
       const rs = s.results.filter((r) => r.c === c);
@@ -613,7 +663,8 @@
     return `<section class="card stack" style="max-width:52rem;margin:1rem auto">
       <p class="label">${s.timeUp ? "🔔 Time's up" : 'Session complete'} · ${{ practice: 'Practice summary', mock: 'Mock oral · panel verdict', drill: 'Mistakes drill' }[s.mode]}</p>
       <div class="row" style="align-items:baseline"><span class="big-score">${s.score}</span><span class="muted mono" style="font-size:1.4rem">/ ${s.max} · ${pct}%</span></div>
-      <div class="says"><span class="who">Final feedback</span><p>${msg}</p></div>
+      <div class="says ${flags.length && s.mode === 'mock' ? 'flag' : ''}"><span class="who">Final feedback</span><p>${msg}</p></div>
+      ${rubricPanel(s.results, s.mode === 'mock')}
       <div class="stack" style="gap:.7rem">${rows}</div>
       <div class="row"><button class="btn primary" data-act="restart">Back to setup</button><a class="btn" href="#review">All my mistakes</a></div>
     </section>`;
@@ -783,9 +834,32 @@
   function renderGuide() {
     const card = (title, html, hue) => `<section class="card hue-top prose" style="--h:${hue}"><h2 style="font-size:1.1rem;margin-bottom:.6rem">${title}</h2>${html}</section>`;
     view.innerHTML = `<div class="fade">
-      <section class="hero"><div><p class="label">Exam guide</p><h1>How the real oral runs</h1><p>Pieced together from candidate recalls across 2016–2025.</p></div></section>
+      <section class="hero"><div><p class="label">Exam guide</p><h1>How the real oral runs</h1><p>The official OPTM8513/8523 exam guidelines first, then what candidate recalls from 2016–2025 add.</p></div></section>
       <div class="guide-grid">
-        ${card('Format', `<ul>
+        ${card('Official: the 2026 oral', `<ul>
+          <li><strong>Monday 23 – Thursday 26 November 2026</strong> (see the schedule for your slot), in person, <strong>Lederer Meeting Room 3.001</strong>.</li>
+          <li>About <strong>20 minutes</strong> (it can vary) with <strong>two therapeutically qualified examiners</strong>.</li>
+          <li>Worth <strong>35%</strong> of the final grade, and a <strong>hurdle</strong>: you must pass the oral to pass the course.</li>
+          <li>Covers cases suited to optometric management, your written case report, legislation and other therapeutic topics. To pass, show <strong>safe, competent</strong> prescribing in an Australian and/or New Zealand setting.</li>
+          <li>Re-read your <strong>case report and reflection task feedback</strong>: either may open the discussion.</li></ul>`, 225)}
+        ${card('Official: how it is marked', `<p>Out of <strong>20</strong>: four areas, each 25% and marked 0–5 (5 Excellent, 3–4 Satisfactory, 1–2 Borderline, 0 Unsatisfactory).</p><ol>
+          <li><strong>Clinical interpretation &amp; work-up</strong>: interpret the key findings; choose and justify further history, examination and tests.</li>
+          <li><strong>Diagnosis &amp; clinical reasoning</strong>: a reasoned working diagnosis, differentials excluded with reasons, correct grading, classification and terminology.</li>
+          <li><strong>Management &amp; therapeutic prescribing</strong>: a safe, evidence-based plan; contraindications, precautions, interactions, adverse effects; legislation; referral, urgency and co-management.</li>
+          <li><strong>Follow-up, prognosis &amp; ongoing care</strong>: review timing, monitoring, treatment endpoints, expected course, recurrence and complications, and what you change if treatment fails.</li></ol>
+          <p>Needing <em>prompting</em> costs marks: occasional prompting is still Satisfactory, substantial prompting is Borderline. The simulator's end screen marks your session in these four areas.</p>`, 290)}
+        ${card('Official: the red flag principle', `<p>You can be <strong>failed on the oral whatever your other marks</strong> if a proposed plan is sight- or life-threatening. Know the absolute and relative contraindications of each medicine, how to manage ocular emergencies, and when to refer immediately.</p>
+          <p>In the simulator, these are the questions marked safety-critical. Miss one in a mock oral and the verdict is a red flag.</p>`, 0)}
+        ${card('Official: what to be ready for', `<ul>
+          <li>Pathology slides and images; interpreting images of the eye, the visual pathway, fields and OCT.</li>
+          <li>Quick changes of topic, and alternative patients or histories when you discuss treatment, including <strong>special populations</strong>.</li>
+          <li>Considering and excluding differentials; grading systems and correct nomenclature.</li>
+          <li>The <strong>OBA Guidelines for use of scheduled medicines</strong>.</li>
+          <li>Mechanism of action of drug classes; contraindications, precautions, adverse effects and <strong>drug interactions</strong>.</li>
+          <li><strong>Ocular effects of systemic drugs</strong> and <strong>systemic effects of ocular drugs</strong>.</li>
+          <li>Dose, frequency, follow-up period, and what to do if the response isn't what you expected.</li>
+          <li>Key clinical trials and guidelines, and how they change management; treatment endpoints and referral indications.</li></ul>`, 170)}
+        ${card('From recalls: format', `<ul>
           <li><strong>~20 minutes</strong>, two examiners: usually one runs an <strong>anterior-eye</strong> case and the other a <strong>glaucoma / posterior / neuro</strong> case. Each examiner only asks about their own case.</li>
           <li>Many sessions open with <strong>case report questions</strong> (“What did you learn?”, then questions built from the marker's feedback). Some panels skip them.</li>
           <li>If you're quick, expect a <strong>third or fourth case</strong>. Finishing early is not a bad sign. They will stop you once you've said enough.</li>
