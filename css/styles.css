@@ -451,8 +451,12 @@ table.t td.c, table.t th.c { text-align: center; }
 .bt-pad.pal { left: -6%; bottom: -7%; width: 58%; height: 22%; background: radial-gradient(closest-side, #c7ec8c 0 55%, #9cd15f 70%, #79b648 86%, #e9f7b9 100%); }
 .bt-mon { position: absolute; line-height: 1; transform-origin: 50% 100%; }
 .bt-mon.foe { right: 26%; top: 48%; transform: translate(50%, -100%); font-size: clamp(3rem, 12cqw, 6rem); }
-.bt-mon.pal { left: 25%; bottom: 3%; transform: translateX(-50%); font-size: clamp(4rem, 17cqw, 8.5rem); }
-.bt-mon.pal span { transform: scaleX(-1); }
+.bt-mon.pal { left: 25%; bottom: 3%; transform: translateX(-50%); font-size: clamp(4rem, 17cqw, 8.5rem); --fw: clamp(9rem, calc(34cqw * (1 + .08 * var(--rank, 0))), 18rem); margin-bottom: calc(var(--fw) * -.22); }
+.bt-mon.pal::after { bottom: calc(var(--fw) * .2); left: 30%; right: 30%; }
+.bt-mon.pal.animal { --fw: clamp(7rem, calc(26cqw * (1 + .08 * var(--rank, 0))), 13.5rem); } /* animal sheets fill more of their frame */
+.bt-mon.pal.animal::after { bottom: calc(var(--fw) * .22); left: 32%; right: 32%; }
+.bt-mon.pal .bt-fx { filter: drop-shadow(0 0 calc(var(--rank, 0) * 4px) color-mix(in srgb, #ffe680 calc(var(--rank, 0) * 45%), transparent)); }
+.bt-rank { font-style: normal; color: #d89a00; font-size: .8em; text-shadow: none; }
 .bt-mon::after { content: ""; position: absolute; left: 12%; right: 12%; bottom: -.06em; height: .14em; border-radius: 50%; background: rgba(40, 70, 20, .28); z-index: -1; }
 .bt-fx, .bt-mon span { display: block; transform-origin: 50% 100%; }
 .bt-mon.gone { visibility: hidden; }
@@ -489,11 +493,27 @@ table.t td.c, table.t th.c { text-align: center; }
 .bt-pop.hurt { right: auto; left: 22%; top: 46%; }
 .bt-throw { position: absolute; left: 74%; top: 34%; width: 1.6rem; height: 1.6rem; margin: -.8rem 0 0 -.8rem; z-index: 2; }
 .bt-ask { margin-top: 1rem; }
+/* Pixel sprites: one frame of a sheet, stepped through with background-position. --fw is the frame size on screen. */
+.px { --fw: 6rem; display: block; width: var(--fw); height: var(--fw); background-repeat: no-repeat; image-rendering: pixelated;
+  background-size: calc(var(--cols) * var(--fw)) calc(var(--rows) * var(--fw)); background-position: 0 calc(var(--row) * var(--fw) * -1); }
+.bt-mon .px { --fw: inherit; }
+.px.mon-sil { opacity: .3; }
+.mon-pick { width: 9rem; height: 7.4rem; margin: -.4rem auto -.6rem; display: grid; place-items: end center; border-radius: 50% / 30%; background: radial-gradient(42% 16% at 50% 84%, hsl(var(--h) 55% 72% / .8), transparent 75%); }
+.mon-pick .px { --fw: 9rem; margin-bottom: -1.6rem; }
+.mon-team { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); gap: .7rem; }
+.mon-mate { display: flex; gap: .6rem; align-items: center; padding: .6rem .7rem .6rem .2rem; border-radius: var(--r); border: 1px solid var(--line); background: var(--surface); }
+.mon-mate.now { border-color: hsl(var(--h) var(--tint-s) var(--tint-mid)); box-shadow: 0 0 0 2px hsl(var(--h) var(--tint-s) var(--tint-mid)); background: hsl(var(--h) var(--tint-s) var(--tint-bg)); }
+.mon-mate.locked { background: var(--surface-2); }
+.mon-mate-art { flex: none; width: 4.6rem; height: 4.6rem; display: grid; place-items: center; overflow: hidden; }
+.mon-mate-art .px { --fw: 6.4rem; margin-top: -.6rem; }
+.mon-mate-info { flex: 1; min-width: 0; font-size: .88rem; }
+.mon-mate-info p { margin: .25rem 0 .35rem; font-size: .8rem; }
+.mon-mate-info .bt-hp { margin-top: .3rem; max-width: 12rem; }
+.mon-catch .mon-mate-art { background: var(--surface); border-radius: 50%; }
 .bt-moves { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: .55rem; }
 .bt-moves .bt-move { border-width: 2px; border-radius: 12px; }
 .bt-moves button.bt-move:hover { transform: translateY(-2px); box-shadow: 0 4px 0 color-mix(in srgb, var(--accent) 40%, transparent); }
 .mon-today { margin-top: 1rem; }
-.mon-pick { width: 6rem; height: 4.6rem; margin: 0 auto -.3rem; display: grid; place-items: end center; font-size: 3.4rem; line-height: 1; border-radius: 50% / 30%; background: radial-gradient(50% 22% at 50% 88%, hsl(var(--h) 55% 72% / .7), transparent 75%); }
 @container (max-width: 560px) {
   .bt-bar, .bt.hunt .bt-bar { grid-template-columns: minmax(0, 1fr); }
   .bt.hunt .bt-side { display: none; }
@@ -505,30 +525,36 @@ table.t td.c, table.t th.c { text-align: center; }
 @media (prefers-reduced-motion: no-preference) {
   /* Idle: both creatures breathe, slower when low on HP (the engine halves the sprite speed at a quarter HP). */
   .bt-mon.foe span { animation: bt-bob 1.8s ease-in-out infinite; }
-  .bt-mon.pal span { animation: bt-bob-pal 1.4s ease-in-out infinite; }
   .bt-mon.slow span { animation-duration: 3.4s; }
+  .px { animation: px-play calc(var(--n) * var(--ms) * var(--slow, 1) * 1ms) steps(var(--n), jump-none) infinite; }
+  .px.once { animation-iteration-count: 1; animation-fill-mode: forwards; }
+  .bt-mon.slow { --slow: 2; } /* the engine halves sprite speed at a quarter HP */
+  @keyframes px-play { from { background-position-x: 0; } to { background-position-x: calc((var(--n) - 1) * var(--fw) * -1); } }
+  .bt.swap .bt-mon.pal.animal .bt-fx { scale: 0; opacity: 0; }
+  .bt.swap.go .bt-mon.pal.animal .bt-fx { scale: 1; opacity: 1; transition: scale .45s cubic-bezier(.3, 1.6, .5, 1), opacity .2s; }
+  .bt-mon.pal.bt-back .bt-fx { animation: bt-recall .45s ease-in forwards; }
+  @keyframes bt-recall { to { scale: 0; opacity: 0; filter: brightness(3) sepia(1) hue-rotate(-30deg) saturate(5); } }
   .bt-sky::before { animation: bt-drift 38s linear infinite; }
   .bt-sky { animation: bt-shimmer 9s ease-in-out infinite alternate; }
-  .mon-pick span { animation: bt-bob 1.6s ease-in-out infinite; animation-delay: calc(var(--i) * -.5s); }
   @keyframes bt-bob { 50% { transform: translateY(-5%) scaleY(1.03); } }
-  @keyframes bt-bob-pal { 50% { transform: scaleX(-1) translateY(-3%) scaleY(1.02); } 0%, 100% { transform: scaleX(-1); } }
   @keyframes bt-drift { to { transform: translateX(-33%); } }
   @keyframes bt-shimmer { to { filter: hue-rotate(-8deg) saturate(1.1); } }
 
   /* Intro: white flash, platforms slide in from opposite sides, the wild silhouette fills in, then the
-     companion is sent out with a burst. JS adds .in1 and .in2 in turn and drops .intro when done. */
-  .bt.intro .bt-pad.foe, .bt.intro .bt-mon.foe { translate: -130cqw 0; }
-  .bt.intro .bt-pad.pal { translate: 130cqw 0; }
-  .bt.intro .bt-mon.foe .bt-fx { filter: brightness(0); }
-  .bt.intro .bt-box.foe { translate: -110% 0; }
-  .bt.intro .bt-box.pal { translate: 110% 0; }
-  .bt.intro .bt-mon.pal .bt-fx { scale: 0; opacity: 0; }
-  .bt.intro .bt-cmd, .bt.intro .bt-mon.pal::after { opacity: 0; }
+     companion is sent out with a burst. JS adds .in1 and .in2 in turn and drops .bt-intro when done. */
+  .bt.bt-intro .bt-pad.foe, .bt.bt-intro .bt-mon.foe { translate: -130cqw 0; }
+  .bt.bt-intro .bt-pad.pal { translate: 130cqw 0; }
+  .bt.bt-intro .bt-mon.foe .bt-fx { filter: brightness(0); }
+  .bt.bt-intro .bt-box.foe { translate: -110% 0; }
+  .bt.bt-intro .bt-box.pal { translate: 110% 0; }
+  .bt.bt-intro .bt-mon.pal .bt-fx { scale: 0; opacity: 0; }
+  .bt.bt-intro .bt-cmd, .bt.bt-intro .bt-mon.pal::after { opacity: 0; }
   .bt.in1 .bt-pad, .bt.in1 .bt-mon.foe { translate: 0 0; transition: translate .9s cubic-bezier(.2, .8, .3, 1); }
   .bt.in1 .bt-mon.foe .bt-fx { filter: none; transition: filter .6s .9s; }
   .bt.in1 .bt-box.foe { translate: 0 0; transition: translate .4s 1.1s ease-out; }
   .bt.in1 .bt-stage::after { content: ""; position: absolute; inset: 0; background: #fff; z-index: 5; pointer-events: none; animation: bt-white .6s ease-out forwards; }
   .bt.in2 .bt-mon.pal .bt-fx { scale: 1; opacity: 1; transition: scale .45s cubic-bezier(.3, 1.6, .5, 1), opacity .2s; }
+  .bt.in2 .bt-mon.pal.char .bt-fx { transition: none; }
   .bt.in2 .bt-mon.pal::before { content: ""; position: absolute; left: 50%; bottom: 40%; width: 1em; height: 1em; margin-left: -.5em; border-radius: 50%; background: radial-gradient(#fff, rgba(255, 255, 255, 0) 70%); animation: bt-burst .6s ease-out forwards; }
   .bt.in2 .bt-box.pal { translate: 0 0; transition: translate .4s .3s ease-out; }
   .bt.in2 .bt-cmd { opacity: 1; transition: opacity .4s .6s; }

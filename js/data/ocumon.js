@@ -1,19 +1,37 @@
-// Ocumon: the companions you raise and the wild eye conditions you catch (see the Ocumon tab).
+// Ocumon: the partners you raise and the wild eye conditions you catch (see the Ocumon tab).
 // Each wild creature belongs to a topic and fights with the questions from the cases whose title or
 // theme matches `match` (case-insensitive); a hunt tops the pool up with other questions from the topic.
 // Run `node tools/check-ocumon.js` after editing. `tier` 1 common, 2 uncommon, 3 rare (more HP, more XP).
 // `hint` is the line shown once caught; keep it short and clinically right.
 window.OCUMON = {
-  starters: [
-    { id: 'owl', hue: 35, stages: [
-      { name: 'Hootlet', icon: '🐣' }, { name: 'Strigil', icon: '🦉' }, { name: 'Nightsight', icon: '🦅' }],
-      blurb: 'Huge eyes for low light. Hits hardest on glaucoma and neuro questions.', strong: ['glaucoma', 'neuro', 'retina'] },
-    { id: 'cat', hue: 195, stages: [
-      { name: 'Kitlet', icon: '🐱' }, { name: 'Tapetail', icon: '🐈' }, { name: 'Lucidon', icon: '🐆' }],
-      blurb: 'Shines a tapetum at the slit lamp. Hits hardest on cornea and uveitis questions.', strong: ['cornea', 'uveitis', 'professional'] },
-    { id: 'lizard', hue: 140, stages: [
-      { name: 'Chamelet', icon: '🦎' }, { name: 'Swivelid', icon: '🐊' }, { name: 'Dracornea', icon: '🐉' }],
-      blurb: 'Each eye swivels on its own. Hits hardest on lids, allergy and conjunctiva questions.', strong: ['allergy', 'conj', 'professional'] },
+  // Partners: the Ocumon you raise. Pick a starter, and a new partner joins every MON_UNLOCK new catches,
+  // in this order. `sprite` is a sheet in img/sprites: 'animal' sheets are the Little Animals Pack
+  // (free to use, not to resell), 'char' sheets are 72 Cute Pixel Character (BDragon1727, free licence).
+  // `strong` topics take ×1.25 damage. Each partner keeps its own level.
+  partners: [
+    { id: 'kitlet', name: 'Kitlet', sprite: 'cat', kind: 'animal', hue: 350, starter: true, strong: ['cornea', 'uveitis'], blurb: 'Shines a tapetum at the slit lamp. Strong on cornea and uveitis.' },
+    { id: 'hopticus', name: 'Hopticus', sprite: 'bunny', kind: 'animal', hue: 220, starter: true, strong: ['neuro', 'retina'], blurb: 'Ears up for every field defect. Strong on neuro and retina.' },
+    { id: 'blinkster', name: 'Blinkster', sprite: 'char-1', kind: 'char', hue: 45, starter: true, strong: ['allergy', 'conj'], blurb: 'Never stops blinking. Strong on lids, allergy and conjunctiva.' },
+    { id: 'ursight', name: 'Ursight', sprite: 'bear', kind: 'animal', hue: 30, strong: ['glaucoma', 'professional'], blurb: 'Slow, steady and hard to fool on pressure. Strong on glaucoma and prescribing rules.' },
+    { id: 'rosacea', name: 'Rosacea', sprite: 'char-6', kind: 'char', hue: 330, strong: ['allergy', 'cornea'], blurb: 'Flushes pink and fights back at the lid margin. Strong on lids and cornea.' },
+    { id: 'patchbeard', name: 'Patchbeard', sprite: 'char-9', kind: 'char', hue: 260, strong: ['neuro', 'professional'], blurb: 'Patched one eye as a boy and never looked back. Strong on neuro and prescribing rules.' },
+    { id: 'pinkeye', name: 'Pinkeye', sprite: 'pig', kind: 'animal', hue: 340, strong: ['conj', 'allergy'], blurb: 'Red, sticky and cheerful about it. Strong on conjunctiva and allergy.' },
+    { id: 'mohawkeye', name: 'Mohawkeye', sprite: 'char-4', kind: 'char', hue: 120, strong: ['glaucoma', 'retina'], blurb: 'Spikes up like an IOP trace. Strong on glaucoma and retina.' },
+    { id: 'lupupil', name: 'Lupupil', sprite: 'wolf', kind: 'animal', hue: 210, strong: ['uveitis', 'glaucoma'], blurb: 'Howls at a fixed, mid-dilated pupil. Strong on uveitis and glaucoma.' },
+    { id: 'visorian', name: 'Visorian', sprite: 'char-14', kind: 'char', hue: 220, strong: ['cornea', 'professional'], blurb: 'Never takes off the eye protection. Strong on cornea and prescribing rules.' },
+    { id: 'foxglove', name: 'Foxglove', sprite: 'char-15', kind: 'char', hue: 25, strong: ['retina', 'neuro'], blurb: 'Sees the world a little yellow. Strong on retina and neuro.' },
+    { id: 'redreflex', name: 'Redreflex', sprite: 'char-3', kind: 'char', hue: 10, strong: ['retina', 'uveitis'], blurb: 'Checks every red reflex twice. Strong on retina and uveitis.' },
+    { id: 'nightblind', name: 'Nightblind', sprite: 'char-13', kind: 'char', hue: 235, strong: ['retina', 'glaucoma'], blurb: 'Moves in the dark, mostly by memory. Strong on retina and glaucoma.' },
+    { id: 'capsulo', name: 'Capsulo', sprite: 'char-5', kind: 'char', hue: 200, strong: ['uveitis', 'cornea'], blurb: 'Keeps a close eye on the lens capsule. Strong on uveitis and cornea.' },
+    { id: 'irisius', name: 'Irisius', sprite: 'char-10', kind: 'char', hue: 0, strong: ['uveitis', 'conj'], blurb: 'A crest the colour of an inflamed iris. Strong on uveitis and conjunctiva.' },
+    { id: 'cyanopsia', name: 'Cyanopsia', sprite: 'char-8', kind: 'char', hue: 190, strong: ['neuro', 'professional'], blurb: 'Everything looks a bit blue today. Strong on neuro and prescribing rules.' },
+    { id: 'greenlid', name: 'Greenlid', sprite: 'char-7', kind: 'char', hue: 150, strong: ['allergy', 'conj'], blurb: 'Hat pulled down over a swollen lid. Strong on allergy and conjunctiva.' },
+    { id: 'sparticle', name: 'Sparticle', sprite: 'char-12', kind: 'char', hue: 210, strong: ['glaucoma', 'cornea'], blurb: 'Shields up against foreign bodies. Strong on glaucoma and cornea.' },
+    { id: 'spikecone', name: 'Spikecone', sprite: 'char-2', kind: 'char', hue: 100, strong: ['retina', 'allergy'], blurb: 'Hair like a field of cones. Strong on retina and allergy.' },
+    { id: 'shadowscope', name: 'Shadowscope', sprite: 'char-11', kind: 'char', hue: 240, strong: ['neuro', 'glaucoma'], blurb: 'Finds the scotoma you missed. Strong on neuro and glaucoma.' },
+    { id: 'prismo', name: 'Prismo', sprite: 'char-16', kind: 'char', hue: 275, strong: ['neuro', 'conj'], blurb: 'Bends light, and diplopia, to its will. Strong on neuro and conjunctiva.' },
+    { id: 'goggleon', name: 'Goggleon', sprite: 'char-17', kind: 'char', hue: 355, strong: ['professional', 'cornea'], blurb: 'Reads every product information sheet. Strong on prescribing rules and cornea.' },
+    { id: 'mouches', name: 'Mouches', sprite: 'char-18', kind: 'char', hue: 35, strong: ['retina', 'uveitis'], blurb: 'Drifts across your vision like a floater. Strong on retina and uveitis.' },
   ],
   wild: [
     // Glaucoma & IOP
