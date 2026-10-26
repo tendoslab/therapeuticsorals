@@ -35,6 +35,15 @@ window.CASE_AUDIO = {
     [231.3,"7. Pregnancy"],
     [276.5,"8. β-blocker timing"]
   ] },
+  "oht-slt": { src: "audio/oht-slt.mp3", dur: 200.1, chapters: [
+    [0,"The case"],
+    [15.9,"1. Work-up"],
+    [44.8,"2. Results"],
+    [57,"3. OHTS risk factors"],
+    [85.4,"4. SLT"],
+    [124.7,"5. Residual IOP"],
+    [165.6,"6. Beyond glaucoma"]
+  ] },
   "pds": { src: "audio/pds.mp3", dur: 311, chapters: [
     [0,"The case"],
     [25.2,"1. Diagnosis & signs"],
