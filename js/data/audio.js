@@ -1,18 +1,18 @@
 // Listen-along audio for each case, made by tools/narrate.js with VoiceStudio. Generated: don't edit by hand.
 // { caseId: { src, dur (seconds), chapters: [[start seconds, label], ...] } }
 window.CASE_AUDIO = {
-  "aac-first-aid": { src: "audio/aac-first-aid.mp3", dur: 511.3, chapters: [
+  "aac-first-aid": { src: "audio/aac-first-aid.mp3", dur: 515, chapters: [
     [0,"The case"],
-    [30.1,"1. Describe & differentials"],
-    [86.4,"2. Differentiating PSS"],
-    [127.8,"3. Confirming the mechanism"],
-    [162.3,"4. Results"],
-    [182.9,"5. First aid for THIS patient"],
-    [251.7,"6. Contraindications"],
-    [310.5,"7. Getting acetazolamide"],
-    [356,"8. Vomiting"],
-    [393.9,"9. Pilocarpine"],
-    [443,"10. Definitive care"]
+    [29.9,"1. Describe & differentials"],
+    [88.8,"2. Differentiating PSS"],
+    [130.6,"3. Confirming the mechanism"],
+    [164.1,"4. Results"],
+    [184.6,"5. First aid for THIS patient"],
+    [254,"6. Contraindications"],
+    [312.6,"7. Getting acetazolamide"],
+    [358.2,"8. Vomiting"],
+    [396.4,"9. Pilocarpine"],
+    [445.2,"10. Definitive care"]
   ] },
   "angle-recession": { src: "audio/angle-recession.mp3", dur: 237.2, chapters: [
     [0,"The case"],
@@ -95,12 +95,12 @@ window.CASE_AUDIO = {
     [283.1,"8. Referral & review"],
     [338.7,"9. Review schedule"]
   ] },
-  "steroid-response": { src: "audio/steroid-response.mp3", dur: 206, chapters: [
+  "steroid-response": { src: "audio/steroid-response.mp3", dur: 212.3, chapters: [
     [0,"The case"],
-    [20.7,"1. Mechanism"],
-    [52,"2. Who responds"],
-    [77.2,"3. Numbers"],
-    [112.2,"4. Penetration"],
-    [145.9,"5. Management"]
+    [21,"1. Mechanism"],
+    [51.7,"2. Who responds"],
+    [79.8,"3. Numbers"],
+    [114.9,"4. Penetration"],
+    [149.7,"5. Management"]
   ] }
 };

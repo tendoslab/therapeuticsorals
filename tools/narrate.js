@@ -9,6 +9,10 @@
 //   --url URL        VoiceStudio backend (default http://127.0.0.1:3900; the desktop app's backend)
 // Voices are set in tools/narrate-voices.json. Clips are cached in tools/.narrate-cache (git-ignored) by voice
 // and text, so a rerun only re-speaks what changed. Needs ffmpeg on the PATH.
+// Every new clip is transcribed back with VoiceStudio's speech-to-text; a clip that doesn't match its text
+// (the engine sometimes babbles on dense jargon) is re-spoken with another seed, up to RETRIES times.
+//   --no-check       skip that check
+//   --recheck        also check clips already in the cache, and re-speak the bad ones
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -20,10 +24,15 @@ const THINK = 4;         // seconds to answer in your head before the model answ
 const GAP = 0.6;         // between lines
 const TURN = 1.5;        // when the speaker changes
 const MAX_CHARS = 500;   // longest piece sent in one request (split at sentence ends)
+const MATCH = 0.6;       // share of words the transcript must get back for a clip to pass
+const RETRIES = 4;       // fresh seeds to try when a clip fails
 
 const args = process.argv.slice(2);
 const flag = (n) => { const i = args.indexOf(n); return i < 0 ? null : args.splice(i, 2)[1]; };
-const dry = args.includes('--dry-run') && !!args.splice(args.indexOf('--dry-run'), 1);
+const bool = (n) => args.includes(n) && !!args.splice(args.indexOf(n), 1);
+const dry = bool('--dry-run');
+const check = !bool('--no-check');
+const recheck = bool('--recheck');
 const only = (flag('--cases') || '').split(',').filter(Boolean);
 const url = (flag('--url') || process.env.VOICESTUDIO_URL || 'http://127.0.0.1:3900').replace(/\/$/, '');
 if (!args.length) { console.log('Usage: node tools/narrate.js <case file> [...] [--dry-run] [--cases a,b] [--url URL]'); process.exit(1); }
@@ -64,14 +73,14 @@ function speak(html) {
   return s && !/[.?!]$/.test(s) ? `${s}.` : s;
 }
 const sentence = (s) => (s ? (/[.?!]$/.test(s.trim()) ? s.trim() : `${s.trim()}.`) : '');
-const listOf = (xs) => xs.map(speak).join(' ');
-
+// The model answer as separate lines: a list of key points run together into one request is the
+// text the engine is most likely to babble on.
 function modelAnswer(st) {
-  if (st.type === 'viva') return listOf(st.points);
-  if (st.type === 'mcq') return speak(st.options[st.answer]);
-  if (st.type === 'multi') return listOf(st.answers.map((i) => st.options[i]));
-  if (st.type === 'match') return st.pairs.map((p) => speak(`${p.label}: ${p.answer}`)).join(' ');
-  return '';
+  if (st.type === 'viva') return st.points.map(speak);
+  if (st.type === 'mcq') return [speak(st.options[st.answer])];
+  if (st.type === 'multi') return st.answers.map((i) => speak(st.options[i]));
+  if (st.type === 'match') return st.pairs.map((p) => speak(`${p.label}: ${p.answer}`));
+  return [];
 }
 // A case as chapters of lines: [{ label, lines: [{ voice, text } | { pause }] }].
 function scriptOf(c) {
@@ -88,7 +97,7 @@ function scriptOf(c) {
       return;
     }
     const lines = [{ voice: 'examiner2', text: speak(st.question) }, { pause: THINK }];
-    lines.push({ voice: 'narrator', text: `Model answer. ${modelAnswer(st)}` });
+    modelAnswer(st).forEach((t, i) => lines.push({ voice: 'narrator', text: i ? t : `Model answer. ${t}` }));
     if (st.explain) lines.push({ voice: 'narrator', text: speak(st.explain) });
     out.push({ label, lines });
   });
@@ -123,18 +132,14 @@ const cacheDir = path.join(__dirname, '.narrate-cache');
 fs.mkdirSync(cacheDir, { recursive: true });
 fs.mkdirSync(path.join(root, 'audio'), { recursive: true });
 
-// One piece of speech as raw PCM, from the cache or VoiceStudio's OpenAI-compatible endpoint.
-async function pcm(voice, text) {
-  const body = Object.assign({ response_format: 'wav' }, VOICES[voice], { input: text });
-  delete body.label;
-  const key = crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex').slice(0, 24);
-  const file = path.join(cacheDir, `${key}.pcm`);
-  if (fs.existsSync(file)) return fs.readFileSync(file);
-  let res;
+const toPcm = (audio) => execFileSync('ffmpeg', ['-v', 'error', '-i', 'pipe:0', '-f', 's16le', '-ac', '1', '-ar', String(RATE), 'pipe:1'], { input: audio, maxBuffer: 1 << 30 });
+const wavOf = (raw) => execFileSync('ffmpeg', ['-v', 'error', '-f', 's16le', '-ar', String(RATE), '-ac', '1', '-i', 'pipe:0', '-f', 'wav', 'pipe:1'], { input: raw, maxBuffer: 1 << 30 });
+
+async function post(route, init) {
   for (let tries = 1; ; tries++) {
     try {
-      res = await fetch(`${url}/v1/audio/speech`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
-      if (res.ok) break;
+      const res = await fetch(`${url}${route}`, Object.assign({ method: 'POST' }, init));
+      if (res.ok) return res;
       const msg = await res.text();
       if (tries >= 3 || res.status < 500) throw new Error(`VoiceStudio ${res.status}: ${msg.slice(0, 400)}`);
     } catch (e) {
@@ -143,10 +148,57 @@ async function pcm(voice, text) {
     }
     await new Promise((r) => setTimeout(r, 2000 * tries));
   }
-  const wav = Buffer.from(await res.arrayBuffer());
-  const raw = execFileSync('ffmpeg', ['-v', 'error', '-i', 'pipe:0', '-f', 's16le', '-ac', '1', '-ar', String(RATE), 'pipe:1'], { input: wav, maxBuffer: 1 << 30 });
-  fs.writeFileSync(file, raw);
-  return raw;
+}
+// Share of the text's words heard back in order (numbers are left out: the transcript writes 55 for fifty-five).
+const words = (s) => s.toLowerCase().replace(/[^a-z\s]/g, ' ').split(/\s+/).filter(Boolean);
+function heardShare(text, heard) {
+  const a = words(text), b = words(heard);
+  if (!a.length) return 1;
+  let prev = new Array(b.length + 1).fill(0);
+  for (const w of a) {
+    const row = [0];
+    for (let j = 0; j < b.length; j++) row.push(w === b[j] ? prev[j] + 1 : Math.max(prev[j + 1], row[j]));
+    prev = row;
+  }
+  return prev[b.length] / a.length;
+}
+async function heard(raw, text) {
+  const form = new FormData();
+  form.append('file', new Blob([wavOf(raw)], { type: 'audio/wav' }), 'clip.wav');
+  form.append('language', 'en');
+  form.append('response_format', 'json');
+  const { text: got } = await (await post('/v1/audio/transcriptions', { body: form })).json();
+  return heardShare(text, got || '');
+}
+
+// One piece of speech as raw PCM, from the cache or VoiceStudio's OpenAI-compatible endpoint.
+const failed = [];
+async function pcm(voice, text) {
+  const body = Object.assign({ response_format: 'wav' }, VOICES[voice], { input: text });
+  delete body.label;
+  const key = crypto.createHash('sha256').update(JSON.stringify(body)).digest('hex').slice(0, 24);
+  const file = path.join(cacheDir, `${key}.pcm`);
+  const okFile = `${file}.ok`;   // marks a cached clip that passed the check
+  if (fs.existsSync(file) && (!check || !recheck || fs.existsSync(okFile))) return fs.readFileSync(file);
+  let best = null, bestScore = -1;
+  for (let attempt = 0; attempt <= (check ? RETRIES : 0); attempt++) {
+    // The cached clip is tried first; each retry uses the next seed but is still cached under the first key.
+    const raw = attempt === 0 && fs.existsSync(file) ? fs.readFileSync(file)
+      : await speech(Object.assign({}, body, body.seed != null && attempt ? { seed: body.seed + attempt * 7919 } : {}));
+    if (!check) { best = raw; break; }
+    const score = await heard(raw, text);
+    if (score > bestScore) { best = raw; bestScore = score; }
+    if (score >= MATCH) break;
+  }
+  fs.writeFileSync(file, best);
+  if (!check) return best;
+  if (bestScore >= MATCH) fs.writeFileSync(okFile, '');
+  else { fs.rmSync(okFile, { force: true }); failed.push(`${voice} (${Math.round(bestScore * 100)}% heard): ${text}`); }
+  return best;
+}
+async function speech(body) {
+  const res = await post('/v1/audio/speech', { headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  return toPcm(Buffer.from(await res.arrayBuffer()));
 }
 const silence = (sec) => Buffer.alloc(Math.round(sec * RATE) * 2);
 
@@ -201,4 +253,5 @@ ${entries.join(',\n')}
 };
 `);
   console.log(`Updated js/data/audio.js (${ids.length} cases with audio).`);
+  if (failed.length) console.log(`\n${failed.length} clip(s) still didn't match their text after ${RETRIES} retries; listen to these:\n${failed.map((f) => `  ${f}`).join('\n')}`);
 })().catch((e) => { console.error(`\n${e.message}`); process.exit(1); });
