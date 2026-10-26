@@ -94,5 +94,13 @@ window.CASE_AUDIO = {
     [250.6,"7. β1-selective"],
     [283.1,"8. Referral & review"],
     [338.7,"9. Review schedule"]
+  ] },
+  "steroid-response": { src: "audio/steroid-response.mp3", dur: 206, chapters: [
+    [0,"The case"],
+    [20.7,"1. Mechanism"],
+    [52,"2. Who responds"],
+    [77.2,"3. Numbers"],
+    [112.2,"4. Penetration"],
+    [145.9,"5. Management"]
   ] }
 };
