@@ -13,5 +13,15 @@ window.CASE_AUDIO = {
     [348.8,"8. Vomiting"],
     [385.8,"9. Pilocarpine"],
     [434,"10. Definitive care"]
+  ] },
+  "chronic-angle-closure": { src: "audio/chronic-angle-closure.mp3", dur: 242, chapters: [
+    [0,"The case"],
+    [21.5,"1. Next step"],
+    [45.6,"2. Results"],
+    [57.8,"3. Classify"],
+    [96.6,"4. Chronic signs"],
+    [137.5,"5. OCT & fields"],
+    [150.4,"6. Management"],
+    [193.6,"7. ZAP & access"]
   ] }
 };
