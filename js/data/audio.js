@@ -23,5 +23,17 @@ window.CASE_AUDIO = {
     [137.5,"5. OCT & fields"],
     [150.4,"6. Management"],
     [193.6,"7. ZAP & access"]
+  ] },
+  "pxf": { src: "audio/pxf.mp3", dur: 370.4, chapters: [
+    [0,"The case"],
+    [27,"1. Describe & signs"],
+    [79.8,"2. PXF vs PDS"],
+    [118.5,"3. What is the material?"],
+    [162.6,"4. Prognosis"],
+    [198.6,"5. Results"],
+    [219.4,"6. Drop choice"],
+    [250.6,"7. β1-selective"],
+    [283.1,"8. Referral & review"],
+    [338.7,"9. Review schedule"]
   ] }
 };
