@@ -54,6 +54,15 @@ window.CASE_AUDIO = {
     [200.2,"6. Treatment"],
     [279.3,"7. Natural history"]
   ] },
+  "poag-central": { src: "audio/poag-central.mp3", dur: 235.1, chapters: [
+    [0,"The case"],
+    [30.6,"1. Central involvement"],
+    [55,"2. Grade"],
+    [81.4,"3. Management"],
+    [117.7,"4. The right eye"],
+    [151.2,"5. Pathophysiology"],
+    [192.8,"6. Progression despite target"]
+  ] },
   "pxf": { src: "audio/pxf.mp3", dur: 370.4, chapters: [
     [0,"The case"],
     [27,"1. Describe & signs"],
