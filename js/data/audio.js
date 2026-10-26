@@ -14,6 +14,16 @@ window.CASE_AUDIO = {
     [393.9,"9. Pilocarpine"],
     [443,"10. Definitive care"]
   ] },
+  "angle-recession": { src: "audio/angle-recession.mp3", dur: 237.2, chapters: [
+    [0,"The case"],
+    [22.8,"1. Gonioscopy"],
+    [67.9,"2. History"],
+    [83.1,"3. Hyphaema grade"],
+    [103.5,"4. Risk"],
+    [137.4,"5. Fluctuation"],
+    [158.9,"6. Drug choice"],
+    [189.6,"7. Glaucoma management"]
+  ] },
   "chronic-angle-closure": { src: "audio/chronic-angle-closure.mp3", dur: 242, chapters: [
     [0,"The case"],
     [21.5,"1. Next step"],
