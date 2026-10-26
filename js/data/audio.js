@@ -24,6 +24,16 @@ window.CASE_AUDIO = {
     [150.4,"6. Management"],
     [193.6,"7. ZAP & access"]
   ] },
+  "ntg": { src: "audio/ntg.mp3", dur: 276.5, chapters: [
+    [0,"The case"],
+    [23,"1. Work-up"],
+    [63.8,"2. Colour vision"],
+    [93.1,"3. Red flags"],
+    [130,"4. Target"],
+    [166.2,"5. Studies"],
+    [207.8,"6. Drug choice"],
+    [242.7,"7. Adherence"]
+  ] },
   "oht-disc-haem": { src: "audio/oht-disc-haem.mp3", dur: 305, chapters: [
     [0,"The case"],
     [22.9,"1. Describe the discs"],
