@@ -24,6 +24,16 @@ window.CASE_AUDIO = {
     [150.4,"6. Management"],
     [193.6,"7. ZAP & access"]
   ] },
+  "pds": { src: "audio/pds.mp3", dur: 311, chapters: [
+    [0,"The case"],
+    [25.2,"1. Diagnosis & signs"],
+    [86,"2. Conversion risk"],
+    [124.6,"3. Back of the eye"],
+    [135.6,"4. Expected field"],
+    [159.2,"5. Grade it"],
+    [200.2,"6. Treatment"],
+    [279.3,"7. Natural history"]
+  ] },
   "pxf": { src: "audio/pxf.mp3", dur: 370.4, chapters: [
     [0,"The case"],
     [27,"1. Describe & signs"],
