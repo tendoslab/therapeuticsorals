@@ -24,6 +24,17 @@ window.CASE_AUDIO = {
     [150.4,"6. Management"],
     [193.6,"7. ZAP & access"]
   ] },
+  "oht-disc-haem": { src: "audio/oht-disc-haem.mp3", dur: 305, chapters: [
+    [0,"The case"],
+    [22.9,"1. Describe the discs"],
+    [62.6,"2. Haemorrhage differentials"],
+    [92.6,"3. Results"],
+    [112.2,"4. CCT"],
+    [156.3,"5. Diagnosis & risk"],
+    [193.3,"6. OHTS"],
+    [231.3,"7. Pregnancy"],
+    [276.5,"8. β-blocker timing"]
+  ] },
   "pds": { src: "audio/pds.mp3", dur: 311, chapters: [
     [0,"The case"],
     [25.2,"1. Diagnosis & signs"],
