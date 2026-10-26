@@ -27,6 +27,7 @@
       <a href="#guide">Exam guide</a>
       <a href="#mon" id="mon-link">Ocumon<span class="badge mon" id="mon-badge" hidden></span></a>
       <a href="#play">Play</a>
+      <a href="#listen">Listen</a>
     </nav>
     <div class="status">
       <span class="pill-stat timer" id="timer-pill" hidden></span>
@@ -36,6 +37,19 @@
   </div>
 </header>
 <main id="view" aria-live="polite"></main>
+<div class="player" id="player" role="region" aria-label="Audio player" hidden>
+  <div class="pl-info"><b class="pl-title"></b><span class="pl-chapter"></span><span class="pl-pos"></span></div>
+  <div class="pl-controls">
+    <button class="pl-btn" data-listen="prev-case" aria-label="Previous case">⏮</button>
+    <button class="pl-btn" data-listen="back" aria-label="Back 15 seconds">↺15</button>
+    <button class="pl-btn pl-main" data-listen="toggle" aria-label="Play">▶</button>
+    <button class="pl-btn" data-listen="fwd" aria-label="Forward 15 seconds">15↻</button>
+    <button class="pl-btn" data-listen="next-case" aria-label="Next case">⏭</button>
+    <button class="pl-btn pl-rate" data-listen="rate" aria-label="Playback speed">1×</button>
+    <button class="pl-btn" data-listen="close" aria-label="Stop and close the player">✕</button>
+  </div>
+  <div class="pl-bar"><input type="range" class="pl-seek" min="0" max="1" value="0" step="1" aria-label="Position in this case"><span class="pl-time mono"></span></div>
+</div>
 <input type="file" id="import-file" accept=".json,application/json" hidden>
 <footer class="foot">Study aid only. Doses, scheduling, PBS listings and OBA/RANZCO requirements change. Verify against the current AMH, eTG, product information, OBA guidelines and your course notes. Ocumon sprites: 72 Cute Pixel Character by BDragon1727, Little Animals Pack V3 and GrafxKid’s Sprite Packs (CC0).</footer>
 
@@ -65,6 +79,7 @@
 <script src="js/data/corrections.js"></script>
 <script src="js/data/images.js"></script>
 <script src="js/data/ocumon.js"></script>
+<script src="js/data/audio.js"></script>
 <!-- Why each wrong option is wrong (window.WHY), one file per case file -->
 <script src="js/data/why-glaucoma.js"></script>
 <script src="js/data/why-neuro.js"></script>
@@ -86,6 +101,7 @@
 <script src="js/data/why-anterior-notes-2025.js"></script>
 <script src="js/data/why-posterior-notes-2025.js"></script>
 <script src="js/data/why-my-case-report.js"></script>
+<script src="js/listen.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
