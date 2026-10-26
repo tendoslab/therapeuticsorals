@@ -1,0 +1,8 @@
+{
+  "_help": "Request settings for VoiceStudio's /v1/audio/speech, one per voice in tools/narrate.js. 'model' is the engine id (omnivoice is the default engine). With omnivoice, 'instruct' designs the voice from tags, and a fixed 'seed' keeps it the same across every clip. To use a cloned voice, set 'voice' to its VoiceStudio profile id and drop 'instruct'. Changing a voice re-speaks everything that uses it.",
+  "voices": {
+    "examiner1": { "label": "Examiner 1 (sets the scene)", "model": "omnivoice", "instruct": "female, middle-aged, low pitch, australian accent", "seed": 1101, "language": "en" },
+    "examiner2": { "label": "Examiner 2 (asks the questions)", "model": "omnivoice", "instruct": "male, middle-aged, moderate pitch, australian accent", "seed": 2202, "language": "en" },
+    "narrator": { "label": "Model answers", "model": "omnivoice", "instruct": "female, young adult, moderate pitch, british accent", "seed": 3303, "language": "en" }
+  }
+}

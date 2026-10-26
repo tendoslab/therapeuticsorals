@@ -794,7 +794,7 @@
       const rows = cs.map((c) => {
         const p = saved.cases[c.id];
         const nm = c.steps.filter((_, i) => saved.missed[stepKey(c, i)]).length;
-        return `<tr><td><button class="case-link" data-act="case" data-v="${c.id}" title="Practise this case"><b>${c.title}</b></button><br><small class="muted">${esc(c.theme)}</small></td>
+        return `<tr><td><button class="case-link" data-act="case" data-v="${c.id}" title="Practise this case"><b>${c.title}</b></button>${window.Listen.has(c.id) ? ` <button class="listen-btn" data-listen="track" data-v="${c.id}" title="Listen to this case" aria-label="Listen to ${esc(c.title)}">🎧</button>` : ''}<br><small class="muted">${esc(c.theme)}</small></td>
           ${years.map((y) => `<td class="c">${(c.years || []).includes(y) ? '<span class="dotyes">●</span>' : '<span class="dotno">·</span>'}</td>`).join('')}
           <td class="c">${nm ? `<a href="#review" class="no">${nm}</a>` : '<span class="dotno">—</span>'}</td>
           <td class="c mono ${p ? (p.last >= PASS_PCT ? 'ok' : 'no') : ''}">${p ? p.last + '%' : '<span class="dotno">—</span>'}</td></tr>`;
@@ -806,7 +806,7 @@
     }).join('');
     view.innerHTML = `<div class="fade">
       <section class="hero"><div><p class="label">Recall bank</p><h1>Every case, by topic and source</h1>
-      <p>● = that case was recalled from that exam or set of notes. Tap a case title to practise it. Pick several sources to compare just those columns.</p></div></section>
+      <p>● = that case was recalled from that exam or set of notes. Tap a case title to practise it, or 🎧 to listen to it. Pick several sources to compare just those columns.</p></div></section>
       <div class="row" style="gap:.4rem;margin-bottom:1.2rem">${sourceChips()}</div>
       ${sections || '<p class="muted">No cases match these sources.</p>'}
     </div>`;
@@ -2047,7 +2047,7 @@
   }
 
   // ------------------------------------------------------------------ routing and chrome
-  const ROUTES = { sim: null, play: renderPlay, mon: renderMon, review: renderReview, mastered: renderMastered, bank: renderBank, audit: renderAudit, guide: renderGuide };
+  const ROUTES = { sim: null, play: renderPlay, mon: renderMon, review: renderReview, mastered: renderMastered, bank: renderBank, audit: renderAudit, guide: renderGuide, listen: () => window.Listen.render(view) };
   const route = () => { const r = location.hash.slice(1); return r in ROUTES ? r : 'sim'; };
   function render(opts = {}) {
     const r = route();
@@ -2060,6 +2060,7 @@
     const y = window.scrollY;
     if (r !== 'play') arcQuit(); // leaving the tab ends a game in progress
     if (r !== 'mon') introSeen = null; // coming back to Ocumon plays the battle intro again
+    if (r !== 'listen') window.Listen.leave(); // the player keeps going; only the tab stops redrawing
     if (r === 'sim') renderSim(); else ROUTES[r]();
     scorePill.hidden = !active();
     if (active()) scorePill.textContent = `Score ${sim.s.score} / ${sim.s.max}`;
