@@ -18,6 +18,7 @@ const root = path.join(__dirname, '..');
 const RATE = 24000;      // mono 16-bit PCM, the rate every clip is resampled to before joining
 const THINK = 4;         // seconds to answer in your head before the model answer
 const GAP = 0.6;         // between lines
+const TURN = 1.5;        // when the speaker changes
 const MAX_CHARS = 500;   // longest piece sent in one request (split at sentence ends)
 
 const args = process.argv.slice(2);
@@ -161,11 +162,16 @@ const silence = (sec) => Buffer.alloc(Math.round(sec * RATE) * 2);
     const add = (b) => { bufs.push(b); samples += b.length / 2; };
     const script = scriptOf(c);
     const total = script.reduce((n, ch) => n + ch.lines.filter((l) => l.text).reduce((m, l) => m + pieces(l.text).length, 0), 0);
-    let done = 0;
+    let done = 0, prev = null;
+    // A longer gap when the voice changes, put before a chapter mark so jumping to a question starts on its first word.
+    const turn = (v) => { if (prev && prev !== v) add(silence(TURN - GAP)); prev = v; };
     for (const ch of script) {
+      const first = ch.lines.find((l) => l.voice);
+      if (first) turn(first.voice);
       chapters.push([Math.round((samples / RATE) * 10) / 10, ch.label]);
       for (const l of ch.lines) {
-        if (l.pause) { add(silence(l.pause)); continue; }
+        if (l.pause) { add(silence(l.pause)); prev = null; continue; }
+        turn(l.voice);
         for (const p of pieces(l.text)) {
           add(await pcm(l.voice, p));
           done++;
