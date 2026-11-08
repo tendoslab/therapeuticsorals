@@ -28,6 +28,7 @@
   // Where each case came from (matches the `years` field on every case), newest first;
   // sources with no date follow, then cases written for topics the exam guidelines list, and your own case report last.
   const SOURCES = [
+    { id: 'Mock 2026', label: '2026 YO mock orals (study session)', short: '2026 YO mock' },
     { id: '2025', label: '2025 orals', short: '2025' },
     { id: 'Mock 2025', label: '2025 YO mock orals', short: '2025 YO mock' },
     { id: 'Case studies 2022', label: '2022 case studies', short: '2022 case studies' },
@@ -409,7 +410,7 @@
     <section class="hero"><div>
       <p class="label">Therapeutics oral practice</p>
       <h1>Talk through the case before the panel does</h1>
-      <p>${CASES.length} cases (${totalSteps} examiner questions) from the 2018, 2019 and 2025 recalls, the 2025 Young Optometrists mock orals, peer recalls, the 2016 and 2022 case-study notes and the Young Optometrists mock orals, checked against Australian practice. Each case keeps the questions from the sitting or notes it came from. Pick topics, then practise whole cases or sit a timed mock oral.</p>
+      <p>${CASES.length} cases (${totalSteps} examiner questions) from the 2018, 2019 and 2025 recalls, the 2025 and 2026 Young Optometrists mock orals, peer recalls, the 2016 and 2022 case-study notes and the Young Optometrists mock orals, checked against Australian practice. Each case keeps the questions from the sitting or notes it came from. Pick topics, then practise whole cases or sit a timed mock oral.</p>
     </div></section>
     <div class="grid-2">
       <section class="card stack" aria-labelledby="topics-h">
@@ -1210,7 +1211,7 @@
   const inPool = (w, c) => c.category === w.cat && (wildRe[w.id] = wildRe[w.id] || new RegExp(w.match, 'i')).test(`${c.title} ${c.theme || ''}`);
   // Rarity follows the exam: a creature is common when its cases were asked in 3 or more exam sittings, uncommon
   // in 1 or 2, and rare when only the study notes cover it. Your own case report is asked every time, so it's common.
-  const EXAM_SOURCES = ['2025', 'Mock 2025', 'YO mock', '2019', '2018', 'Peer recalls', 'Exam recall'];
+  const EXAM_SOURCES = ['Mock 2026', '2025', 'Mock 2025', 'YO mock', '2019', '2018', 'Peer recalls', 'Exam recall'];
   MON.wild.forEach((w) => {
     const ys = new Set(CASES.filter((c) => inPool(w, c)).flatMap((c) => c.years || []));
     w.asked = EXAM_SOURCES.filter((y) => ys.has(y)).length;

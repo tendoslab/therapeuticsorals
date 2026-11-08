@@ -1069,6 +1069,178 @@ window.CASE_IMAGES = {
    "credit": "Anterior eye notes 2025 (Anterior Compressed.pdf), p. 55: “Subconjunctival haemorrhage”"
   }
  ],
+ "yo26-aac": [
+  {
+   "src": "img/cases/yo-2026-session-compressed-001-000.jpg",
+   "w": 676,
+   "h": 324,
+   "caption": "Photos of both eyes",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 1 (Case 1, acute angle closure)"
+  },
+  {
+   "src": "img/cases/yo-2026-session-compressed-003-001.jpg",
+   "w": 573,
+   "h": 345,
+   "caption": "Four photos of another patient",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 3 (signs of a previous attack)",
+   "step": 6
+  }
+ ],
+ "yo26-hsk-grinder": [
+  {
+   "src": "img/cases/yo-2026-session-compressed-003-002.jpg",
+   "w": 586,
+   "h": 352,
+   "caption": "Slit lamp photos, white light and fluorescein",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 3 (Case 2, HSV dendrite)"
+  },
+  {
+   "src": "img/cases/yo-2026-session-compressed-014-008.jpg",
+   "w": 666,
+   "h": 430,
+   "caption": "Fluorescein at review",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 14 (Case 2 follow-up)",
+   "step": 6
+  }
+ ],
+ "yo26-mk-dailies": [
+  {
+   "src": "img/cases/yo-2026-session-compressed-015-009.jpg",
+   "w": 720,
+   "h": 444,
+   "caption": "Anterior eye, slit and fluorescein photos",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 15 (Case 3, CL keratitis)"
+  }
+ ],
+ "yo26-poag": [
+  {
+   "src": "img/cases/yo-2026-session-compressed-017-010.jpg",
+   "w": 475,
+   "h": 292,
+   "caption": "Right disc photo",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 17 (POAG case)",
+   "step": 1
+  },
+  {
+   "src": "img/cases/yo-2026-session-compressed-018-011.jpg",
+   "w": 461,
+   "h": 473,
+   "caption": "OCT ONH and RNFL report",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 18 (POAG case)",
+   "step": 2
+  },
+  {
+   "src": "img/cases/yo-2026-session-compressed-018-012.jpg",
+   "w": 456,
+   "h": 400,
+   "caption": "24-2 SITA Faster grey scale",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 18 (POAG case)",
+   "step": 3
+  },
+  {
+   "src": "img/cases/yo-2026-session-compressed-020-013.jpg",
+   "w": 414,
+   "h": 362,
+   "caption": "Field at the 6-week review",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 20 (POAG case follow-up)",
+   "step": 10
+  }
+ ],
+ "yo26-pds": [
+  {
+   "src": "img/cases/yo-2026-session-compressed-020-014.jpg",
+   "w": 314,
+   "h": 262,
+   "caption": "Slit lamp photo of the endothelium",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 20 (pigment dispersion case)"
+  },
+  {
+   "src": "img/cases/yo-2026-session-compressed-020-015.jpg",
+   "w": 314,
+   "h": 309,
+   "caption": "Slit lamp photo, retro-illumination",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 20 (Krukenberg spindle)"
+  },
+  {
+   "src": "img/cases/yo-2026-session-compressed-021-016.jpg",
+   "w": 704,
+   "h": 397,
+   "caption": "Gonioscopy photo",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 21 (pigment dispersion case)",
+   "step": 1
+  }
+ ],
+ "yo26-pxf": [
+  {
+   "src": "img/cases/yo-2026-session-compressed-022-018.jpg",
+   "w": 405,
+   "h": 257,
+   "caption": "Dilated slit lamp photo of the lens",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 22 (PXF case)"
+  },
+  {
+   "src": "img/cases/yo-2026-session-compressed-022-017.jpg",
+   "w": 394,
+   "h": 300,
+   "caption": "Photo of the pupil margin",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 22 (PXF case)"
+  }
+ ],
+ "yo26-sac": [
+  {
+   "src": "img/cases/yo-2026-session-compressed-023-019.jpg",
+   "w": 311,
+   "h": 181,
+   "caption": "External photo",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 23 (Case 2A, allergic conjunctivitis)"
+  },
+  {
+   "src": "img/cases/yo-2026-session-compressed-023-020.jpg",
+   "w": 294,
+   "h": 180,
+   "caption": "Lower lid everted",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 23 (Case 2A)"
+  }
+ ],
+ "yo26-vkc": [
+  {
+   "src": "img/cases/yo-2026-session-compressed-025-021.jpg",
+   "w": 439,
+   "h": 272,
+   "caption": "Anterior eye photo",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 25 (Case 2B, VKC)"
+  },
+  {
+   "src": "img/cases/yo-2026-session-compressed-025-022.jpg",
+   "w": 402,
+   "h": 269,
+   "caption": "Inferior palpebral conjunctiva",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 25 (Case 2B, VKC)"
+  },
+  {
+   "src": "img/cases/yo-2026-session-compressed-025-023.jpg",
+   "w": 428,
+   "h": 283,
+   "caption": "Upper lid everted",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 25 (Case 2B, VKC)"
+  }
+ ],
+ "yo26-aau": [
+  {
+   "src": "img/cases/yo-2026-session-compressed-027-024.jpg",
+   "w": 410,
+   "h": 246,
+   "caption": "Anterior eye photo",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 27 (Case 4, anterior uveitis)"
+  },
+  {
+   "src": "img/cases/yo-2026-session-compressed-027-025.jpg",
+   "w": 435,
+   "h": 286,
+   "caption": "Slit lamp photo of the endothelium",
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 27 (Case 4, keratic precipitates)"
+  }
+ ],
  "homonymous": [
   {
    "src": "img/cases/field-homonymous.png",
