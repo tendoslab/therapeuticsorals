@@ -23,6 +23,7 @@ CS16 = '2016 case studies (Past Papers/thera-case-studies.docx): {}'
 CS22 = '2022 case studies / YO MOTHs (Past Papers/All_the_case_studies_22.pdf), p. {}'
 R25 = '2025 orals recall (Past Papers/THERA-ORALS-2025.pdf), p. {}'
 YO25 = '2025 YO mock orals (Past Papers/YO Mock Orals 2025.pdf), p. 3'
+YO26 = '2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. {}'
 ADDED = 'Photo added to the repo (images/{}), not from the exam sources'
 SCHEM = 'Schematic drawn for this simulator from the case description (not a real printout)'
 
@@ -30,6 +31,7 @@ def ex(code): return f'{W}/ex/{code}.png'
 def ppt(n): return f'{W}/pp/Practice-Therapeutics-Orals.pptx/ppt/media/{n}'
 def cs16(n): return f'{W}/pp/thera-case-studies.docx/word/media/{n}'
 def pdf(n): return f'{W}/pdfimg/{n}.png'
+def yo26(n): return f'{W}/pdfimg/YO_2026_Session_compressed-{n}.png'
 def added(n): return f'images/{n}'
 
 # Reused sources, named once
@@ -189,6 +191,28 @@ M = {
   'phlyctenulosis': [(added('phlyctenulosis.jpg'), None, 'Slit-lamp photo', ADDED.format('phlyctenulosis.jpg') + ' (a similar case)', None)],
   'an-pterygium': [(ex('A055-570'), None, 'Anterior eye photo', A.format(55, 'Pterygium'), None)],
   'mp-subconj-haem': [(ex('A055-573'), None, 'Anterior eye photo', A.format(55, 'Subconjunctival haemorrhage'), None)],
+  # ---- 2026 YO study session (mock-2026.js)
+  'yo26-aac': [(yo26('001-000'), None, 'Photos of both eyes', YO26.format(1) + ' (Case 1, acute angle closure)', None),
+               (yo26('003-001'), None, 'Four photos of another patient', YO26.format(3) + ' (signs of a previous attack)', 6)],
+  'yo26-hsk-grinder': [(yo26('003-002'), None, 'Slit lamp photos, white light and fluorescein', YO26.format(3) + ' (Case 2, HSV dendrite)', None),
+                       (yo26('014-008'), None, 'Fluorescein at review', YO26.format(14) + ' (Case 2 follow-up)', 6)],
+  'yo26-mk-dailies': [(yo26('015-009'), None, 'Anterior eye, slit and fluorescein photos', YO26.format(15) + ' (Case 3, CL keratitis)', None)],
+  'yo26-poag': [(yo26('017-010'), None, 'Right disc photo', YO26.format(17) + ' (POAG case)', 1),
+                (yo26('018-011'), None, 'OCT ONH and RNFL report', YO26.format(18) + ' (POAG case)', 2),
+                (yo26('018-012'), None, '24-2 SITA Faster grey scale', YO26.format(18) + ' (POAG case)', 3),
+                (yo26('020-013'), None, 'Field at the 6-week review', YO26.format(20) + ' (POAG case follow-up)', 10)],
+  'yo26-pds': [(yo26('020-014'), None, 'Slit lamp photo of the endothelium', YO26.format(20) + ' (pigment dispersion case)', None),
+               (yo26('020-015'), None, 'Slit lamp photo, retro-illumination', YO26.format(20) + ' (Krukenberg spindle)', None),
+               (yo26('021-016'), None, 'Gonioscopy photo', YO26.format(21) + ' (pigment dispersion case)', 1)],
+  'yo26-pxf': [(yo26('022-018'), None, 'Dilated slit lamp photo of the lens', YO26.format(22) + ' (PXF case)', None),
+               (yo26('022-017'), None, 'Photo of the pupil margin', YO26.format(22) + ' (PXF case)', None)],
+  'yo26-sac': [(yo26('023-019'), None, 'External photo', YO26.format(23) + ' (Case 2A, allergic conjunctivitis)', None),
+               (yo26('023-020'), None, 'Lower lid everted', YO26.format(23) + ' (Case 2A)', None)],
+  'yo26-vkc': [(yo26('025-021'), None, 'Anterior eye photo', YO26.format(25) + ' (Case 2B, VKC)', None),
+               (yo26('025-022'), None, 'Inferior palpebral conjunctiva', YO26.format(25) + ' (Case 2B, VKC)', None),
+               (yo26('025-023'), None, 'Upper lid everted', YO26.format(25) + ' (Case 2B, VKC)', None)],
+  'yo26-aau': [(yo26('027-024'), None, 'Anterior eye photo', YO26.format(27) + ' (Case 4, anterior uveitis)', None),
+               (yo26('027-025'), None, 'Slit lamp photo of the endothelium', YO26.format(27) + ' (Case 4, keratic precipitates)', None)],
 }
 
 # Schematic field plots for the field cases with no printout in the sources.

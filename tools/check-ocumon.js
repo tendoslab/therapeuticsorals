@@ -13,7 +13,7 @@ for (const src of html.match(/js\/data\/[^"]+\.js/g)) eval(fs.readFileSync(path.
 const CASES = window.CASES, MON = window.OCUMON, CATS = window.CATEGORIES.map((c) => c.id);
 const MIN_QUESTIONS = 2;
 // Same rule as js/app.js: rarity comes from how many exam sittings asked about the creature's cases.
-const EXAM_SOURCES = ['2025', 'Mock 2025', 'YO mock', '2019', '2018', 'Peer recalls', 'Exam recall'];
+const EXAM_SOURCES = ['Mock 2026', '2025', 'Mock 2025', 'YO mock', '2019', '2018', 'Peer recalls', 'Exam recall'];
 const tiers = [0, 0, 0, 0];
 let bad = 0;
 const fail = (msg) => { bad++; console.log(`✕ ${msg}`); };
