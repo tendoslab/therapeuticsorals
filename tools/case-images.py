@@ -31,6 +31,7 @@ def ex(code): return f'{W}/ex/{code}.png'
 def ppt(n): return f'{W}/pp/Practice-Therapeutics-Orals.pptx/ppt/media/{n}'
 def cs16(n): return f'{W}/pp/thera-case-studies.docx/word/media/{n}'
 def pdf(n): return f'{W}/pdfimg/{n}.png'
+def emma(n): return f'{W}/pdfimg/Anterior_Case_Report_-_z5421013-{n}.png'
 def yo26(n): return f'{W}/pdfimg/YO_2026_Session_compressed-{n}.png'
 def added(n): return f'images/{n}'
 
@@ -191,6 +192,9 @@ M = {
   'phlyctenulosis': [(added('phlyctenulosis.jpg'), None, 'Slit-lamp photo', ADDED.format('phlyctenulosis.jpg') + ' (a similar case)', None)],
   'an-pterygium': [(ex('A055-570'), None, 'Anterior eye photo', A.format(55, 'Pterygium'), None)],
   'mp-subconj-haem': [(ex('A055-573'), None, 'Anterior eye photo', A.format(55, 'Subconjunctival haemorrhage'), None)],
+  # ---- Emma's case report (emma-case-report.js); the marker queried whether the cover photo is her patient
+  'emma-report-hzo-diagnosis': [(emma('002-000'), (.06, .372, .815, .673), 'Slit-lamp photo, right eye',
+                                 'Emma’s case report (Case Report/Anterior Case Report - z5421013.pdf), cover image. The marker asked whether it was of her own patient, so treat it as illustrative.', 2)],
   # ---- 2026 YO study session (mock-2026.js)
   'yo26-aac': [(yo26('001-000'), None, 'Photos of both eyes', YO26.format(1) + ' (Case 1, acute angle closure)', None),
                (yo26('003-001'), None, 'Four photos of another patient', YO26.format(3) + ' (signs of a previous attack)', 6)],
@@ -242,7 +246,7 @@ def extract():
         with zipfile.ZipFile(f) as z:
             z.extractall(f'{W}/pp/{os.path.basename(f)}', [n for n in z.namelist() if '/media/' in n])
     os.makedirs(f'{W}/pdfimg', exist_ok=True)
-    for f in glob.glob('Past Papers/*.pdf'):
+    for f in glob.glob('Past Papers/*.pdf') + glob.glob('Case Report/Anterior Case Report*.pdf'):
         stem = os.path.splitext(os.path.basename(f))[0].replace(' ', '_')
         subprocess.run(['pdfimages', '-png', '-p', f, f'{W}/pdfimg/{stem}'], check=True)
 

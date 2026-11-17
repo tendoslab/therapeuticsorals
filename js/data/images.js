@@ -1294,5 +1294,15 @@ window.CASE_IMAGES = {
    "caption": "24-2 grey scale, both eyes (schematic)",
    "credit": "Schematic drawn for this simulator from the case description (not a real printout)"
   }
+ ],
+ "emma-report-hzo-diagnosis": [
+  {
+   "src": "img/cases/anterior-case-report---z5421013-002-000-crop.jpg",
+   "w": 813,
+   "h": 458,
+   "caption": "Slit-lamp photo, right eye",
+   "credit": "Emma’s case report (Case Report/Anterior Case Report - z5421013.pdf), cover image. The marker asked whether it was of her own patient, so treat it as illustrative.",
+   "step": 2
+  }
  ]
 };

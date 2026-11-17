@@ -78,11 +78,11 @@ button, input, select, textarea { font: inherit; color: inherit; }
 /* ---------- top bar ---------- */
 .topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--surface); box-shadow: var(--shadow); }
 .topbar::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--violet), var(--mint)); }
-.topbar-in { max-width: 74rem; margin: 0 auto; padding: .6rem 16px; display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; align-items: center; }
+.topbar-in { max-width: 74rem; margin: 0 auto; padding: .6rem 16px; display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; }
 .brand { display: flex; align-items: center; gap: .55rem; font-weight: 800; font-size: 1.1rem; letter-spacing: -.02em; color: var(--ink); text-decoration: none; }
 .brand img { width: 28px; height: 28px; flex: none; }
-.nav { display: flex; flex-wrap: wrap; gap: .25rem; }
-.nav a { text-decoration: none; color: var(--muted); padding: .35rem .7rem; border-radius: 999px; font-weight: 600; font-size: .92rem; position: relative; }
+.nav { display: flex; flex-wrap: wrap; gap: .1rem; }
+.nav a { text-decoration: none; color: var(--muted); padding: .35rem .5rem; border-radius: 999px; font-weight: 600; font-size: .92rem; position: relative; }
 .nav a:hover { color: var(--ink); background: var(--surface-2); }
 .nav a[aria-current="page"] { color: var(--accent-ink); background: var(--accent); }
 .nav .badge.good { background: var(--good); }
@@ -706,3 +706,45 @@ body.has-player { padding-bottom: 7.5rem; }
   .pl-btn { flex: 1; min-width: 0; }
   body.has-player { padding-bottom: 10rem; }
 }
+
+/* Study notes tab: contents on the left (a chip row on phones), sections as cards with photo grids. */
+.notes-layout { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: 1rem; align-items: start; margin-top: 1rem; }
+.notes-toc { position: sticky; top: calc(var(--topbar-h, 4.5rem) + .75rem); display: flex; flex-direction: column; gap: .15rem; max-height: calc(100vh - var(--topbar-h, 4.5rem) - 1.5rem); overflow-y: auto; scroll-margin-top: calc(var(--topbar-h, 4.5rem) + .75rem); }
+.notes-toc .label { margin: 0 0 .3rem .5rem; }
+.toc-item { display: flex; gap: .5rem; align-items: center; text-align: left; border: 0; background: none; color: var(--muted); font: inherit; font-size: .9rem; font-weight: 600; padding: .4rem .55rem; border-radius: 8px; border-left: 3px solid hsl(var(--h) 65% var(--tint-mid)); cursor: pointer; }
+.toc-item:hover { background: var(--surface-2); color: var(--ink); }
+.notes-body { display: flex; flex-direction: column; gap: 1rem; min-width: 0; }
+.nsec { scroll-margin-top: calc(var(--topbar-h, 4.5rem) + .75rem); position: relative; }
+.nsec h2 { font-size: 1.3rem; margin: 0 0 .3rem; }
+.nsec h3 { font-size: 1rem; margin: 1.1rem 0 .4rem; color: hsl(var(--h) 60% var(--tint-fg)); }
+.nsec .nlead { color: var(--muted); margin: 0 0 .8rem; max-width: 52rem; }
+.nsec .ntop { margin-top: 1rem; }
+.ncols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1.5rem; }
+.ncols > div > :first-child { margin-top: .4rem; }
+.nfigs { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 12.5rem), 1fr)); gap: .8rem; margin: .8rem 0; }
+.nfig { margin: 0; display: flex; flex-direction: column; }
+.nfig.wide { grid-column: span 2; }
+.nfig button { display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: 4 / 3; padding: 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--surface-2); cursor: zoom-in; }
+.nfig.wide button { aspect-ratio: auto; }
+.nfig img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.nfig.wide img { height: auto; max-height: 26rem; object-fit: contain; background: #fff; }
+.nfig figcaption { font-size: .82rem; line-height: 1.4; margin-top: .35rem; color: var(--muted); }
+.nfig figcaption b { color: var(--ink); }
+.ntable { font-size: .88rem; margin: .5rem 0 .8rem; }
+.ntable td { line-height: 1.45; }
+.nbox { border-radius: 8px; padding: .75rem .9rem; margin: .7rem 0; background: var(--surface-2); border-left: 4px solid var(--line); }
+.nbox .label { margin: 0 0 .3rem; font-weight: 700; }
+.nbox p { margin: .3rem 0; }
+.nbox.bad { background: var(--bad-soft); border-left-color: var(--bad); }
+.nbox.good { background: var(--good-soft); border-left-color: var(--good); }
+.nbox.warn { background: var(--warn-soft); border-left-color: var(--warn); }
+.nsec details { border: 1px solid var(--line); border-radius: 8px; padding: .5rem .8rem; margin: .5rem 0; background: var(--surface); }
+.nsec details summary { cursor: pointer; }
+@media (max-width: 900px) {
+  .notes-layout { grid-template-columns: minmax(0, 1fr); }
+  .notes-toc { position: static; flex-direction: row; flex-wrap: wrap; max-height: none; gap: .35rem; }
+  .notes-toc .label { width: 100%; margin-left: 0; }
+  .toc-item { background: var(--surface); border: 1px solid var(--line); border-left-width: 3px; border-radius: 999px; padding: .3rem .7rem; font-size: .85rem; }
+  .ncols { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) { .nfig.wide { grid-column: auto; } .nfigs { grid-template-columns: repeat(2, minmax(0, 1fr)); } .nfig.wide { grid-column: 1 / -1; } }
