@@ -26,7 +26,7 @@
     if (st) st.why = Object.assign({}, window.WHY[k], st.why);
   });
   // Where each case came from (matches the `years` field on every case), newest first;
-  // sources with no date follow, then cases written for topics the exam guidelines list, your own case report and Emma's.
+  // sources with no date follow, then cases written for topics the exam guidelines list, your own case report and your classmates' (Emma, Jenn, Nat).
   const SOURCES = [
     { id: 'Mock 2026', label: '2026 YO mock orals (study session)', short: '2026 YO mock' },
     { id: '2025', label: '2025 orals', short: '2025' },
@@ -45,6 +45,8 @@
     { id: 'Exam guidelines', label: 'Written for the 2026 exam guidelines', short: 'Exam guidelines' },
     { id: 'My case report', label: 'My case report (RCE / EBMD)', short: 'My report' },
     { id: 'Emma case report', label: 'Emma’s case report (HZO nummular keratitis)', short: 'Emma’s report' },
+    { id: 'Jenn case report', label: 'Jenn’s case report (recurrent anterior uveitis)', short: 'Jenn’s report' },
+    { id: 'Nat case report', label: 'Nat’s case report (marginal keratitis)', short: 'Nat’s report' },
   ];
   const sourceLabel = (id) => (SOURCES.find((s) => s.id === id) || { label: id }).label;
 
