@@ -26,7 +26,7 @@
     if (st) st.why = Object.assign({}, window.WHY[k], st.why);
   });
   // Where each case came from (matches the `years` field on every case), newest first;
-  // sources with no date follow, then cases written for topics the exam guidelines list, and your own case report last.
+  // sources with no date follow, then cases written for topics the exam guidelines list, your own case report and Emma's.
   const SOURCES = [
     { id: 'Mock 2026', label: '2026 YO mock orals (study session)', short: '2026 YO mock' },
     { id: '2025', label: '2025 orals', short: '2025' },
@@ -44,6 +44,7 @@
     { id: 'Practice orals', label: 'Practice orals deck', short: 'Practice deck' },
     { id: 'Exam guidelines', label: 'Written for the 2026 exam guidelines', short: 'Exam guidelines' },
     { id: 'My case report', label: 'My case report (RCE / EBMD)', short: 'My report' },
+    { id: 'Emma case report', label: 'Emma’s case report (HZO nummular keratitis)', short: 'Emma’s report' },
   ];
   const sourceLabel = (id) => (SOURCES.find((s) => s.id === id) || { label: id }).label;
 
@@ -611,7 +612,7 @@
         ${detail}
         <div class="model"><p class="label">🧑‍⚕️ Examiner notes</p><div class="prose">${st.explain}</div></div>
         ${st.recall ? `<div class="recall"><p class="label">⚠️ Recall check: what past candidates said vs what's correct</p><div class="prose">${st.recall}</div></div>` : ''}
-        ${st.marker ? `<div class="marker"><p class="label">📝 Marker's comment on your case report</p><div class="prose">${st.marker}</div></div>` : ''}
+        ${st.marker ? `<div class="marker"><p class="label">📝 Marker's comment on ${esc(c.markerOf || 'your case report')}</p><div class="prose">${st.marker}</div></div>` : ''}
         <button class="btn primary big" data-act="next">${nextLabel} →</button>
       </section></div>`;
   }
@@ -832,6 +833,22 @@
   }
 
   // ------------------------------------------------------------------ exam guide
+  // Study notes: a laid-out summary of the Therapeutics Orals Study Sheet and its Part 1 / Part 2 PDFs
+  // (content and images in js/data/study-notes.js). The contents list scrolls to a section without touching the hash.
+  function renderNotes() {
+    const N = window.STUDY_NOTES || [];
+    const bar = document.querySelector('.topbar');
+    if (bar) document.documentElement.style.setProperty('--topbar-h', `${bar.offsetHeight}px`);
+    view.innerHTML = `<div class="fade">
+      <section class="hero"><div><p class="label">Study notes</p><h1>Therapeutics orals study sheet</h1><p>A laid-out summary of the study sheet (Nov 2026) and its Part 1 and Part 2 notes: what to say, the doses examiners drill, the corrections to older notes, and the photos. Tap any image to enlarge it.</p></div></section>
+      <div class="notes-layout">
+        <nav class="notes-toc" aria-label="Study notes sections"><p class="label">Contents</p>${N.map((s) => `<button type="button" class="toc-item" data-act="notes-jump" data-v="${esc(s.id)}" style="--h:${s.hue}"><span aria-hidden="true">${s.icon}</span>${esc(s.title)}</button>`).join('')}</nav>
+        <div class="notes-body">${N.map((s) => `<section class="card hue-top prose nsec" id="notes-${esc(s.id)}" style="--h:${s.hue}">
+          <h2><span aria-hidden="true">${s.icon}</span> ${esc(s.title)}</h2><p class="nlead">${s.lead}</p>${s.html}
+          <button type="button" class="btn small ghost ntop" data-act="notes-jump" data-v="top">↑ Contents</button></section>`).join('')}</div>
+      </div></div>`;
+  }
+
   function renderGuide() {
     const card = (title, html, hue) => `<section class="card hue-top prose" style="--h:${hue}"><h2 style="font-size:1.1rem;margin-bottom:.6rem">${title}</h2>${html}</section>`;
     view.innerHTML = `<div class="fade">
@@ -2048,7 +2065,7 @@
   }
 
   // ------------------------------------------------------------------ routing and chrome
-  const ROUTES = { sim: null, play: renderPlay, mon: renderMon, review: renderReview, mastered: renderMastered, bank: renderBank, audit: renderAudit, guide: renderGuide, listen: () => window.Listen.render(view) };
+  const ROUTES = { sim: null, play: renderPlay, mon: renderMon, review: renderReview, mastered: renderMastered, bank: renderBank, audit: renderAudit, guide: renderGuide, notes: renderNotes, listen: () => window.Listen.render(view) };
   const route = () => { const r = location.hash.slice(1); return r in ROUTES ? r : 'sim'; };
   function render(opts = {}) {
     const r = route();
@@ -2095,6 +2112,11 @@
       case 'reset':
         if (confirm('Clear your saved case results, your missed questions and your mastered list? Your Ocumon is kept.')) { saved = Object.assign(cleanSaved(), { mon: saved.mon }); persist(); try { localStorage.removeItem(LEGACY_KEY); } catch (e) { /* ignore */ } again(); }
         break;
+      case 'notes-jump': {
+        const el = v === 'top' ? document.querySelector('.notes-toc') : document.getElementById(`notes-${v}`);
+        if (el) el.scrollIntoView({ behavior: calm() ? 'auto' : 'smooth', block: 'start' });
+        break;
+      }
       case 'export': exportSave(); break;
       case 'import': document.getElementById('import-file').click(); break;
       case 'mon-starter': monChoose(v); break;
