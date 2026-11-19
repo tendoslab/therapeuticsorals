@@ -845,10 +845,12 @@
   const FC = window.FLASHCARDS || [];
   const FC_DECKS = window.FLASHCARD_DECKS || [];
   const MIN = 60e3, DAY = 864e5;
-  const FC_LEARN = [1, 10], FC_RELEARN = [10];          // minutes
-  const FC_GRAD = 1, FC_EASY = 4, FC_MAX = 365;          // days
+  // Exam-cram settings (the oral is days away): an extra 1-hour learning step, no daily new-card limit,
+  // and no gap longer than 2 days, so every card comes round again before the exam.
+  const FC_LEARN = [1, 10, 60], FC_RELEARN = [10];      // minutes
+  const FC_GRAD = 1, FC_EASY = 2, FC_MAX = 2;            // days
   const FC_EASE = 2.5, FC_MIN_EASE = 1.3, FC_HARD = 1.2, FC_BONUS = 1.3;
-  const FC_NEW_PER_DAY = 20, FC_AHEAD = 20 * MIN;       // learning cards up to 20 min early once nothing else is left
+  const FC_AHEAD = 20 * MIN;                            // learning cards up to 20 min early once nothing else is left
   const RATINGS = [
     { n: 1, id: 'again', label: 'Again', hint: 'Forgot it' },
     { n: 2, id: 'hard', label: 'Hard', hint: 'Got it, with effort' },
@@ -862,7 +864,14 @@
     if (!isMap(saved.fcDay) || saved.fcDay.d !== fcDayKey()) saved.fcDay = { d: fcDayKey(), n: 0, extra: 0 };
     return saved.fcDay;
   }
-  const fcNewLeft = () => { const t = fcToday(); return Math.max(0, FC_NEW_PER_DAY + (t.extra || 0) - (t.n || 0)); };
+  const fcNewLeft = () => Infinity; // no daily cap on new cards
+  // Cards scheduled under longer gaps come back within the cap.
+  let clamped = false;
+  Object.keys(saved.cards).forEach((id) => {
+    const st = fcGet(id);
+    if (st && st.ivl > FC_MAX) { st.ivl = FC_MAX; st.due = Math.min(st.due, fcDayStart() + FC_MAX * DAY); clamped = true; }
+  });
+  if (clamped) persist();
 
   // The state a card moves to when rated r (1 Again … 4 Easy). Pure: also used to label the buttons.
   function fcNext(st, r, now = Date.now()) {
@@ -875,9 +884,10 @@
         s.q = 'relearn'; s.step = 0; s.due = now + FC_RELEARN[0] * MIN; return s;
       }
       const late = Math.max(0, Math.round((fcDayStart(now) - fcDayStart(s.due)) / DAY)); // days overdue count for something
-      const hard = Math.max(s.ivl + 1, Math.round(s.ivl * FC_HARD));
-      const good = Math.max(hard + 1, Math.round((s.ivl + late / 2) * s.ease));
-      const easy = Math.max(good + 1, Math.round((s.ivl + late) * s.ease * FC_BONUS));
+      const cap = (d) => Math.min(FC_MAX, d);
+      const hard = cap(Math.max(1, Math.round(s.ivl * FC_HARD)));
+      const good = cap(Math.max(hard + 1, Math.round((s.ivl + late / 2) * s.ease)));
+      const easy = cap(Math.max(good + 1, Math.round((s.ivl + late) * s.ease * FC_BONUS)));
       if (r === 2) { s.ease = Math.max(FC_MIN_EASE, s.ease - 0.15); s.ivl = hard; } else if (r === 3) s.ivl = good; else { s.ease += 0.15; s.ivl = easy; }
       s.ivl = Math.min(FC_MAX, s.ivl); s.due = dueIn(s.ivl); return s;
     }
@@ -978,8 +988,8 @@
   const fcCountsHtml = (o) => `<span class="fc-counts" title="New · Learning · Due"><b class="c-new">${o.fresh}</b> <b class="c-learn">${o.learn}</b> <b class="c-due">${o.review}</b></span>`;
   function renderFlashcards() {
     if (fc.studying) return renderFcStudy();
-    const now = Date.now(), all = fcCounts(fc.decks, now), left = fcNewLeft();
-    const newNow = Math.min(all.fresh, left), ready = all.learn + all.review + newNow;
+    const now = Date.now(), all = fcCounts(fc.decks, now);
+    const newNow = all.fresh, ready = all.learn + all.review + newNow;
     const rows = FC_DECKS.map((d) => {
       const o = fcCounts(new Set([d.id]), now), on = fc.decks.has(d.id);
       const pct = o.total ? Math.round((100 * o.seen) / o.total) : 0;
@@ -999,7 +1009,7 @@
     }).length);
     const dayName = (i) => (i === 1 ? 'Tomorrow' : new Date(today0 + i * DAY).toLocaleDateString('en-AU', { weekday: 'short' }));
     const nl = fcNextLearn();
-    const idle = !ready ? (all.fresh && !left ? `You’ve met today’s ${FC_NEW_PER_DAY + (fcToday().extra || 0)} new cards.` : nl < Infinity ? `Nothing due. The next learning card is back in ${fcSpan(nl - now)}.` : all.total ? 'Nothing due in these decks right now. 🎉' : 'Pick at least one deck.') : '';
+    const idle = !ready ? (nl < Infinity ? `Nothing due. The next learning card is back in ${fcSpan(nl - now)}.` : all.total ? 'Nothing due in these decks right now. 🎉' : 'Pick at least one deck.') : '';
     return `<div class="grid-2 fc-home">
       <section class="card stack" aria-labelledby="fc-decks-h">
         <div class="row" style="justify-content:space-between"><h2 id="fc-decks-h" style="font-size:1.15rem;margin:0">Decks</h2>
@@ -1011,15 +1021,14 @@
           <div class="fc-today">${fcCountsHtml(Object.assign({}, all, { fresh: newNow }))}<span class="muted">new · learning · due</span></div></div>
         <button class="btn primary big" data-act="fc-start" ${ready ? '' : 'disabled'}>${ready ? `Study ${ready} card${ready === 1 ? '' : 's'}` : 'Nothing to study now'}</button>
         ${idle ? `<p class="muted" style="margin:0">${idle}</p>` : ''}
-        ${all.fresh && !left ? '<button class="btn small" data-act="fc-more">+10 new cards today</button>' : ''}
         <div><p class="label">Coming up</p><div class="fc-week">${week.slice(1).map((n, i) => `<div><small>${dayName(i + 1)}</small><b class="mono">${n}</b></div>`).join('')}</div></div>
         <div class="prose fc-how"><p class="label">How it works</p>
           <p>Read the question, say the answer out loud, then flip the card and rate how it went. The button shows when you’ll see the card again:</p>
           <ul><li><b class="r-again">Again</b>: you forgot it. It comes back in a minute (a review card relearns and its gap halves).</li>
           <li><b class="r-hard">Hard</b>: right, but a struggle. A slightly longer gap, and the card gets harder.</li>
-          <li><b class="r-good">Good</b>: right. The gap grows by the card’s ease (about 2.5×).</li>
+          <li><b class="r-good">Good</b>: right. The gap grows by the card’s ease (about 2.5×), up to 2 days.</li>
           <li><b class="r-easy">Easy</b>: instant. A much longer gap, and the card gets easier.</li></ul>
-          <p class="muted">New cards: ${FC_NEW_PER_DAY} a day. Keys: <kbd>Space</kbd> flip (again for Good), <kbd>1</kbd>–<kbd>4</kbd> rate, <kbd>Ctrl</kbd>+<kbd>Z</kbd> undo. Progress is saved in this browser and included in Export progress.</p></div>
+          <p class="muted">Exam mode: no limit on new cards, and no card waits more than ${FC_MAX} days. Keys: <kbd>Space</kbd> flip (again for Good), <kbd>1</kbd>–<kbd>4</kbd> rate, <kbd>Ctrl</kbd>+<kbd>Z</kbd> undo. Progress is saved in this browser and included in Export progress.</p></div>
         <button class="btn small ghost" data-act="fc-reset" style="align-self:flex-start">Reset flashcard progress</button>
       </section></div>`;
   }
@@ -1034,7 +1043,7 @@
       const nl = fcNextLearn();
       return `${top}<section class="card fc-card fc-end"><h2>🎉 ${nl < Infinity ? 'Done for now' : 'All caught up'}</h2>
         <p>${fc.done} card${fc.done === 1 ? '' : 's'} reviewed this session.${nl < Infinity ? ` ${nl - FC_AHEAD - now > 0 ? `Learning cards come back in ${fcSpan(nl - FC_AHEAD - now)}; this page will pick them up.` : ''}` : ''}</p>
-        <div class="row">${o.fresh === 0 && fcCounts(fc.decks, now).fresh ? '<button class="btn" data-act="fc-more">+10 new cards today</button>' : ''}<button class="btn primary" data-act="fc-stop">Back to decks</button></div></section>`;
+        <div class="row"><button class="btn primary" data-act="fc-stop">Back to decks</button></div></section>`;
     }
     const d = fcDeck(c.deck), s = fcGet(c.id);
     const state = !s ? '<span class="pill accent">New</span>' : s.q === 'review' ? `<span class="pill good">Review · ${fcSpan(s.ivl * DAY)} gap</span>` : `<span class="pill bad">${s.q === 'relearn' ? 'Relearning' : 'Learning'}</span>`;
@@ -2371,7 +2380,6 @@
       case 'fc-show': fc.shown = true; again(); break;
       case 'fc-rate': fcRate(Number(v)); break;
       case 'fc-undo': fcUndo(); break;
-      case 'fc-more': fcToday().extra = (fcToday().extra || 0) + 10; persist(); if (fc.studying) fcAdvance(); again(); break;
       case 'fc-reset':
         if (confirm('Reset all flashcard progress? Every card goes back to new. Your cases, mistakes and Ocumon are not touched.')) { saved.cards = {}; saved.fcDay = {}; fc.studying = false; fc.undo = null; persist(); again(); }
         break;
