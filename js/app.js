@@ -55,6 +55,7 @@
   const timerPill = document.getElementById('timer-pill');
   const missBadge = document.getElementById('miss-badge');
   const masterBadge = document.getElementById('master-badge');
+  const fcBadge = document.getElementById('fc-badge');
   // The top bar wraps to two rows on narrower screens, so whatever is pinned under it reads its real height
   // from --topbar-h rather than guessing one.
   const topbar = document.querySelector('.topbar');
@@ -66,7 +67,7 @@
   // A damaged or hand-edited save falls back to empty lists rather than breaking the page.
   const isMap = (v) => !!v && typeof v === 'object' && !Array.isArray(v);
   function cleanSaved(o) {
-    const s = { cases: {}, missed: {}, seen: {}, mastered: {}, played: {} };
+    const s = { cases: {}, missed: {}, seen: {}, mastered: {}, played: {}, cards: {}, fcDay: {} };
     if (isMap(o)) Object.keys(o).forEach((k) => { if (!(k in s) || isMap(o[k])) s[k] = o[k]; });
     return s;
   }
@@ -834,6 +835,228 @@
       ${groups}</div>`;
   }
 
+  // ------------------------------------------------------------------ flashcards (inside the Study notes tab)
+  // Anki-style spaced repetition over js/data/flashcards.js. A new card walks through short learning steps
+  // (1 and 10 min), then graduates to a review card whose interval grows by its ease (starting at 250%).
+  // Again on a review card is a lapse: ease −20 points, the interval halves and it relearns for 10 min.
+  // Hard ×1.2 (ease −15), Good ×ease, Easy ×ease×1.3 (ease +15). Days roll over at 4 am, as in Anki.
+  // Progress: saved.cards[cardId] = { q: 'learn' | 'relearn' | 'review', step, ivl (days), ease, due (ms), reps, lapses };
+  // new cards introduced today: saved.fcDay = { d, n, extra }.
+  const FC = window.FLASHCARDS || [];
+  const FC_DECKS = window.FLASHCARD_DECKS || [];
+  const MIN = 60e3, DAY = 864e5;
+  const FC_LEARN = [1, 10], FC_RELEARN = [10];          // minutes
+  const FC_GRAD = 1, FC_EASY = 4, FC_MAX = 365;          // days
+  const FC_EASE = 2.5, FC_MIN_EASE = 1.3, FC_HARD = 1.2, FC_BONUS = 1.3;
+  const FC_NEW_PER_DAY = 20, FC_AHEAD = 20 * MIN;       // learning cards up to 20 min early once nothing else is left
+  const RATINGS = [
+    { n: 1, id: 'again', label: 'Again', hint: 'Forgot it' },
+    { n: 2, id: 'hard', label: 'Hard', hint: 'Got it, with effort' },
+    { n: 3, id: 'good', label: 'Good', hint: 'Got it' },
+    { n: 4, id: 'easy', label: 'Easy', hint: 'Instant' }];
+  const fcDeck = (id) => FC_DECKS.find((d) => d.id === id) || { id, title: id, icon: '🗂️', hue: 225 };
+  const fcDayStart = (t = Date.now()) => { const d = new Date(t - 4 * 3600e3); d.setHours(4, 0, 0, 0); return d.getTime(); };
+  const fcDayKey = () => { const d = new Date(fcDayStart()); return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; };
+  const fcGet = (id) => { const s = saved.cards[id]; return isMap(s) && typeof s.due === 'number' && /^(learn|relearn|review)$/.test(s.q) ? s : undefined; };
+  function fcToday() {
+    if (!isMap(saved.fcDay) || saved.fcDay.d !== fcDayKey()) saved.fcDay = { d: fcDayKey(), n: 0, extra: 0 };
+    return saved.fcDay;
+  }
+  const fcNewLeft = () => { const t = fcToday(); return Math.max(0, FC_NEW_PER_DAY + (t.extra || 0) - (t.n || 0)); };
+
+  // The state a card moves to when rated r (1 Again … 4 Easy). Pure: also used to label the buttons.
+  function fcNext(st, r, now = Date.now()) {
+    const s = Object.assign({ q: 'new', step: 0, ivl: 0, ease: FC_EASE, reps: 0, lapses: 0 }, st);
+    const dueIn = (days) => fcDayStart(now) + days * DAY;
+    s.reps += 1; s.last = now;
+    if (s.q === 'review') {
+      if (r === 1) {
+        s.lapses += 1; s.ease = Math.max(FC_MIN_EASE, s.ease - 0.2); s.ivl = Math.max(1, Math.round(s.ivl * 0.5));
+        s.q = 'relearn'; s.step = 0; s.due = now + FC_RELEARN[0] * MIN; return s;
+      }
+      const late = Math.max(0, Math.round((fcDayStart(now) - fcDayStart(s.due)) / DAY)); // days overdue count for something
+      const hard = Math.max(s.ivl + 1, Math.round(s.ivl * FC_HARD));
+      const good = Math.max(hard + 1, Math.round((s.ivl + late / 2) * s.ease));
+      const easy = Math.max(good + 1, Math.round((s.ivl + late) * s.ease * FC_BONUS));
+      if (r === 2) { s.ease = Math.max(FC_MIN_EASE, s.ease - 0.15); s.ivl = hard; } else if (r === 3) s.ivl = good; else { s.ease += 0.15; s.ivl = easy; }
+      s.ivl = Math.min(FC_MAX, s.ivl); s.due = dueIn(s.ivl); return s;
+    }
+    if (s.q === 'new') { s.q = 'learn'; s.step = 0; }
+    const steps = s.q === 'relearn' ? FC_RELEARN : FC_LEARN;
+    const graduate = (days) => { s.q = 'review'; s.step = 0; s.ivl = Math.min(FC_MAX, days); s.due = dueIn(s.ivl); return s; };
+    if (r === 4) return graduate(s.q === 'relearn' ? s.ivl + 1 : FC_EASY);
+    if (r === 1) s.step = 0;
+    else if (r === 3) { s.step += 1; if (s.step >= steps.length) return graduate(s.q === 'relearn' ? s.ivl : FC_GRAD); }
+    // Hard repeats the step: halfway to the next step, or 1.5× when it's the last one.
+    const m = r === 2 ? (steps[s.step + 1] ? (steps[s.step] + steps[s.step + 1]) / 2 : steps[s.step] * 1.5) : steps[s.step];
+    s.due = now + Math.round(m) * MIN; return s;
+  }
+  // "<1m", "10m", "3h", "4d", "1.5mo", "1y"
+  function fcSpan(ms) {
+    const m = ms / MIN;
+    if (m < 1) return '<1m';
+    if (m < 60) return `${Math.round(m)}m`;
+    if (m < 1440) return `${Math.round(m / 60)}h`;
+    const d = Math.round(ms / DAY);
+    if (d < 30) return `${d}d`;
+    if (d < 365) return `${Math.round(d / 3.04) / 10}mo`;
+    return `${Math.round(d / 36.5) / 10}y`;
+  }
+  const fcIvlLabel = (s, now) => (s.q === 'review' ? fcSpan(s.ivl * DAY) : fcSpan(s.due - now));
+
+  const fc = { mode: 'notes', decks: new Set(FC_DECKS.map((d) => d.id)), studying: false, cur: null, shown: false, undo: null, lastId: null, done: 0, wait: 0 };
+  try { if (localStorage.getItem(STORE_KEY + ':notesMode') === 'cards') fc.mode = 'cards'; } catch (e) { /* ignore */ }
+
+  function fcCounts(decks, now = Date.now()) {
+    const o = { total: 0, fresh: 0, learn: 0, review: 0, seen: 0, mature: 0 };
+    FC.forEach((c) => {
+      if (!decks.has(c.deck)) return;
+      o.total++;
+      const s = fcGet(c.id);
+      if (!s) { o.fresh++; return; }
+      o.seen++;
+      if (s.q === 'review' && s.ivl >= 21) o.mature++;
+      if (s.due <= now) { if (s.q === 'review') o.review++; else o.learn++; }
+    });
+    return o;
+  }
+  // Cards waiting now across every deck (learning and reviews, not new): the nav badge.
+  const fcDueAll = () => { const now = Date.now(); return FC.filter((c) => { const s = fcGet(c.id); return s && s.due <= now; }).length; };
+
+  // Next card, Anki's order: learning cards that are due, then reviews due, then new cards (round-robin
+  // across the chosen decks, up to the daily limit), then learning cards due within 20 minutes.
+  function fcPick(now = Date.now()) {
+    const pool = FC.filter((c) => fc.decks.has(c.deck));
+    const notLast = (xs) => (xs.length > 1 ? xs.filter((c) => c.id !== fc.lastId) : xs);
+    const learning = pool.filter((c) => { const s = fcGet(c.id); return s && s.q !== 'review'; }).sort((a, b) => fcGet(a.id).due - fcGet(b.id).due);
+    const lrnDue = learning.filter((c) => fcGet(c.id).due <= now);
+    if (lrnDue.length) return notLast(lrnDue)[0];
+    const revDue = pool.filter((c) => { const s = fcGet(c.id); return s && s.q === 'review' && s.due <= now; }).sort((a, b) => fcGet(a.id).due - fcGet(b.id).due);
+    if (revDue.length) return notLast(revDue)[0];
+    if (fcNewLeft() > 0) {
+      const pos = {}, order = FC_DECKS.map((d) => d.id);
+      const fresh = pool.filter((c) => !fcGet(c.id)).map((c) => ({ c, i: (pos[c.deck] = (pos[c.deck] || 0) + 1) }));
+      fresh.sort((a, b) => a.i - b.i || order.indexOf(a.c.deck) - order.indexOf(b.c.deck));
+      if (fresh.length) return fresh[0].c;
+    }
+    const ahead = learning.filter((c) => fcGet(c.id).due <= now + FC_AHEAD);
+    return ahead.length ? notLast(ahead)[0] : null;
+  }
+  // The next learning card's due time, for the "come back in 8 min" message.
+  const fcNextLearn = () => FC.filter((c) => fc.decks.has(c.deck)).map((c) => fcGet(c.id)).filter((s) => s && s.q !== 'review').reduce((m, s) => Math.min(m, s.due), Infinity);
+
+  function fcStart() { fc.studying = true; fc.done = 0; fc.undo = null; fc.lastId = null; fcAdvance(); }
+  function fcAdvance() {
+    const c = fcPick();
+    fc.cur = c ? c.id : null; fc.shown = false;
+    clearTimeout(fc.wait);
+    if (!c) {
+      const t = fcNextLearn();
+      if (t < Infinity) fc.wait = setTimeout(() => { if (route() === 'notes' && fc.mode === 'cards' && fc.studying && !fc.cur) { fcAdvance(); render(); } }, Math.max(1000, t - FC_AHEAD - Date.now() + 500));
+    }
+  }
+  function fcRate(r) {
+    const c = FC.find((x) => x.id === fc.cur);
+    if (!c || !fc.shown) return;
+    const prev = saved.cards[c.id], day = Object.assign({}, fcToday());
+    if (!fcGet(c.id)) fcToday().n += 1;
+    saved.cards[c.id] = fcNext(fcGet(c.id), r);
+    fc.undo = { id: c.id, prev, day };
+    fc.lastId = c.id; fc.done += 1;
+    persist(); fcAdvance(); render();
+  }
+  function fcUndo() {
+    const u = fc.undo;
+    if (!u) return;
+    if (u.prev === undefined) delete saved.cards[u.id]; else saved.cards[u.id] = u.prev;
+    saved.fcDay = u.day;
+    fc.undo = null; fc.studying = true; fc.cur = u.id; fc.shown = false; fc.done = Math.max(0, fc.done - 1);
+    clearTimeout(fc.wait);
+    persist(); render();
+  }
+
+  const fcCountsHtml = (o) => `<span class="fc-counts" title="New · Learning · Due"><b class="c-new">${o.fresh}</b> <b class="c-learn">${o.learn}</b> <b class="c-due">${o.review}</b></span>`;
+  function renderFlashcards() {
+    if (fc.studying) return renderFcStudy();
+    const now = Date.now(), all = fcCounts(fc.decks, now), left = fcNewLeft();
+    const newNow = Math.min(all.fresh, left), ready = all.learn + all.review + newNow;
+    const rows = FC_DECKS.map((d) => {
+      const o = fcCounts(new Set([d.id]), now), on = fc.decks.has(d.id);
+      const pct = o.total ? Math.round((100 * o.seen) / o.total) : 0;
+      return `<button class="cat fc-deck" style="--h:${d.hue}" data-act="fc-deck" data-v="${esc(d.id)}" aria-pressed="${on}">
+        <span class="ico" aria-hidden="true">${d.icon}</span>
+        <span><b>${esc(d.title)}</b><small>${esc(d.blurb)} · ${o.total} cards</small>
+          <span class="fc-bar" aria-hidden="true"><i style="width:${pct}%"></i></span>
+          <small>${fcCountsHtml(o)} <span class="muted">· ${o.seen}/${o.total} studied${o.mature ? ` · ${o.mature} mature` : ''}</span></small></span>
+        <span class="tick" aria-hidden="true">${on ? '✓' : ''}</span></button>`;
+    }).join('');
+    // Reviews falling due over the next week (chosen decks), counted by study day.
+    const today0 = fcDayStart(now), week = range(7).map((i) => FC.filter((c) => {
+      const s = fcGet(c.id);
+      if (!s || !fc.decks.has(c.deck)) return false;
+      const d = Math.max(0, Math.round((fcDayStart(s.due) - today0) / DAY));
+      return i === 0 ? s.due > now && d === 0 : d === i;
+    }).length);
+    const dayName = (i) => (i === 1 ? 'Tomorrow' : new Date(today0 + i * DAY).toLocaleDateString('en-AU', { weekday: 'short' }));
+    const nl = fcNextLearn();
+    const idle = !ready ? (all.fresh && !left ? `You’ve met today’s ${FC_NEW_PER_DAY + (fcToday().extra || 0)} new cards.` : nl < Infinity ? `Nothing due. The next learning card is back in ${fcSpan(nl - now)}.` : all.total ? 'Nothing due in these decks right now. 🎉' : 'Pick at least one deck.') : '';
+    return `<div class="grid-2 fc-home">
+      <section class="card stack" aria-labelledby="fc-decks-h">
+        <div class="row" style="justify-content:space-between"><h2 id="fc-decks-h" style="font-size:1.15rem;margin:0">Decks</h2>
+          <div class="row" style="gap:.35rem"><button class="btn small ghost" data-act="fc-all">All</button><button class="btn small ghost" data-act="fc-none">None</button></div></div>
+        <div class="cat-list">${rows}</div>
+      </section>
+      <section class="card stack">
+        <div><p class="label">Today</p>
+          <div class="fc-today">${fcCountsHtml(Object.assign({}, all, { fresh: newNow }))}<span class="muted">new · learning · due</span></div></div>
+        <button class="btn primary big" data-act="fc-start" ${ready ? '' : 'disabled'}>${ready ? `Study ${ready} card${ready === 1 ? '' : 's'}` : 'Nothing to study now'}</button>
+        ${idle ? `<p class="muted" style="margin:0">${idle}</p>` : ''}
+        ${all.fresh && !left ? '<button class="btn small" data-act="fc-more">+10 new cards today</button>' : ''}
+        <div><p class="label">Coming up</p><div class="fc-week">${week.slice(1).map((n, i) => `<div><small>${dayName(i + 1)}</small><b class="mono">${n}</b></div>`).join('')}</div></div>
+        <div class="prose fc-how"><p class="label">How it works</p>
+          <p>Read the question, say the answer out loud, then flip the card and rate how it went. The button shows when you’ll see the card again:</p>
+          <ul><li><b class="r-again">Again</b>: you forgot it. It comes back in a minute (a review card relearns and its gap halves).</li>
+          <li><b class="r-hard">Hard</b>: right, but a struggle. A slightly longer gap, and the card gets harder.</li>
+          <li><b class="r-good">Good</b>: right. The gap grows by the card’s ease (about 2.5×).</li>
+          <li><b class="r-easy">Easy</b>: instant. A much longer gap, and the card gets easier.</li></ul>
+          <p class="muted">New cards: ${FC_NEW_PER_DAY} a day. Keys: <kbd>Space</kbd> flip (again for Good), <kbd>1</kbd>–<kbd>4</kbd> rate, <kbd>Ctrl</kbd>+<kbd>Z</kbd> undo. Progress is saved in this browser and included in Export progress.</p></div>
+        <button class="btn small ghost" data-act="fc-reset" style="align-self:flex-start">Reset flashcard progress</button>
+      </section></div>`;
+  }
+  function renderFcStudy() {
+    const now = Date.now(), c = FC.find((x) => x.id === fc.cur);
+    const o = fcCounts(fc.decks, now);
+    o.fresh = Math.min(o.fresh, fcNewLeft());
+    const top = `<div class="row fc-top"><button class="btn small ghost" data-act="fc-stop">← Decks</button>${fcCountsHtml(o)}
+      <span class="muted" style="font-size:.85rem">${fc.done} done</span>
+      ${fc.undo ? '<button class="btn small ghost" data-act="fc-undo" style="margin-left:auto">↶ Undo</button>' : ''}</div>`;
+    if (!c) {
+      const nl = fcNextLearn();
+      return `${top}<section class="card fc-card fc-end"><h2>🎉 ${nl < Infinity ? 'Done for now' : 'All caught up'}</h2>
+        <p>${fc.done} card${fc.done === 1 ? '' : 's'} reviewed this session.${nl < Infinity ? ` ${nl - FC_AHEAD - now > 0 ? `Learning cards come back in ${fcSpan(nl - FC_AHEAD - now)}; this page will pick them up.` : ''}` : ''}</p>
+        <div class="row">${o.fresh === 0 && fcCounts(fc.decks, now).fresh ? '<button class="btn" data-act="fc-more">+10 new cards today</button>' : ''}<button class="btn primary" data-act="fc-stop">Back to decks</button></div></section>`;
+    }
+    const d = fcDeck(c.deck), s = fcGet(c.id);
+    const state = !s ? '<span class="pill accent">New</span>' : s.q === 'review' ? `<span class="pill good">Review · ${fcSpan(s.ivl * DAY)} gap</span>` : `<span class="pill bad">${s.q === 'relearn' ? 'Relearning' : 'Learning'}</span>`;
+    const rate = RATINGS.map((r) => `<button type="button" class="fc-r r-${r.id}" data-act="fc-rate" data-v="${r.n}" title="${r.hint}"><small>${fcIvlLabel(fcNext(s, r.n, now), now)}</small><b>${r.label}</b><kbd>${r.n}</kbd></button>`).join('');
+    return `${top}
+      <section class="card fc-card hue-top" style="--h:${d.hue}" aria-live="polite">
+        <div class="pills"><span class="pill tint" style="--h:${d.hue}">${d.icon} ${esc(d.title)}</span>${state}</div>
+        <div class="fc-q">${c.q}</div>
+        ${fc.shown ? `<div class="fc-a prose">${c.a}</div>` : ''}
+      </section>
+      ${fc.shown ? `<div class="fc-rate">${rate}</div>` : '<button class="btn primary big fc-show" data-act="fc-show">Show answer <kbd>Space</kbd></button>'}`;
+  }
+  document.addEventListener('keydown', (ev) => {
+    if (route() !== 'notes' || fc.mode !== 'cards' || ev.altKey || /^(INPUT|TEXTAREA|SELECT)$/.test(ev.target.tagName)) return;
+    if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === 'z' && fc.undo) { ev.preventDefault(); fcUndo(); return; }
+    if (ev.ctrlKey || ev.metaKey || !fc.studying || !fc.cur) return;
+    if (!fc.shown && (ev.key === ' ' || ev.key === 'Enter')) {
+      if (ev.target.tagName === 'BUTTON' && ev.target.dataset.act !== 'fc-show') return;
+      ev.preventDefault(); fc.shown = true; render({ keepScroll: true });
+    } else if (fc.shown && /^[1-4]$/.test(ev.key)) { ev.preventDefault(); fcRate(Number(ev.key)); } else if (fc.shown && ev.key === ' ' && ev.target.tagName !== 'BUTTON') { ev.preventDefault(); fcRate(3); }
+  });
+
   // ------------------------------------------------------------------ exam guide
   // Study notes: a laid-out summary of the Therapeutics Orals Study Sheet and its Part 1 / Part 2 PDFs
   // (content and images in js/data/study-notes.js). The contents list scrolls to a section without touching the hash.
@@ -841,8 +1064,19 @@
     const N = window.STUDY_NOTES || [];
     const bar = document.querySelector('.topbar');
     if (bar) document.documentElement.style.setProperty('--topbar-h', `${bar.offsetHeight}px`);
+    const due = fcDueAll();
+    const tabs = `<div class="fc-switch" role="group" aria-label="Study notes or flashcards">
+      <button type="button" data-act="notes-mode" data-v="notes" aria-pressed="${fc.mode === 'notes'}">📖 Notes</button>
+      <button type="button" data-act="notes-mode" data-v="cards" aria-pressed="${fc.mode === 'cards'}">🗂️ Flashcards${due ? ` <span class="badge">${due}</span>` : ''}</button></div>`;
+    if (fc.mode === 'cards') {
+      view.innerHTML = `<div class="fade">
+        <section class="hero"><div><p class="label">Study notes · flashcards</p><h1>Revise with spaced repetition</h1><p>${FC.length} cards from the study notes in ${FC_DECKS.length} decks: drug mechanisms and strengths, doses by condition, contraindications, landmark trials, grading scales and red flags. Rate each card and it comes back just before you’d forget it.</p></div></section>
+        ${tabs}${renderFlashcards()}</div>`;
+      return;
+    }
     view.innerHTML = `<div class="fade">
       <section class="hero"><div><p class="label">Study notes</p><h1>Therapeutics orals study sheet</h1><p>A laid-out summary of the study sheet (Nov 2026) and its Part 1 and Part 2 notes: what to say, the doses examiners drill, the corrections to older notes, and the photos. Tap any image to enlarge it.</p></div></section>
+      ${tabs}
       <div class="notes-layout">
         <nav class="notes-toc" aria-label="Study notes sections"><p class="label">Contents</p>${N.map((s) => `<button type="button" class="toc-item" data-act="notes-jump" data-v="${esc(s.id)}" style="--h:${s.hue}"><span aria-hidden="true">${s.icon}</span>${esc(s.title)}</button>`).join('')}</nav>
         <div class="notes-body">${N.map((s) => `<section class="card hue-top prose nsec" id="notes-${esc(s.id)}" style="--h:${s.hue}">
@@ -2054,13 +2288,13 @@
       next.mon = cleanMon(next.mon);
       const when = typeof o.exported === 'string' ? new Date(o.exported).toLocaleString() : 'an unknown date';
       const n = (x) => Object.keys(x).length;
-      if (!confirm(`Replace the progress in this browser with the file exported ${when}?\n\nThe file has ${n(next.cases)} case results, ${n(next.missed)} mistakes, ${n(next.mastered)} mastered questions and ${n(next.mon.dex)} Ocumon caught.`)) return;
+      if (!confirm(`Replace the progress in this browser with the file exported ${when}?\n\nThe file has ${n(next.cases)} case results, ${n(next.missed)} mistakes, ${n(next.mastered)} mastered questions, ${n(next.cards)} flashcards studied and ${n(next.mon.dex)} Ocumon caught.`)) return;
       saved = next;
       if (typeof o.theme === 'string' && /^(light|dark)$/.test(o.theme)) {
         document.documentElement.dataset.theme = o.theme;
         try { localStorage.setItem(STORE_KEY + ':theme', o.theme); } catch (e) { /* ignore */ }
       }
-      hunt = null; persist(); render();
+      hunt = null; fc.studying = false; fc.undo = null; persist(); render();
     };
     r.onerror = () => alert('Could not read that file. Nothing was changed.');
     r.readAsText(file);
@@ -2076,6 +2310,8 @@
     missBadge.hidden = !n; missBadge.textContent = n;
     const nm = masteredKeys().length;
     masterBadge.hidden = !nm; masterBadge.textContent = nm;
+    const nf = fcDueAll();
+    fcBadge.hidden = !nf; fcBadge.textContent = nf;
     monChip();
     const y = window.scrollY;
     if (r !== 'play') arcQuit(); // leaving the tab ends a game in progress
@@ -2085,6 +2321,10 @@
     scorePill.hidden = !active();
     if (active()) scorePill.textContent = `Score ${sim.s.score} / ${sim.s.max}`;
     window.scrollTo({ top: opts.keepScroll ? y : 0 });
+    // Mid-session the flashcard stays in view, so a phone doesn't scroll back past the header after every card.
+    const ft = r === 'notes' && fc.mode === 'cards' && fc.studying && document.querySelector('.fc-top');
+    if (ft && ft.getBoundingClientRect().top < topbar.offsetHeight) ft.scrollIntoView({ block: 'start' });
+    else if (ft && !opts.keepScroll) ft.scrollIntoView({ block: 'start' });
   }
   window.addEventListener('hashchange', () => render());
 
@@ -2112,13 +2352,29 @@
       case 'drill-mastered': startDrill(shownMasteredKeys()); break;
       case 'mastered-cat': mastery.cat = v; again(); break;
       case 'reset':
-        if (confirm('Clear your saved case results, your missed questions and your mastered list? Your Ocumon is kept.')) { saved = Object.assign(cleanSaved(), { mon: saved.mon }); persist(); try { localStorage.removeItem(LEGACY_KEY); } catch (e) { /* ignore */ } again(); }
+        if (confirm('Clear your saved case results, your missed questions and your mastered list? Your Ocumon and flashcards are kept.')) { saved = Object.assign(cleanSaved(), { mon: saved.mon, cards: saved.cards, fcDay: saved.fcDay }); persist(); try { localStorage.removeItem(LEGACY_KEY); } catch (e) { /* ignore */ } again(); }
         break;
       case 'notes-jump': {
         const el = v === 'top' ? document.querySelector('.notes-toc') : document.getElementById(`notes-${v}`);
         if (el) el.scrollIntoView({ behavior: calm() ? 'auto' : 'smooth', block: 'start' });
         break;
       }
+      case 'notes-mode':
+        fc.mode = v === 'cards' ? 'cards' : 'notes';
+        try { localStorage.setItem(STORE_KEY + ':notesMode', fc.mode); } catch (e) { /* ignore */ }
+        again(); break;
+      case 'fc-deck': fc.decks.has(v) ? fc.decks.delete(v) : fc.decks.add(v); again(); break;
+      case 'fc-all': FC_DECKS.forEach((d) => fc.decks.add(d.id)); again(); break;
+      case 'fc-none': fc.decks.clear(); again(); break;
+      case 'fc-start': fcStart(); render(); break;
+      case 'fc-stop': fc.studying = false; fc.cur = null; clearTimeout(fc.wait); render(); break;
+      case 'fc-show': fc.shown = true; again(); break;
+      case 'fc-rate': fcRate(Number(v)); break;
+      case 'fc-undo': fcUndo(); break;
+      case 'fc-more': fcToday().extra = (fcToday().extra || 0) + 10; persist(); if (fc.studying) fcAdvance(); again(); break;
+      case 'fc-reset':
+        if (confirm('Reset all flashcard progress? Every card goes back to new. Your cases, mistakes and Ocumon are not touched.')) { saved.cards = {}; saved.fcDay = {}; fc.studying = false; fc.undo = null; persist(); again(); }
+        break;
       case 'export': exportSave(); break;
       case 'import': document.getElementById('import-file').click(); break;
       case 'mon-starter': monChoose(v); break;
