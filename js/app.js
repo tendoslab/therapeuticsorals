@@ -67,7 +67,7 @@
   // A damaged or hand-edited save falls back to empty lists rather than breaking the page.
   const isMap = (v) => !!v && typeof v === 'object' && !Array.isArray(v);
   function cleanSaved(o) {
-    const s = { cases: {}, missed: {}, seen: {}, mastered: {}, played: {}, cards: {}, fcDay: {} };
+    const s = { cases: {}, missed: {}, seen: {}, mastered: {}, played: {}, cards: {}, fcDay: {}, fixes: {} };
     if (isMap(o)) Object.keys(o).forEach((k) => { if (!(k in s) || isMap(o[k])) s[k] = o[k]; });
     return s;
   }
@@ -107,6 +107,20 @@
   const sourceRank = (id) => { const i = SOURCES.findIndex((s) => s.id === id); return i < 0 ? SOURCES.length : i; };
   const sourcePills = (c) => [...(c.years || [])].sort((a, b) => sourceRank(a) - sourceRank(b)).map((y) => `<span class="pill">${esc(sourceLabel(y))}</span>`).join('');
   const scored = (c) => c.steps.map((s, i) => i).filter((i) => c.steps[i].type !== 'reveal');
+  // Saves from before skips were held back: a case's last questions all saved as 'Skipped' means you stopped
+  // there (a whole case skipped, or the rest of one), not that you missed them, so they come off My mistakes.
+  function dropStoppedSkips(sv) {
+    if (sv.fixes.trailingSkips) return;
+    CASES.forEach((c) => {
+      for (const i of scored(c).reverse()) {
+        const k = stepKey(c, i), m = sv.missed[k];
+        if (!m || m.said !== 'Skipped') break;
+        delete sv.missed[k]; delete sv.seen[k];
+      }
+    });
+    sv.fixes.trailingSkips = 1;
+  }
+  dropStoppedSkips(saved); persist();
   // The exam's marking rubric: four areas, each marked 0–5, for a total out of 20 (OPTM8523 exam guidelines).
   // A step can set `domain`; otherwise its phase label (then its question) decides, first matching rule wins.
   const DOMAINS = [
@@ -215,7 +229,7 @@
 
   function newSession(mode, items) {
     stopTimer();
-    sim.s = { mode, items, i: 0, score: 0, max: 0, results: [], picked: new Set(), perm: null, draft: {}, last: null, view: 'question', parked: false, finished: false, timeUp: false };
+    sim.s = { mode, items, i: 0, score: 0, max: 0, results: [], held: [], picked: new Set(), perm: null, draft: {}, last: null, view: 'question', parked: false, finished: false, timeUp: false };
     prepItem();
     location.hash === '#sim' ? render() : (location.hash = '#sim');
   }
@@ -273,6 +287,13 @@
 
   function record(points, said) {
     const s = sim.s, it = cur(), k = stepKey(it.c, it.s);
+    // Skips earlier in this case count now that you've answered something after them.
+    s.held.filter((h) => h.c === it.c).forEach((h) => {
+      s.max += PTS;
+      s.results.push({ c: h.c, s: h.s, points: 0, said: 'Skipped' });
+      track(stepKey(h.c, h.s), 0, 'Skipped');
+    });
+    s.held = s.held.filter((h) => h.c !== it.c);
     s.score += points; s.max += PTS;
     s.results.push({ c: it.c, s: it.s, points, said });
     track(k, points, said);
@@ -317,14 +338,19 @@
       record(Math.round((PTS * n) / st.points.length), `Covered ${n} of ${st.points.length} key points.${missedPts.length ? ' Missed: ' + missedPts.join(' · ') : ''}`);
     }
     const nx = s.items[s.i + 1];
-    if (s.mode !== 'drill' && !it.intro && (!nx || nx.c !== it.c || nx.intro)) completeCase(it.c);
+    if (!it.intro && (!nx || nx.c !== it.c || nx.intro)) {
+      if (s.mode !== 'drill') completeCase(it.c);
+      s.held = []; // skips with nothing answered after them: you stopped the case, so they aren't mistakes
+    }
     s.i++;
     if (s.i >= s.items.length) { finish(); return; }
     prepItem(); render();
   }
   function skip() {
     const st = curStep();
-    if (st && st.type !== 'reveal') record(0, 'Skipped');
+    // A skip only lands on My mistakes once you answer a later question in the same case; skipping the
+    // rest of a case (or all of it) is stopping, not missing. A drill skip leaves the question where it was.
+    if (st && st.type !== 'reveal' && sim.s.mode !== 'drill') sim.s.held.push({ c: cur().c, s: cur().s });
     sim.s.last = null; sim.s.view = 'question';
     next();
   }
@@ -714,7 +740,7 @@
     </section>`).join('');
     view.innerHTML = `<div class="fade">
       <section class="hero"><div><p class="label">My mistakes</p><h1>Questions to revisit</h1>
-        <p>Every question you scored under ${STEP_PASS}/10 on, or skipped, with what you said and the model answer. Drill them on their own (the case record keeps each one in context), or retry the whole case. A question drops off once you get it right.</p>
+        <p>Every question you scored under ${STEP_PASS}/10 on, or skipped and then carried on with the case, with what you said and the model answer. Drill them on their own (the case record keeps each one in context), or retry the whole case. A question drops off once you get it right.</p>
         ${keys.length ? `<div class="row" style="margin-top:.9rem"><button class="btn primary" data-act="drill-shown">Drill ${shown === keys.length ? 'all' : 'these'} ${shown} question${shown === 1 ? '' : 's'}</button></div>` : ''}
       </div></section>
       ${keys.length ? `<div class="row" style="gap:.4rem;margin-bottom:1.2rem">
@@ -2294,6 +2320,7 @@
       try { o = JSON.parse(r.result); } catch (e) { /* handled below */ }
       if (!isMap(o) || o.app !== 'thera-orals' || !isMap(o.data)) { alert('That file isn’t a Thera Orals progress file. Nothing was changed.'); return; }
       const next = cleanSaved(o.data);
+      dropStoppedSkips(next);
       next.mon = cleanMon(next.mon);
       const when = typeof o.exported === 'string' ? new Date(o.exported).toLocaleString() : 'an unknown date';
       const n = (x) => Object.keys(x).length;
