@@ -797,3 +797,12 @@ kbd { font-family: var(--font-mono); font-size: .75em; padding: .05rem .35rem; b
   .fc-r kbd { display: none; }
   .fc-week { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
+/* Hidden mode: the options sit blurred under a cover until you choose to see them */
+.veil { position: relative; border-radius: 9px; }
+.veil-in { filter: blur(7px); opacity: .55; pointer-events: none; user-select: none; }
+.veil-cover { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .6rem; text-align: center; padding: 1rem; }
+.veil-cover p { margin: 0; font-weight: 600; }
+@media (prefers-reduced-motion: no-preference) { .veil-in { transition: filter .2s; } }
+.veil-match select { filter: blur(5px); }
+.veil-bar { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-top: .8rem; }

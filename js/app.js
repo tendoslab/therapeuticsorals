@@ -213,7 +213,9 @@
     cats: new Set(CATS.map((c) => c.id)),
     sources: new Set(), pool: 'all', count: 5, // no sources picked = all sources
     s: null, // the current session (practice, mock or drill); it survives tab switches
+    hidden: false, // hidden mode: answer options stay blurred until you choose to see them
   };
+  try { sim.hidden = localStorage.getItem(STORE_KEY + ':hidden') === '1'; } catch (e) { /* ignore */ }
   let timerHandle = null;
 
   const sourceMatch = (c) => !sim.sources.size || (c.years || []).some((y) => sim.sources.has(y));
@@ -281,7 +283,7 @@
   function prepItem() {
     const s = sim.s, st = curStep();
     s.view = cur() && cur().intro ? 'intro' : 'question';
-    s.picked = new Set(); s.last = null; s.draft = {}; s.perm = null;
+    s.picked = new Set(); s.last = null; s.draft = {}; s.perm = null; s.shown = false;
     if (!st) return;
     if (st.type === 'mcq' || st.type === 'multi') s.perm = st.fixedOrder ? range(st.options.length) : shuffled(range(st.options.length));
     else if (st.type === 'match') s.perm = shuffled([...new Set([...st.pairs.map((p) => p.answer), ...(st.distractors || [])])]);
@@ -305,6 +307,7 @@
 
   function submit() {
     const s = sim.s, st = curStep();
+    if (st.type !== 'viva' && veiled()) return;
     if (st.type === 'mcq') {
       const pick = [...s.picked][0];
       if (pick === undefined) return;
@@ -499,6 +502,7 @@
             </div>
             <input type="range" id="count-range" min="1" max="${Math.max(1, max)}" value="${Math.max(1, sim.count)}" aria-label="Number of cases" ${max ? '' : 'disabled'}>
           </div>
+          <div class="row" style="gap:.5rem">${hiddenToggle()}<span class="muted" style="font-size:.85rem">Blurs the options on each question until you choose to see them</span></div>
           <button class="btn primary big" data-act="start" id="start-btn" ${max ? '' : 'disabled'}>${startLabel()}</button>
         </div>
         <div class="card stack mock-card">
@@ -556,6 +560,7 @@
     return `<div class="toolbar">
       <span class="pill ${s.mode === 'mock' ? 'mock' : 'accent'}">${mode}</span>
       <div class="row" style="gap:.25rem">
+        ${hiddenToggle()}
         <button class="btn ghost small" data-act="park">← Setup</button>
         ${canSkip ? '<button class="btn ghost small" data-act="skip">Skip question</button>' : ''}
         <button class="btn ghost small" data-act="skip-case" title="Not ready for this one: nothing is marked wrong, and it goes to the back of the queue${s.swap && s.mode !== 'drill' ? '. Another case takes its place' : ''}">Skip case</button>
@@ -563,6 +568,16 @@
       </div>
     </div>`;
   }
+
+  // Hidden mode: answer options are blurred until you've said your answer and choose to see them.
+  const hiddenToggle = () => `<button class="chip" data-act="hidden-mode" aria-pressed="${sim.hidden}" title="Blur multiple-choice and matching options until you choose to show them, so you answer from memory first">🙈 Hidden mode${sim.hidden ? ' on' : ''}</button>`;
+  const veiled = () => sim.hidden && !sim.s.shown;
+  // Wraps a question's options in the blur, with the button that lifts it.
+  const veil = (html) => veiled() ? `<div class="veil"><div class="veil-in" inert aria-hidden="true">${html}</div>
+      <div class="veil-cover"><p>Say your answer first, then look at the options.</p><button class="btn primary" data-act="show-opts">Show options</button></div></div>` : html;
+  // Matching: the items stay readable (they're the question); only the dropdown choices are blurred.
+  const veilMatch = (html) => veiled() ? `<div class="veil-match">${html}</div>
+      <div class="veil-bar"><span class="muted">Say your matches first, then look at the choices.</span><button class="btn primary small" data-act="show-opts">Show options</button></div>` : html;
 
   function progressBar() {
     const s = sim.s, it = cur(), c = it.c;
@@ -620,13 +635,13 @@
     } else if (st.type === 'mcq' || st.type === 'multi') {
       const multi = st.type === 'multi';
       body = `${multi ? '<p class="label" style="color:var(--accent)">Select all that apply</p>' : ''}
-        <div class="opts" role="group">${s.perm.map((oi) => `<button class="opt ${multi ? 'box' : ''}" data-act="pick" data-v="${oi}" aria-pressed="${s.picked.has(oi)}"><span class="dot" aria-hidden="true"></span><span>${st.options[oi]}</span><span></span></button>`).join('')}</div>
-        <div class="row" style="margin-top:1rem"><button class="btn primary" data-act="submit" id="submit-btn" ${s.picked.size ? '' : 'disabled'}>${multi ? 'Submit selection' : 'Lock in answer'}</button>
+        ${veil(`<div class="opts" role="group">${s.perm.map((oi) => `<button class="opt ${multi ? 'box' : ''}" data-act="pick" data-v="${oi}" aria-pressed="${s.picked.has(oi)}"><span class="dot" aria-hidden="true"></span><span>${st.options[oi]}</span><span></span></button>`).join('')}</div>`)}
+        <div class="row" style="margin-top:1rem"><button class="btn primary" data-act="submit" id="submit-btn" ${s.picked.size && !veiled() ? '' : 'disabled'}>${multi ? 'Submit selection' : 'Lock in answer'}</button>
         <span class="muted" style="font-size:.88rem">${multi ? 'Tap every option you would say to the panel.' : 'Pick one, then lock it in. You can change your mind before locking in.'}</span></div>`;
     } else if (st.type === 'match') {
-      body = `<div>${st.pairs.map((p, i) => `<div class="matchrow"><label for="m-${i}"><b>${p.label}</b></label>
-        <select id="m-${i}"><option value="">Choose…</option>${s.perm.map((o, oi) => `<option value="${oi}">${esc(strip(o))}</option>`).join('')}</select></div>`).join('')}</div>
-        <button class="btn primary" data-act="submit" style="margin-top:1rem">Submit matches</button>`;
+      body = `${veilMatch(`<div>${st.pairs.map((p, i) => `<div class="matchrow"><label for="m-${i}"><b>${p.label}</b></label>
+        <select id="m-${i}" ${veiled() ? 'disabled aria-hidden="true"' : ''}><option value="">Choose…</option>${s.perm.map((o, oi) => `<option value="${oi}">${esc(strip(o))}</option>`).join('')}</select></div>`).join('')}</div>`)}
+        <button class="btn primary" data-act="submit" style="margin-top:1rem" ${veiled() ? 'disabled' : ''}>Submit matches</button>`;
     } else if (st.type === 'viva') {
       body = `<p class="muted" style="font-size:.92rem">Answer out loud as you would to the panel (jot notes if you like), then reveal the model answer and tick what you actually covered.</p>
         <textarea id="viva-notes" placeholder="Your answer…"></textarea>
@@ -2479,6 +2494,12 @@
       case 'continue': next(); break;
       case 'skip': skip(); break;
       case 'skip-case': skipCase(); break;
+      case 'hidden-mode':
+        sim.hidden = !sim.hidden;
+        try { localStorage.setItem(STORE_KEY + ':hidden', sim.hidden ? '1' : '0'); } catch (e) { /* ignore */ }
+        render({ keepScroll: true });
+        break;
+      case 'show-opts': s.shown = true; render({ keepScroll: true }); break;
       case 'pick': {
         const st = curStep(), n = Number(v);
         if (st.type === 'mcq') s.picked = new Set([n]);
