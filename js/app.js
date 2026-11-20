@@ -238,6 +238,7 @@
     const pool = freshFirst(poolCases());
     if (!pool.length || !confirmReplace()) return;
     newSession('practice', caseItems(pool.slice(0, Math.min(sim.count, pool.length))));
+    sim.s.swap = true;
   }
   function startCase(id) {
     const c = CASES.find((x) => x.id === id);
@@ -258,6 +259,7 @@
     const bonus = shuffled([...anterior.slice(1), ...posterior.slice(1)])[0];
     newSession('mock', caseItems(bonus ? [...order, bonus] : order));
     sim.s.bonusFrom = order.length;
+    sim.s.swap = true;
     sim.s.endsAt = Date.now() + MOCK_MINUTES * 60000;
     startTimer();
   }
@@ -353,6 +355,33 @@
     if (st && st.type !== 'reveal' && sim.s.mode !== 'drill') sim.s.held.push({ c: cur().c, s: cur().s });
     sim.s.last = null; sim.s.view = 'question';
     next();
+  }
+  // Skip the whole case: nothing in it lands on My mistakes, it goes to the back of the queue for later
+  // sessions, and in a practice session or mock another case from the same pool takes its place.
+  function swapFor(c) {
+    const s = sim.s, used = new Set([...s.items.map((x) => x.c), ...s.skipped]);
+    let pool;
+    if (s.mode === 'mock') pool = c.warmup ? CASES.filter((x) => x.warmup) : CASES.filter(inScope).filter((x) => cat(x.category).half === cat(c.category).half);
+    else pool = poolCases();
+    return freshFirst(pool.filter((x) => !used.has(x)))[0];
+  }
+  function skipCase() {
+    const s = sim.s, c = cur().c;
+    let from = s.i, to = s.i;
+    while (from > 0 && s.items[from - 1].c === c) from--;
+    while (to < s.items.length && s.items[to].c === c) to++;
+    (s.skipped = s.skipped || []).push(c);
+    s.held = s.held.filter((h) => h.c !== c);
+    markPlayed(c); persist();
+    const rep = s.mode !== 'drill' && s.swap ? swapFor(c) : null;
+    const answered = s.results.some((r) => r.c === c);
+    // A case you'd already answered part of stays on the results screen; an untouched one simply goes.
+    const keep = answered ? s.items.slice(from, to) : [];
+    s.items.splice(from, to - from, ...keep, ...(rep ? caseItems([rep]) : []));
+    s.i = from + keep.length;
+    s.last = null;
+    if (s.i >= s.items.length) { finish(); return; }
+    prepItem(); render();
   }
   function completeCase(c) {
     const rs = sim.s.results.filter((r) => r.c === c);
@@ -529,6 +558,7 @@
       <div class="row" style="gap:.25rem">
         <button class="btn ghost small" data-act="park">← Setup</button>
         ${canSkip ? '<button class="btn ghost small" data-act="skip">Skip question</button>' : ''}
+        <button class="btn ghost small" data-act="skip-case" title="Not ready for this one: nothing is marked wrong, and it goes to the back of the queue${s.swap && s.mode !== 'drill' ? '. Another case takes its place' : ''}">Skip case</button>
         <button class="btn ghost small" data-act="finish">End &amp; see results</button>
       </div>
     </div>`;
@@ -683,7 +713,7 @@
       const rs = s.results.filter((r) => r.c === c);
       const max = (s.mode === 'drill' ? rs.length : scored(c).length) * PTS;
       const got = rs.reduce((a, r) => a + r.points, 0);
-      const status = !rs.length ? 'Not reached' : rs.length < (s.mode === 'drill' ? s.items.filter((x) => x.c === c).length : scored(c).length) ? `Unfinished · ${got}/${rs.length * PTS}` : `${got}/${max} · ${Math.round((100 * got) / max)}%`;
+      const status = (s.skipped || []).includes(c) ? `Skipped${rs.length ? ` · ${rs.reduce((a, r) => a + r.points, 0)}/${rs.length * PTS} before` : ''}` : !rs.length ? 'Not reached' : rs.length < (s.mode === 'drill' ? s.items.filter((x) => x.c === c).length : scored(c).length) ? `Unfinished · ${got}/${rs.length * PTS}` : `${got}/${max} · ${Math.round((100 * got) / max)}%`;
       const misses = rs.filter((r) => r.points < STEP_PASS);
       return `<div class="result">
         <div class="result-head"><div><div class="pills">${catPill(c.category)}</div><b style="display:block;margin-top:.3rem">${c.title}</b></div><span class="mono">${status}</span></div>
@@ -2448,6 +2478,7 @@
       }
       case 'continue': next(); break;
       case 'skip': skip(); break;
+      case 'skip-case': skipCase(); break;
       case 'pick': {
         const st = curStep(), n = Number(v);
         if (st.type === 'mcq') s.picked = new Set([n]);
