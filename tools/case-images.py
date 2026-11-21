@@ -21,6 +21,7 @@ P = 'Posterior eye notes 2025 (Posterior Compressed.pdf), p. {}: “{}”'
 PPT = 'Practice Therapeutics Orals deck (Past Papers/Practice-Therapeutics-Orals.pptx), slide {}'
 CS16 = '2016 case studies (Past Papers/thera-case-studies.docx): {}'
 CS22 = '2022 case studies / YO MOTHs (Past Papers/All_the_case_studies_22.pdf), p. {}'
+R23 = '2023 orals recall (Past Papers/2023%20Thera%20Orals%20Qs.pdf), p. {}'
 R25 = '2025 orals recall (Past Papers/THERA-ORALS-2025.pdf), p. {}'
 YO25 = '2025 YO mock orals (Past Papers/YO Mock Orals 2025.pdf), p. 3'
 YO26 = '2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. {}'
@@ -32,6 +33,7 @@ def ppt(n): return f'{W}/pp/Practice-Therapeutics-Orals.pptx/ppt/media/{n}'
 def cs16(n): return f'{W}/pp/thera-case-studies.docx/word/media/{n}'
 def pdf(n): return f'{W}/pdfimg/{n}.png'
 def emma(n): return f'{W}/pdfimg/Anterior_Case_Report_-_z5421013-{n}.png'
+def r23(n): return f'{W}/pdfimg/2023%20Thera%20Orals%20Qs-{n}.png'
 def yo26(n): return f'{W}/pdfimg/YO_2026_Session_compressed-{n}.png'
 def added(n): return f'images/{n}'
 
@@ -217,6 +219,10 @@ M = {
                (yo26('025-023'), None, 'Upper lid everted', YO26.format(25) + ' (Case 2B, VKC)', None)],
   'yo26-aau': [(yo26('027-024'), None, 'Anterior eye photo', YO26.format(27) + ' (Case 4, anterior uveitis)', None),
                (yo26('027-025'), None, 'Slit lamp photo of the endothelium', YO26.format(27) + ' (Case 4, keratic precipitates)', None)],
+  # ---- 2023 orals recall
+  'r2023-preseptal': [(r23('009-000'), None, 'Photo of the child', R23.format(9) + ' (preseptal cellulitis, “sth like this”)', None)],
+  'r2023-pds': [(r23('029-005'), None, 'Slit lamp photo of the iris', R23.format(29) + ' (PDS: “very similar to this except had the optic section running thru the pupil”)', None)],
+  'r2023-aau': [(r23('041-007'), None, 'Slit lamp photo of the endothelium', R23.format(41) + ' (acute anterior uveitis, keratic precipitates)', None)],
 }
 
 # Schematic field plots for the field cases with no printout in the sources.
@@ -272,7 +278,7 @@ def main():
             key = (src, crop)
             if key not in done:
                 tag = 'ppt-' if '.pptx' in src else 'cs16-' if '.docx' in src else 'added-' if src.startswith('images/') else ''
-                name = tag + os.path.splitext(os.path.basename(src))[0].lower().replace('_', '-').replace(' ', '-')
+                name = tag + os.path.splitext(os.path.basename(src))[0].lower().replace('_', '-').replace(' ', '-').replace('%20', '-')
                 if crop: name += '-crop'
                 done[key] = (name, save(src, crop, name))
             name, (w, h) = done[key]
