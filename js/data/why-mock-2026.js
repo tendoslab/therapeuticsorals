@@ -120,8 +120,8 @@ Object.assign(window.WHY, {
   },
   'yo26-pds#0': {
     1: 'The tutors said to start broad and then refine; naming it first leaves no room if you are wrong.',
-    2: 'A vertical spindle of pigment is a Krukenberg spindle, not inflammatory KPs.',
-    3: 'Guttae are beaten-metal excrescences, not a pigmented vertical spindle.',
+    2: 'These are discrete round deposits (KPs), not the vertical band of fine pigment dust that makes a Krukenberg spindle; rule out uveitis first.',
+    3: 'Guttae are dark beaten-metal excrescences seen in specular reflection, not discrete round deposits.',
   },
   'yo26-pds#1': {
     5: 'Flakes on the lens capsule are pseudoexfoliation.',

@@ -35,9 +35,11 @@
     { id: '2023', label: '2023 orals', short: '2023' },
     { id: 'Case studies 2022', label: '2022 case studies', short: '2022 case studies' },
     { id: 'YO mock', label: 'YO mock orals (2022 notes)', short: 'YO mock 2022' },
+    { id: '2020', label: '2020 orals', short: '2020' },
     { id: '2019', label: '2019 orals', short: '2019' },
     { id: '2018', label: '2018 orals', short: '2018' },
     { id: 'Case studies 2016', label: '2016 case studies', short: '2016 case studies' },
+    { id: '2014', label: '2014 orals', short: '2014' },
     { id: 'Anterior notes', label: 'Anterior notes', short: 'Ant. notes' },
     { id: 'Posterior notes', label: 'Posterior notes', short: 'Post. notes' },
     { id: 'Peer recalls', label: 'Peer recalls (other candidates)', short: 'Peer recalls' },
@@ -474,7 +476,7 @@
     <section class="hero"><div>
       <p class="label">Therapeutics oral practice</p>
       <h1>Talk through the case before the panel does</h1>
-      <p>${CASES.length} cases (${totalSteps} examiner questions) from the 2018, 2019, 2023, 2024 and 2025 recalls, the 2025 and 2026 Young Optometrists mock orals, peer recalls, the 2016 and 2022 case-study notes and the Young Optometrists mock orals, checked against Australian practice. Each case keeps the questions from the sitting or notes it came from. Pick topics, then practise whole cases or sit a timed mock oral.</p>
+      <p>${CASES.length} cases (${totalSteps} examiner questions) from the 2014, 2018, 2019, 2020, 2023, 2024 and 2025 recalls, the 2025 and 2026 Young Optometrists mock orals, peer recalls, the 2016 and 2022 case-study notes and the Young Optometrists mock orals, checked against Australian practice. Each case keeps the questions from the sitting or notes it came from. Pick topics, then practise whole cases or sit a timed mock oral.</p>
     </div></section>
     <div class="grid-2">
       <section class="card stack" aria-labelledby="topics-h">
@@ -1546,7 +1548,7 @@
   const inPool = (w, c) => c.category === w.cat && (wildRe[w.id] = wildRe[w.id] || new RegExp(w.match, 'i')).test(`${c.title} ${c.theme || ''}`);
   // Rarity follows the exam: a creature is common when its cases were asked in 3 or more exam sittings, uncommon
   // in 1 or 2, and rare when only the study notes cover it. Your own case report is asked every time, so it's common.
-  const EXAM_SOURCES = ['Mock 2026', '2025', 'Mock 2025', '2024', '2023', 'YO mock', '2019', '2018', 'Peer recalls', 'Exam recall'];
+  const EXAM_SOURCES = ['Mock 2026', '2025', 'Mock 2025', '2024', '2023', 'YO mock', '2020', '2019', '2018', '2014', 'Peer recalls', 'Exam recall'];
   MON.wild.forEach((w) => {
     const ys = new Set(CASES.filter((c) => inPool(w, c)).flatMap((c) => c.years || []));
     w.asked = EXAM_SOURCES.filter((y) => ys.has(y)).length;

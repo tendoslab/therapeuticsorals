@@ -1069,6 +1069,16 @@ window.CASE_IMAGES = {
    "credit": "Anterior eye notes 2025 (Anterior Compressed.pdf), p. 55: “Subconjunctival haemorrhage”"
   }
  ],
+ "emma-report-hzo-diagnosis": [
+  {
+   "src": "img/cases/anterior-case-report---z5421013-002-000-crop.jpg",
+   "w": 813,
+   "h": 458,
+   "caption": "Slit-lamp photo, right eye",
+   "credit": "Emma’s case report (Case Report/Anterior Case Report - z5421013.pdf), cover image. The marker asked whether it was of her own patient, so treat it as illustrative.",
+   "step": 2
+  }
+ ],
  "yo26-aac": [
   {
    "src": "img/cases/yo-2026-session-compressed-001-000.jpg",
@@ -1152,14 +1162,15 @@ window.CASE_IMAGES = {
    "w": 314,
    "h": 262,
    "caption": "Slit lamp photo of the endothelium",
-   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 20 (pigment dispersion case)"
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 20 (pigment dispersion case, slide labelled “KP”)"
   },
   {
    "src": "img/cases/yo-2026-session-compressed-020-015.jpg",
    "w": 314,
    "h": 309,
    "caption": "Slit lamp photo, retro-illumination",
-   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 20 (Krukenberg spindle)"
+   "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 20 (Krukenberg spindle)",
+   "step": 1
   },
   {
    "src": "img/cases/yo-2026-session-compressed-021-016.jpg",
@@ -1241,6 +1252,69 @@ window.CASE_IMAGES = {
    "credit": "2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. 27 (Case 4, keratic precipitates)"
   }
  ],
+ "r2023-preseptal": [
+  {
+   "src": "img/cases/2023-thera-orals-qs-009-000.jpg",
+   "w": 448,
+   "h": 267,
+   "caption": "Photo of the child",
+   "credit": "2023 orals recall (Past Papers/2023%20Thera%20Orals%20Qs.pdf), p. 9 (preseptal cellulitis, “sth like this”)"
+  }
+ ],
+ "r2023-pds": [
+  {
+   "src": "img/cases/2023-thera-orals-qs-029-005.jpg",
+   "w": 594,
+   "h": 516,
+   "caption": "Slit lamp photo of the iris",
+   "credit": "2023 orals recall (Past Papers/2023%20Thera%20Orals%20Qs.pdf), p. 29 (PDS: “very similar to this except had the optic section running thru the pupil”)"
+  }
+ ],
+ "r2023-aau": [
+  {
+   "src": "img/cases/2023-thera-orals-qs-041-007.jpg",
+   "w": 611,
+   "h": 438,
+   "caption": "Slit lamp photo of the endothelium",
+   "credit": "2023 orals recall (Past Papers/2023%20Thera%20Orals%20Qs.pdf), p. 41 (acute anterior uveitis, keratic precipitates)"
+  }
+ ],
+ "r2020-goldmann-chiasm": [
+  {
+   "src": "img/cases/pe-untitled-14-004-006.jpg",
+   "w": 599,
+   "h": 300,
+   "caption": "Goldmann field, both eyes",
+   "credit": "2014–2020 past exam notes (Past Papers/Past Exams 2014-2020/Untitled 14.pdf), p. 4 (field notes; the 2020 candidate said theirs “looked kinda like this”)"
+  }
+ ],
+ "r2014-mk-sterile-dual": [
+  {
+   "src": "img/cases/pe-untitled-11-009-005.jpg",
+   "w": 412,
+   "h": 317,
+   "caption": "Anterior eye photo",
+   "credit": "2014–2020 past exam notes (Past Papers/Past Exams 2014-2020/Untitled 11.pdf), p. 9 (contact lens bacterial keratitis notes)"
+  }
+ ],
+ "r2018-two-eyes-fields": [
+  {
+   "src": "img/cases/pe-untitled-15-007-001.jpg",
+   "w": 451,
+   "h": 289,
+   "caption": "Disc photos, right and left",
+   "credit": "2014–2020 past exam notes (Past Papers/Past Exams 2014-2020/Untitled 15.pdf), p. 7 (glaucoma practice case)"
+  }
+ ],
+ "r2018-joseph-pxf": [
+  {
+   "src": "img/cases/pe-untitled-15-006-000.jpg",
+   "w": 331,
+   "h": 208,
+   "caption": "Slit lamp photo of the dilated pupil",
+   "credit": "2014–2020 past exam notes (Past Papers/Past Exams 2014-2020/Untitled 15.pdf), p. 6 (pseudoexfoliation notes)"
+  }
+ ],
  "homonymous": [
   {
    "src": "img/cases/field-homonymous.png",
@@ -1293,43 +1367,6 @@ window.CASE_IMAGES = {
    "h": 230,
    "caption": "24-2 grey scale, both eyes (schematic)",
    "credit": "Schematic drawn for this simulator from the case description (not a real printout)"
-  }
- ],
- "emma-report-hzo-diagnosis": [
-  {
-   "src": "img/cases/anterior-case-report---z5421013-002-000-crop.jpg",
-   "w": 813,
-   "h": 458,
-   "caption": "Slit-lamp photo, right eye",
-   "credit": "Emma’s case report (Case Report/Anterior Case Report - z5421013.pdf), cover image. The marker asked whether it was of her own patient, so treat it as illustrative.",
-   "step": 2
-  }
- ],
- "r2023-preseptal": [
-  {
-   "src": "img/cases/2023-thera-orals-qs-009-000.jpg",
-   "w": 448,
-   "h": 267,
-   "caption": "Photo of the child",
-   "credit": "2023 orals recall (Past Papers/2023%20Thera%20Orals%20Qs.pdf), p. 9 (preseptal cellulitis, “sth like this”)"
-  }
- ],
- "r2023-pds": [
-  {
-   "src": "img/cases/2023-thera-orals-qs-029-005.jpg",
-   "w": 594,
-   "h": 516,
-   "caption": "Slit lamp photo of the iris",
-   "credit": "2023 orals recall (Past Papers/2023%20Thera%20Orals%20Qs.pdf), p. 29 (PDS: “very similar to this except had the optic section running thru the pupil”)"
-  }
- ],
- "r2023-aau": [
-  {
-   "src": "img/cases/2023-thera-orals-qs-041-007.jpg",
-   "w": 611,
-   "h": 438,
-   "caption": "Slit lamp photo of the endothelium",
-   "credit": "2023 orals recall (Past Papers/2023%20Thera%20Orals%20Qs.pdf), p. 41 (acute anterior uveitis, keratic precipitates)"
   }
  ]
 };
