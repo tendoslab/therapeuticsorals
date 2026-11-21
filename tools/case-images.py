@@ -25,6 +25,7 @@ R23 = '2023 orals recall (Past Papers/2023%20Thera%20Orals%20Qs.pdf), p. {}'
 R25 = '2025 orals recall (Past Papers/THERA-ORALS-2025.pdf), p. {}'
 YO25 = '2025 YO mock orals (Past Papers/YO Mock Orals 2025.pdf), p. 3'
 YO26 = '2026 YO study session (Past Papers/YO 2026 Session_compressed.pdf), p. {}'
+PE = '2014–2020 past exam notes (Past Papers/Past Exams 2014-2020/Untitled {}.pdf), p. {}'
 ADDED = 'Photo added to the repo (images/{}), not from the exam sources'
 SCHEM = 'Schematic drawn for this simulator from the case description (not a real printout)'
 
@@ -35,6 +36,7 @@ def pdf(n): return f'{W}/pdfimg/{n}.png'
 def emma(n): return f'{W}/pdfimg/Anterior_Case_Report_-_z5421013-{n}.png'
 def r23(n): return f'{W}/pdfimg/2023%20Thera%20Orals%20Qs-{n}.png'
 def yo26(n): return f'{W}/pdfimg/YO_2026_Session_compressed-{n}.png'
+def pe(doc, n): return f'{W}/pdfimg/PE_Untitled_{doc}-{n}.png'
 def added(n): return f'images/{n}'
 
 # Reused sources, named once
@@ -207,8 +209,8 @@ M = {
                 (yo26('018-011'), None, 'OCT ONH and RNFL report', YO26.format(18) + ' (POAG case)', 2),
                 (yo26('018-012'), None, '24-2 SITA Faster grey scale', YO26.format(18) + ' (POAG case)', 3),
                 (yo26('020-013'), None, 'Field at the 6-week review', YO26.format(20) + ' (POAG case follow-up)', 10)],
-  'yo26-pds': [(yo26('020-014'), None, 'Slit lamp photo of the endothelium', YO26.format(20) + ' (pigment dispersion case)', None),
-               (yo26('020-015'), None, 'Slit lamp photo, retro-illumination', YO26.format(20) + ' (Krukenberg spindle)', None),
+  'yo26-pds': [(yo26('020-014'), None, 'Slit lamp photo of the endothelium', YO26.format(20) + ' (pigment dispersion case, slide labelled “KP”)', None),
+               (yo26('020-015'), None, 'Slit lamp photo, retro-illumination', YO26.format(20) + ' (Krukenberg spindle)', 1),
                (yo26('021-016'), None, 'Gonioscopy photo', YO26.format(21) + ' (pigment dispersion case)', 1)],
   'yo26-pxf': [(yo26('022-018'), None, 'Dilated slit lamp photo of the lens', YO26.format(22) + ' (PXF case)', None),
                (yo26('022-017'), None, 'Photo of the pupil margin', YO26.format(22) + ' (PXF case)', None)],
@@ -223,6 +225,11 @@ M = {
   'r2023-preseptal': [(r23('009-000'), None, 'Photo of the child', R23.format(9) + ' (preseptal cellulitis, “sth like this”)', None)],
   'r2023-pds': [(r23('029-005'), None, 'Slit lamp photo of the iris', R23.format(29) + ' (PDS: “very similar to this except had the optic section running thru the pupil”)', None)],
   'r2023-aau': [(r23('041-007'), None, 'Slit lamp photo of the endothelium', R23.format(41) + ' (acute anterior uveitis, keratic precipitates)', None)],
+  # ---- 2014–2020 past exam notes
+  'r2020-goldmann-chiasm': [(pe(14, '004-006'), None, 'Goldmann field, both eyes', PE.format(14, 4) + ' (field notes; the 2020 candidate said theirs “looked kinda like this”)', None)],
+  'r2014-mk-sterile-dual': [(pe(11, '009-005'), None, 'Anterior eye photo', PE.format(11, 9) + ' (contact lens bacterial keratitis notes)', None)],
+  'r2018-two-eyes-fields': [(pe(15, '007-001'), None, 'Disc photos, right and left', PE.format(15, 7) + ' (glaucoma practice case)', None)],
+  'r2018-joseph-pxf': [(pe(15, '006-000'), None, 'Slit lamp photo of the dilated pupil', PE.format(15, 6) + ' (pseudoexfoliation notes)', None)],
 }
 
 # Schematic field plots for the field cases with no printout in the sources.
@@ -254,6 +261,9 @@ def extract():
     os.makedirs(f'{W}/pdfimg', exist_ok=True)
     for f in glob.glob('Past Papers/*.pdf') + glob.glob('Case Report/Anterior Case Report*.pdf'):
         stem = os.path.splitext(os.path.basename(f))[0].replace(' ', '_')
+        subprocess.run(['pdfimages', '-png', '-p', f, f'{W}/pdfimg/{stem}'], check=True)
+    for f in glob.glob('Past Papers/Past Exams 2014-2020/*.pdf'):
+        stem = 'PE_' + os.path.splitext(os.path.basename(f))[0].replace(' ', '_')
         subprocess.run(['pdfimages', '-png', '-p', f, f'{W}/pdfimg/{stem}'], check=True)
 
 def save(src, crop, name):

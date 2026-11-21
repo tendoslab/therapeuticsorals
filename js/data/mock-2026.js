@@ -470,25 +470,25 @@ window.CASES.push(
         years: ['Mock 2026'],
         patient: 'Young adult man, myopic.',
         stem: 'Referred after a routine exam. IOP raised; he mentions blurring after vigorous exercise.',
-        exhibit: 'Slit lamp: fine pigmented deposits on the endothelium in a vertical spindle, plus a gonioscopy photo of a heavily pigmented trabecular meshwork.',
+        exhibit: 'Slit lamp: discrete round deposits of different sizes on the endothelium (the tutors’ slide labels them KPs). Then a retro-illumination photo of a vertical band of fine pigment on the central endothelium, and a gonioscopy photo of a heavily pigmented trabecular meshwork.',
         steps: [
             {
                 phase: '1. Describe it',
                 type: 'mcq',
-                question: 'You are shown the endothelium photo. How do you start?',
+                question: 'You are shown the first endothelium photo: discrete, round deposits of different sizes. How do you start?',
                 options: [
-                    'Broad first: “pigmented deposits on the central endothelium in a vertical spindle”, then “this looks like a Krukenberg spindle, suggesting pigment dispersion”, then what else to look for.',
-                    'Name the condition straight away (“pigmentary glaucoma”), since describing the photo wastes the panel’s time, then stage the glaucoma from how much pigment is on the cornea and in the angle.',
-                    'Call them keratic precipitates from uveitis, since all deposits on the endothelium are inflammatory cells, then ask for the AC cell grade and start prednisolone acetate 1%.',
-                    'Say the photo shows the cornea guttata of Fuchs dystrophy, since central endothelial dots are guttae, then ask for the pachymetry, the endothelial count and ask about blur on waking.'
+                    'Broad first: “discrete round deposits on the endothelium, which look like KPs”, then ask for AC cells and flare, IOP and the other eye to decide if this is uveitis or pigment.',
+                    'Name the condition straight away (“pigmentary glaucoma”), since describing the photo wastes the panel’s time, then stage the glaucoma from how much pigment is on the cornea.',
+                    'Call it a Krukenberg spindle at once, since any deposit on the endothelium of a young myope is pigment, then go straight to gonioscopy without asking about inflammation.',
+                    'Say the photo shows the cornea guttata of Fuchs dystrophy, since endothelial dots are guttae, then ask for the pachymetry and the endothelial count, and ask about blur on waking.'
                 ],
                 answer: 0,
-                explain: 'The tutors: start broad (“deposits”, “something on the cornea”), then refine. If you are wrong, a broad start leaves room to correct yourself.'
+                explain: 'The tutors: start broad (“deposits”, “something on the cornea”), then refine. KPs are discrete clumps of inflammatory cells, often in the lower cornea (Arlt’s triangle); a Krukenberg spindle is a vertical band of fine pigment dust in the centre. Pigmented KPs can follow uveitis, so ask about inflammation before calling it PDS. If you are wrong, a broad start leaves room to correct yourself.'
             },
             {
                 phase: '2. What else?',
                 type: 'multi',
-                question: 'Which findings support pigment dispersion?',
+                question: 'The tutors then show a second photo: a vertical band of fine pigment on the central endothelium (a Krukenberg spindle). Which findings support pigment dispersion?',
                 options: [
                     'Mid-peripheral spoke-like iris transillumination defects',
                     'Posterior iris bowing (concave iris) on gonioscopy',
