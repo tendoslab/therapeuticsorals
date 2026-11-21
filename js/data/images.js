@@ -1304,5 +1304,32 @@ window.CASE_IMAGES = {
    "credit": "Emma’s case report (Case Report/Anterior Case Report - z5421013.pdf), cover image. The marker asked whether it was of her own patient, so treat it as illustrative.",
    "step": 2
   }
+ ],
+ "r2023-preseptal": [
+  {
+   "src": "img/cases/2023-thera-orals-qs-009-000.jpg",
+   "w": 448,
+   "h": 267,
+   "caption": "Photo of the child",
+   "credit": "2023 orals recall (Past Papers/2023%20Thera%20Orals%20Qs.pdf), p. 9 (preseptal cellulitis, “sth like this”)"
+  }
+ ],
+ "r2023-pds": [
+  {
+   "src": "img/cases/2023-thera-orals-qs-029-005.jpg",
+   "w": 594,
+   "h": 516,
+   "caption": "Slit lamp photo of the iris",
+   "credit": "2023 orals recall (Past Papers/2023%20Thera%20Orals%20Qs.pdf), p. 29 (PDS: “very similar to this except had the optic section running thru the pupil”)"
+  }
+ ],
+ "r2023-aau": [
+  {
+   "src": "img/cases/2023-thera-orals-qs-041-007.jpg",
+   "w": 611,
+   "h": 438,
+   "caption": "Slit lamp photo of the endothelium",
+   "credit": "2023 orals recall (Past Papers/2023%20Thera%20Orals%20Qs.pdf), p. 41 (acute anterior uveitis, keratic precipitates)"
+  }
  ]
 };
