@@ -296,6 +296,7 @@
         ${ul('<b>SAC/PAC:</b> avoid allergen, cold compress, chilled PF lubricants; olopatadine 0.1% or ketotifen 0.025% bd (no more than bd); loratadine 10 mg <i>once</i> daily. Severe: short FML.',
           '<b>VKC:</b> boy 7–12, warm climate, ropey mucus, cobblestones over 1 mm, Horner-Trantas dots, shield ulcer risk. Combination drop bd + pulse steroid with a fast taper (≈2 weeks; children respond more). Shield ulcer: steroid + Chlorsig ± debridement (Cameron 1 medical; 2 + debridement; 3 + amniotic membrane). Ciclosporin if recurrent.',
           '<b>AKC:</b> adults with eczema, lower-lid papillae, keratoconus and HSV risk. Refer.')}
+        <p class="nmoa"><button type="button" class="btn small ghost" data-act="notes-jump" data-v="vkc">🌸 Allergy spectrum diagram, VKC by grade and shield ulcers</button></p>
         ${h3('Conjunctivitis')}
         ${table(['Type', 'Clues', 'Management'], [
           ['Bacterial', 'Mucopurulent, lids stuck. Adults Staph aureus; children H. influenzae, Strep pneumoniae', 'Chloramphenicol 0.5% qid or 1% ointment; review 24–48 h. Hyperacute = gonococcal: same-day referral'],
@@ -418,7 +419,7 @@
           ['Optic tract', 'Incongruous homonymous + RAPD', 'Tumour, stroke'],
           ['Temporal lobe', 'Superior quadrantanopia (“pie in the sky”)', 'Tumour, MCA stroke'],
           ['Parietal lobe', 'Inferior quadrantanopia (“pie on the floor”)', 'Tumour, MCA stroke'],
-          ['Occipital', 'Congruous homonymous, macular sparing', 'PCA stroke']])}</div></div>
+          ['Occipital', 'Congruous homonymous, macular sparing', 'PCA stroke']])}</div></div><!--macular-->
         <div class="ncols"><div>
         ${h3('Work-up and when to MRI')}
         ${ul('VA, pupils (RAPD; anisocoria dim and bright), colour (D15/HRR for acquired), red cap, motility, 24-2/30-2, disc, BP.', 'MRI if a field respects the vertical midline, pallor exceeds cupping, unexplained loss in the young, or neuro symptoms.', 'A −3.00 DS lens removing a superotemporal defect = tilted disc, not chiasm.')}

@@ -266,6 +266,9 @@
     }
   ];
 
+  // Shared with js/data/notes-diagrams.js, which draws more diagrams in the same style.
+  window.NOTES_KIT = { ul, h3, box, table, jump, diagram, legend, flow };
+
   // Slot the mechanism sections in straight after the drug reference.
   const N = window.STUDY_NOTES || [];
   const at = N.findIndex((s) => s.id === 'drugs');
