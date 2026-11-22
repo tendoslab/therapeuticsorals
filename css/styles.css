@@ -749,6 +749,86 @@ body.has-player { padding-bottom: 7.5rem; }
 }
 @media (max-width: 560px) { .nfig.wide { grid-column: auto; } .nfigs { grid-template-columns: repeat(2, minmax(0, 1fr)); } .nfig.wide { grid-column: 1 / -1; } }
 
+/* Drug mechanism sections (js/data/drug-moa.js): inline SVG diagrams coloured from the theme tokens,
+   numbered legends, HTML flowcharts and range bars. */
+.dgrid { display: flex; flex-direction: column; gap: .8rem; margin: .4rem 0 .6rem; }
+.dgm { margin: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); padding: .6rem .6rem .5rem; }
+.dgm-scroll { overflow-x: auto; }
+.dgm svg { display: block; width: 100%; max-width: 46rem; min-width: 30rem; margin: 0 auto; height: auto; font-family: var(--font-body); }
+.dgm figcaption { font-size: .82rem; line-height: 1.45; color: var(--muted); margin-top: .4rem; }
+.dgm figcaption b { color: var(--ink); }
+.dg-tissue { fill: hsl(200 60% var(--tint-bg)); stroke: hsl(200 50% var(--tint-mid)); stroke-width: 1.5; }
+.dg-sclera { fill: var(--surface-2); stroke: var(--muted); stroke-width: 1.2; }
+.dg-lens { fill: hsl(50 70% var(--tint-bg)); stroke: hsl(45 60% var(--tint-mid)); stroke-width: 1.5; }
+.dg-cb { fill: hsl(350 55% var(--tint-bg)); stroke: hsl(350 50% var(--tint-mid)); stroke-width: 1.5; }
+.dg-iris { fill: hsl(25 45% var(--tint-mid)); stroke: hsl(25 45% 35%); stroke-width: 1; }
+.dg-tm { fill: hsl(140 50% var(--tint-mid)); }
+.dg-canal { fill: var(--surface); stroke: hsl(140 50% var(--tint-mid)); stroke-width: 2; }
+.dg-zon line { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 3; }
+.dg-flow { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-dasharray: 7 5; }
+.dg-flow.alt { stroke: var(--violet); }
+.dg-ahead { fill: var(--accent); } .dg-ahead2 { fill: var(--violet); }
+.dg-lbl text { fill: var(--ink); font-size: 15px; font-weight: 600; }
+.dg-lbl text.sm { font-size: 13px; font-weight: 500; }
+.dg-lbl text.muted { fill: var(--muted); font-style: italic; }
+.dg-lbl .b { font-weight: 700; }
+.dg-lbl text.onpupil { fill: var(--surface); }
+.dg-num circle { fill: hsl(var(--h) 70% var(--tint-mid)); stroke: var(--surface); stroke-width: 2; }
+.dg-num text { fill: var(--surface); font-size: 14px; font-weight: 800; font-family: var(--font-mono); }
+.dg-wall { fill: hsl(140 50% var(--tint-bg)); stroke: hsl(140 45% var(--tint-mid)); stroke-width: 10; }
+.dg-memb { fill: var(--surface); stroke: hsl(140 35% var(--tint-mid)); stroke-width: 2; stroke-dasharray: 6 4; }
+.dg-dna { fill: none; stroke: var(--violet); stroke-width: 3; stroke-linecap: round; }
+.dg-ribo circle, .dg-ribo ellipse { fill: hsl(25 70% var(--tint-mid)); stroke: var(--surface); stroke-width: 1.5; }
+.dg-ribo ellipse { fill: hsl(40 75% var(--tint-mid)); }
+.dg-mrna { stroke: var(--muted); stroke-width: 1.5; }
+.dg-irisface { fill: hsl(30 45% var(--tint-bg)); stroke: hsl(30 40% var(--tint-mid)); stroke-width: 2; }
+.dg-dil line { stroke: hsl(210 60% var(--tint-mid)); stroke-width: 3; stroke-linecap: round; }
+.dg-sph { fill: none; stroke: hsl(350 60% var(--tint-mid)); stroke-width: 18; }
+.dg-pupil { fill: var(--ink); }
+.dg-lead { stroke: var(--muted); stroke-width: 1.2; }
+.dlegend { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: .55rem; }
+.ditem { display: flex; gap: .6rem; align-items: flex-start; border: 1px solid var(--line); border-left: 4px solid hsl(var(--h) 60% var(--tint-mid)); border-radius: 8px; padding: .5rem .7rem; background: var(--surface); font-size: .9rem; }
+.ditem.up, .ditem.kill { border-left-color: var(--good); }
+.ditem.down { border-left-color: var(--accent); }
+.ditem.stall { border-left-color: var(--warn); }
+.ditem p, .ditem ul { margin: .2rem 0 0; }
+.dnum { flex: none; display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: hsl(var(--h) 70% var(--tint-mid)); color: var(--surface); font: 800 .85rem var(--font-mono); }
+.flows { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: .9rem; margin: .5rem 0 .8rem; }
+.flows.two { grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
+.flowcard { border: 1px solid var(--line); border-radius: 10px; padding: .7rem; background: var(--surface-2); min-width: 0; }
+.flowcard > .label { color: hsl(var(--h) 60% var(--tint-fg)); }
+.flow { display: flex; flex-direction: column; min-width: 0; }
+.fnode { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: .4rem .6rem; font-size: .86rem; line-height: 1.35; text-align: center; }
+.fnode.start { border-color: hsl(var(--h) 50% var(--tint-mid)); font-weight: 600; }
+.fnode.end { background: hsl(var(--h) var(--tint-s) var(--tint-bg)); border-color: hsl(var(--h) var(--tint-s) var(--tint-mid)); font-weight: 600; }
+.farrow { display: grid; grid-template-columns: minmax(0, 1fr) 1.2rem minmax(0, 1fr); align-items: center; gap: .4rem; min-height: 1.7rem; padding: .15rem 0; }
+.fvia { font-size: .75rem; color: var(--muted); text-align: right; line-height: 1.3; font-style: italic; }
+.fline { align-self: stretch; position: relative; }
+.fline::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 6px; width: 2px; margin-left: -1px; background: var(--muted); }
+.fline::after { content: ""; position: absolute; left: 50%; bottom: 0; margin-left: -5px; border: 5px solid transparent; border-top: 7px solid var(--muted); border-bottom: 0; }
+.ftags { display: flex; flex-wrap: wrap; gap: .25rem; }
+.ftag { font-size: .72rem; font-weight: 700; line-height: 1.25; border-radius: 6px; padding: .15rem .4rem; border: 1px solid; }
+.ftag.stop { background: var(--bad-soft); color: var(--bad); border-color: color-mix(in srgb, var(--bad) 40%, transparent); }
+.ftag.go { background: var(--good-soft); color: var(--good); border-color: color-mix(in srgb, var(--good) 40%, transparent); }
+.ffork { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: .5rem; padding-top: .25rem; border-top: 2px dashed var(--line); margin-top: .1rem; }
+.ffork .farrow { grid-template-columns: minmax(0, 1fr) 1.2rem minmax(0, 1fr); }
+.fnote { font-size: .8rem; color: var(--muted); margin: .55rem 0 0; line-height: 1.45; }
+.rbars { display: flex; flex-direction: column; gap: .35rem; margin: .5rem 0 .9rem; max-width: 40rem; }
+.rrow { display: grid; grid-template-columns: 9rem minmax(0, 1fr) 5.5rem; gap: .6rem; align-items: center; font-size: .86rem; }
+.rlab { font-weight: 600; }
+.rtrack { position: relative; height: .8rem; background: var(--surface-2); border-radius: 99px; }
+.rtrack i { position: absolute; top: 0; bottom: 0; border-radius: 99px; background: hsl(var(--h) 65% var(--tint-mid)); }
+.rval { font-family: var(--font-mono); font-size: .8rem; color: var(--muted); }
+.raxis .rtrack { background: none; height: 1rem; border-top: 1px solid var(--line); border-radius: 0; }
+.raxis em { position: absolute; top: .1rem; transform: translateX(-50%); font-style: normal; font-size: .7rem; color: var(--muted); white-space: nowrap; }
+.raxis em:first-child { transform: none; }
+.nmoa { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; margin-top: .9rem; font-weight: 600; }
+@media (max-width: 560px) {
+  .rrow { grid-template-columns: 6.5rem minmax(0, 1fr) 4.2rem; gap: .4rem; font-size: .8rem; }
+  .ffork { gap: .3rem; }
+  .farrow { grid-template-columns: minmax(0, 1fr) 1rem minmax(0, 1.3fr); gap: .25rem; }
+}
+
 /* Flashcards (Study notes tab): Anki-style colours for new (blue), learning (red) and due (green). */
 .nav .badge.fc { background: var(--good); }
 .fc-switch { display: inline-flex; gap: .25rem; padding: .25rem; margin-top: 1rem; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); max-width: 100%; }
