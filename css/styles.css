@@ -162,7 +162,7 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
 .cat[aria-pressed="true"] .tick { background: hsl(var(--h, 225) 60% var(--tint-mid)); border-color: hsl(var(--h, 225) 60% var(--tint-mid)); color: var(--accent-ink); }
 .cat b { font-weight: 700; display: block; }
 .cat small { color: var(--muted); display: block; line-height: 1.35; }
-.seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem; }
+.seg { display: grid; grid-template-columns: repeat(4, 1fr); gap: .4rem; }
 .seg button { border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: .55rem .4rem; cursor: pointer; font-weight: 700; }
 .seg button small { display: block; font-family: var(--font-mono); font-weight: 400; color: var(--muted); }
 .seg button[aria-pressed="true"] { border: 2px solid var(--ink); }
@@ -322,7 +322,7 @@ table.t td.c, table.t th.c { text-align: center; }
    all the source columns in view on a laptop screen; narrow phones still scroll sideways. */
 .bank-table th, .bank-table td { padding: .45rem .25rem; }
 .bank-table th.c { font-size: .64rem; letter-spacing: .02em; line-height: 1.25; min-width: 3.2rem; max-width: 4.6rem; }
-.bank-table td:first-child { min-width: 13rem; width: 30%; padding-left: .5rem; }
+.bank-table td:nth-child(2) { min-width: 13rem; width: 30%; padding-left: .5rem; }
 .case-link { all: unset; cursor: pointer; color: var(--ink); }
 .case-link:hover b, .case-link:focus-visible b { color: var(--accent); text-decoration: underline; }
 .case-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
@@ -886,3 +886,44 @@ kbd { font-family: var(--font-mono); font-size: .75em; padding: .05rem .35rem; b
 @media (prefers-reduced-motion: no-preference) { .veil-in { transition: filter .2s; } }
 .veil-match select { filter: blur(5px); }
 .veil-bar { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-top: .8rem; }
+
+/* Starred cases */
+.flag-btn { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: .35rem; font-size: 1.15rem; line-height: 1; padding: .2rem .3rem; border-radius: 6px; color: var(--muted); }
+.flag-btn:hover { background: var(--surface-2); color: var(--warn); }
+.flag-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.flag-btn[aria-pressed="true"] { color: var(--warn); }
+.flag-btn.big { font-size: 1.05rem; padding: .35rem .7rem; border: 1px solid var(--line); border-radius: 999px; font-weight: 700; white-space: nowrap; }
+.flag-btn.big span { font-size: .85rem; }
+.flag-btn.big[aria-pressed="true"] { background: var(--warn-soft); border-color: color-mix(in srgb, var(--warn) 50%, transparent); }
+.intro-title { display: flex; gap: .75rem; align-items: flex-start; justify-content: space-between; }
+.intro-title h1 { margin: 0; }
+.bank-table .star-cell { width: 2rem; min-width: 2rem; max-width: 2rem; padding-left: .3rem; padding-right: 0; }
+.bank-table tr.starred td { background: color-mix(in srgb, var(--warn-soft) 55%, transparent); }
+
+/* Study notes: allergy spectrum, visual fields and VKC grades (js/data/notes-diagrams.js) */
+.dg-box { fill: var(--surface-2); stroke: var(--line); stroke-width: 1.2; }
+.dg-box.rx { fill: var(--surface); }
+.dg-step { stroke: var(--muted); stroke-width: 2; }
+.dg-ahead3 { fill: var(--muted); }
+.dg-bracket { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+.dg-band.good { fill: var(--good-soft); stroke: color-mix(in srgb, var(--good) 55%, transparent); stroke-width: 1.2; }
+.dg-band.bad { fill: var(--bad-soft); stroke: color-mix(in srgb, var(--bad) 55%, transparent); stroke-width: 1.2; }
+.dg-band.warn { fill: var(--warn-soft); stroke: color-mix(in srgb, var(--warn) 55%, transparent); stroke-width: 1.2; }
+.dg-lbl text.band { font-size: 14px; font-weight: 700; }
+.dg-lbl text.band.good { fill: var(--good); } .dg-lbl text.band.bad { fill: var(--bad); } .dg-lbl text.band.warn { fill: var(--warn); }
+.dg-lbl text.muted-up { fill: var(--muted); }
+.dg-field { fill: none; stroke: var(--muted); stroke-width: 1.5; }
+.dg-defect { fill: color-mix(in srgb, var(--bad) 32%, var(--surface)); }
+.dg-merid { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 5 4; }
+.dg-vmerid { stroke: var(--muted); stroke-width: 1; }
+.dg-fix { fill: var(--ink); }
+.vkc-grades { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: .6rem; margin: .5rem 0 1rem; }
+.vkc-grade { border: 1px solid var(--line); border-top: 4px solid var(--good); border-radius: 10px; padding: .6rem .75rem; background: var(--surface); font-size: .9rem; }
+.vkc-grade.warn { border-top-color: var(--warn); }
+.vkc-grade.bad { border-top-color: var(--bad); }
+.vkc-grade p { margin: .35rem 0 0; }
+.vg-head { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; }
+.vg-num { display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--surface-2); font: 800 .85rem var(--font-mono); }
+.vg-who { margin-left: auto; font-size: .72rem; font-weight: 700; color: var(--muted); }
+.vkc-grade.good .vg-who { color: var(--good); } .vkc-grade.warn .vg-who { color: var(--warn); } .vkc-grade.bad .vg-who { color: var(--bad); }
+.vg-sign { color: var(--muted); font-style: italic; }

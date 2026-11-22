@@ -71,7 +71,7 @@
   // A damaged or hand-edited save falls back to empty lists rather than breaking the page.
   const isMap = (v) => !!v && typeof v === 'object' && !Array.isArray(v);
   function cleanSaved(o) {
-    const s = { cases: {}, missed: {}, seen: {}, mastered: {}, played: {}, cards: {}, fcDay: {}, fixes: {} };
+    const s = { cases: {}, missed: {}, seen: {}, mastered: {}, played: {}, cards: {}, fcDay: {}, fixes: {}, flags: {} };
     if (isMap(o)) Object.keys(o).forEach((k) => { if (!(k in s) || isMap(o[k])) s[k] = o[k]; });
     return s;
   }
@@ -93,6 +93,10 @@
     const ids = Object.keys(saved.played).sort((a, b) => saved.played[b] - saved.played[a]);
     ids.slice(RECENT_CASES * 2).forEach((id) => { delete saved.played[id]; });
   }
+  // Starred cases: ones you want to come back to. Kept by case id with the date you starred it.
+  const isFlagged = (c) => !!saved.flags[c.id];
+  const flaggedCases = () => CASES.filter(isFlagged);
+  const flagBtn = (c, big) => `<button type="button" class="flag-btn${big ? ' big' : ''}" data-act="flag" data-v="${c.id}" aria-pressed="${isFlagged(c)}" title="${isFlagged(c) ? 'Starred: tap to unstar' : 'Star this case to come back to it'}" aria-label="${isFlagged(c) ? 'Unstar' : 'Star'} this case">${isFlagged(c) ? '★' : '☆'}${big ? `<span>${isFlagged(c) ? 'Starred' : 'Star case'}</span>` : ''}</button>`;
   const recentCases = (n = RECENT_CASES) => Object.keys(saved.played).sort((a, b) => saved.played[b] - saved.played[a]).slice(0, n);
   // Shuffles cases, then moves the ones played lately to the back, the most recent last.
   function freshFirst(cases) {
@@ -228,6 +232,7 @@
     return CASES.filter(inScope).filter((c) => {
       if (pool === 'new') return !saved.cases[c.id] && !scored(c).some((i) => saved.seen[stepKey(c, i)]);
       if (pool === 'missed') return caseMissed(c);
+      if (pool === 'starred') return isFlagged(c);
       return true;
     });
   }
@@ -453,7 +458,7 @@
     const max = avail.length;
     if (sim.count > max) sim.count = max;
     if (sim.count < 1 && max) sim.count = 1;
-    const counts = { all: poolCases('all').length, new: poolCases('new').length, missed: poolCases('missed').length };
+    const counts = { all: poolCases('all').length, new: poolCases('new').length, missed: poolCases('missed').length, starred: poolCases('starred').length };
     const inScopeAll = CASES.filter(inScope);
     const mockReady = inScopeAll.some((c) => cat(c.category).half === 'anterior') && inScopeAll.some((c) => cat(c.category).half === 'posterior');
     const nMissed = missedKeys().length;
@@ -494,7 +499,7 @@
           </div>
           <div>
             <p class="label">Practice pool</p>
-            <div class="seg">${['all', 'new', 'missed'].map((p) => `<button data-act="pool" data-v="${p}" aria-pressed="${sim.pool === p}" ${counts[p] ? '' : 'disabled'}>${p[0].toUpperCase() + p.slice(1)}<small>${counts[p]}</small></button>`).join('')}</div>
+            <div class="seg">${['all', 'new', 'missed', 'starred'].map((p) => `<button data-act="pool" data-v="${p}" aria-pressed="${sim.pool === p}" ${counts[p] ? '' : 'disabled'} ${p === 'starred' && !counts[p] ? 'title="Star a case (☆) on its first screen, in the case record or in the Recall bank"' : ''}>${p === 'starred' ? '★ ' : ''}${p[0].toUpperCase() + p.slice(1)}<small>${counts[p]}</small></button>`).join('')}</div>
           </div>
           <div>
             <div class="row" style="justify-content:space-between"><p class="label">Cases</p><span class="muted mono" style="font-size:.85rem">${max} available</span></div>
@@ -547,7 +552,7 @@
     const bonus = s.mode === 'mock' && no > s.bonusFrom;
     return `${toolbar()}<article class="intro card stack">
       <div class="pills">${catPill(c.category)}<span class="pill">${esc(c.theme)}</span><span class="pill ${s.mode === 'mock' ? 'mock' : ''}">Case ${no} of ${of}${bonus ? ' · bonus, time permitting' : ''}</span></div>
-      <h1>${c.title}</h1>
+      <div class="intro-title"><h1>${c.title}</h1>${flagBtn(c, true)}</div>
       <div class="pills"><span class="muted" style="font-size:.85rem">Source:</span>${sourcePills(c)}</div>
       <div class="says"><span class="who">${esc(examinerFor(c))} says</span><p style="font-size:1.08rem;font-weight:600">${c.patient}</p><p>${c.stem}</p></div>
       ${photosHTML(c, -1)}
@@ -614,7 +619,7 @@
     }).join('');
     const openSoFar = !matchMedia('(max-width: 800px)').matches;
     return `<aside class="record card" aria-label="Case record">
-      <div><p class="label">Case</p><h3>${c.title}</h3><div class="pills" style="margin-top:.35rem">${catPill(c.category)}${sourcePills(c)}</div></div>
+      <div><div class="row" style="justify-content:space-between;flex-wrap:nowrap;align-items:flex-start"><p class="label">Case</p>${flagBtn(c)}</div><h3>${c.title}</h3><div class="pills" style="margin-top:.35rem">${catPill(c.category)}${sourcePills(c)}</div></div>
       <div><p class="label">Patient</p><p style="margin:0">${c.patient}</p></div>
       <div><p class="label">Presenting</p><p style="margin:0">${c.stem}</p></div>
       ${photosHTML(c, upto)}
@@ -735,7 +740,7 @@
       const status = (s.skipped || []).includes(c) ? `Skipped${rs.length ? ` · ${rs.reduce((a, r) => a + r.points, 0)}/${rs.length * PTS} before` : ''}` : !rs.length ? 'Not reached' : rs.length < (s.mode === 'drill' ? s.items.filter((x) => x.c === c).length : scored(c).length) ? `Unfinished · ${got}/${rs.length * PTS}` : `${got}/${max} · ${Math.round((100 * got) / max)}%`;
       const misses = rs.filter((r) => r.points < STEP_PASS);
       return `<div class="result">
-        <div class="result-head"><div><div class="pills">${catPill(c.category)}</div><b style="display:block;margin-top:.3rem">${c.title}</b></div><span class="mono">${status}</span></div>
+        <div class="result-head"><div><div class="pills">${catPill(c.category)}</div><b style="display:block;margin-top:.3rem">${c.title}</b></div><span class="row" style="gap:.4rem;flex-wrap:nowrap">${flagBtn(c)}<span class="mono">${status}</span></span></div>
         ${misses.length ? `<div class="stack" style="gap:.4rem;margin-top:.6rem">${misses.map((r) => missItem(c, r.s, { score: r.points, said: r.said })).join('')}</div>` : rs.length ? '<p class="muted" style="margin:.4rem 0 0">Clean sweep.</p>' : ''}
         <button class="btn ghost small" data-act="case" data-v="${c.id}" style="margin-top:.5rem">Retry this case →</button>
       </div>`;
@@ -784,7 +789,7 @@
     keys.forEach((k) => { const c = CASES.find((x) => x.id === k.split('#')[0]); counts[c.category] = (counts[c.category] || 0) + 1; });
     const groups = [...byCase.entries()].sort((a, b) => CASES.indexOf(a[0]) - CASES.indexOf(b[0])).map(([c, idx]) => `<section class="case-group">
       <header><div><div class="pills">${catPill(c.category)}${sourcePills(c)}</div><h3 style="margin-top:.35rem">${c.title}</h3></div>
-        <button class="btn small" data-act="case" data-v="${c.id}">Retry whole case →</button></header>
+        <div class="row" style="gap:.4rem">${flagBtn(c)}<button class="btn small" data-act="case" data-v="${c.id}">Retry whole case →</button></div></header>
       ${idx.sort((a, b) => a - b).map((i) => missItem(c, i, saved.missed[stepKey(c, i)], true)).join('')}
     </section>`).join('');
     view.innerHTML = `<div class="fade">
@@ -865,30 +870,34 @@
   }
 
   // ------------------------------------------------------------------ recall bank
+  const bank = { starred: false };
   function renderBank() {
+    const nf = flaggedCases().length;
+    if (!nf) bank.starred = false;
     // Only the picked sources get a column, so narrowing the sources also narrows the table.
     const years = SOURCES.map((s) => s.id).filter((y) => (!sim.sources.size || sim.sources.has(y)) && CASES.some((c) => (c.years || []).includes(y)));
     const sections = CATS.map((ct) => {
-      const cs = CASES.filter((c) => c.category === ct.id && sourceMatch(c));
+      const cs = CASES.filter((c) => c.category === ct.id && sourceMatch(c) && (!bank.starred || isFlagged(c)));
       if (!cs.length) return '';
       const rows = cs.map((c) => {
         const p = saved.cases[c.id];
         const nm = c.steps.filter((_, i) => saved.missed[stepKey(c, i)]).length;
-        return `<tr><td><button class="case-link" data-act="case" data-v="${c.id}" title="Practise this case"><b>${c.title}</b></button>${window.Listen.has(c.id) ? ` <button class="listen-btn" data-listen="track" data-v="${c.id}" title="Listen to this case" aria-label="Listen to ${esc(c.title)}">🎧</button>` : ''}<br><small class="muted">${esc(c.theme)}</small></td>
+        return `<tr class="${isFlagged(c) ? 'starred' : ''}"><td class="c star-cell">${flagBtn(c)}</td><td><button class="case-link" data-act="case" data-v="${c.id}" title="Practise this case"><b>${c.title}</b></button>${window.Listen.has(c.id) ? ` <button class="listen-btn" data-listen="track" data-v="${c.id}" title="Listen to this case" aria-label="Listen to ${esc(c.title)}">🎧</button>` : ''}<br><small class="muted">${esc(c.theme)}</small></td>
           ${years.map((y) => `<td class="c">${(c.years || []).includes(y) ? '<span class="dotyes">●</span>' : '<span class="dotno">·</span>'}</td>`).join('')}
           <td class="c">${nm ? `<a href="#review" class="no">${nm}</a>` : '<span class="dotno">—</span>'}</td>
           <td class="c mono ${p ? (p.last >= PASS_PCT ? 'ok' : 'no') : ''}">${p ? p.last + '%' : '<span class="dotno">—</span>'}</td></tr>`;
       }).join('');
       return `<section class="card hue-top" style="--h:${ct.hue};margin-bottom:1rem">
         <div class="row" style="gap:.5rem;margin-bottom:.6rem"><span style="font-size:1.2rem">${ct.icon}</span><h2 style="font-size:1.1rem">${esc(ct.title)}</h2><span class="muted" style="font-size:.85rem">${cs.length} case${cs.length === 1 ? '' : 's'}</span></div>
-        <div class="tablewrap"><table class="t bank-table"><tr><th>Case</th>${years.map((y) => `<th class="c" title="${esc(sourceLabel(y))}">${esc(SOURCES.find((s) => s.id === y).short)}</th>`).join('')}<th class="c">Missed</th><th class="c">Last</th></tr>${rows}</table></div>
+        <div class="tablewrap"><table class="t bank-table"><tr><th class="c star-cell" title="Starred">★</th><th>Case</th>${years.map((y) => `<th class="c" title="${esc(sourceLabel(y))}">${esc(SOURCES.find((s) => s.id === y).short)}</th>`).join('')}<th class="c">Missed</th><th class="c">Last</th></tr>${rows}</table></div>
       </section>`;
     }).join('');
     view.innerHTML = `<div class="fade">
       <section class="hero"><div><p class="label">Recall bank</p><h1>Every case, by topic and source</h1>
-      <p>● = that case was recalled from that exam or set of notes. Tap a case title to practise it, or 🎧 to listen to it. Pick several sources to compare just those columns.</p></div></section>
-      <div class="row" style="gap:.4rem;margin-bottom:1.2rem">${sourceChips()}</div>
-      ${sections || '<p class="muted">No cases match these sources.</p>'}
+      <p>● = that case was recalled from that exam or set of notes. Tap a case title to practise it, or 🎧 to listen to it. Tap ☆ to star a case you want to come back to. Pick several sources to compare just those columns.</p>
+      ${nf ? `<div class="row" style="margin-top:.9rem;gap:.5rem"><button class="btn primary" data-act="practise-starred">★ Practise my ${nf} starred case${nf === 1 ? '' : 's'}</button></div>` : ''}</div></section>
+      <div class="row" style="gap:.4rem;margin-bottom:1.2rem">${sourceChips()}<button class="chip" data-act="bank-starred" aria-pressed="${bank.starred}" ${nf ? '' : 'disabled'}>★ Starred only <small>${nf}</small></button></div>
+      ${sections || `<p class="muted">${bank.starred ? 'No starred cases match these sources.' : 'No cases match these sources.'}</p>`}
     </div>`;
   }
 
@@ -2424,6 +2433,19 @@
       case 'no-cats': sim.cats.clear(); again(); break;
       case 'source': if (v === 'all') sim.sources.clear(); else sim.sources.has(v) ? sim.sources.delete(v) : sim.sources.add(v); again(); break;
       case 'pool': sim.pool = v; again(); break;
+      case 'flag': {
+        if (saved.flags[v]) delete saved.flags[v]; else saved.flags[v] = today();
+        persist();
+        if (route() === 'sim' && sim.pool === 'starred' && !poolCases().length) sim.pool = 'all';
+        if (route() === 'sim' && active()) {
+          // Mid-question, redraw only the star so typed notes and picks aren't lost.
+          const c = CASES.find((x) => x.id === v);
+          document.querySelectorAll(`.flag-btn[data-v="${CSS.escape(v)}"]`).forEach((el) => { el.outerHTML = flagBtn(c, el.classList.contains('big')); });
+        } else again();
+        break;
+      }
+      case 'bank-starred': bank.starred = !bank.starred; again(); break;
+      case 'practise-starred': { const cs = freshFirst(flaggedCases()); if (cs.length && confirmReplace()) newSession('practice', caseItems(cs)); break; }
       case 'count': sim.count = Math.max(1, Math.min(poolCases().length, sim.count + Number(v))); updateCount(); break;
       case 'count-max': sim.count = poolCases().length; updateCount(); break;
       case 'start': startPractice(); break;
@@ -2437,7 +2459,7 @@
       case 'drill-mastered': startDrill(shownMasteredKeys()); break;
       case 'mastered-cat': mastery.cat = v; again(); break;
       case 'reset':
-        if (confirm('Clear your saved case results, your missed questions and your mastered list? Your Ocumon and flashcards are kept.')) { saved = Object.assign(cleanSaved(), { mon: saved.mon, cards: saved.cards, fcDay: saved.fcDay }); persist(); try { localStorage.removeItem(LEGACY_KEY); } catch (e) { /* ignore */ } again(); }
+        if (confirm('Clear your saved case results, your missed questions and your mastered list? Your Ocumon, flashcards and starred cases are kept.')) { saved = Object.assign(cleanSaved(), { mon: saved.mon, cards: saved.cards, fcDay: saved.fcDay, flags: saved.flags }); persist(); try { localStorage.removeItem(LEGACY_KEY); } catch (e) { /* ignore */ } again(); }
         break;
       case 'notes-jump': {
         const el = v === 'top' ? document.querySelector('.notes-toc') : document.getElementById(`notes-${v}`);
