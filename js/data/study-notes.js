@@ -199,6 +199,21 @@
           'IOP up: timolol or brimonidine. <b>Never a PGA.</b> Steroid response = rise over 5 mmHg, usually within 2–6 weeks.',
           'HSV history: oral aciclovir 400 mg bd cover via GP.',
           'Review at 24 h, then every few days. Relapse in 39% within 1.5 years.')}</div></div>
+        ${h3('Review of systems')}
+        <p>Run through it head to toe on every uveitis patient. A positive answer steers the GP work-up and the referral.</p>
+        ${table(['System', 'Ask about', 'Points to'], [
+          ['Musculoskeletal', 'Lower back pain and stiffness worse in the morning, better with exercise; swollen joints; heel pain', 'Ankylosing spondylitis, reactive or psoriatic arthritis (HLA-B27); JIA in children'],
+          ['Gastrointestinal', 'Diarrhoea, blood or mucus in stool, abdominal pain, weight loss', 'Inflammatory bowel disease (Crohn’s, UC); reactive arthritis after gut infection'],
+          ['Genitourinary', 'Discharge, pain passing urine, genital ulcers, new sexual partners', 'Reactive arthritis, syphilis, Behçet’s'],
+          ['Skin and mouth', 'Psoriasis or nail pitting; red tender shin lumps; rash on palms and soles; recurrent mouth ulcers; cold sores or shingles', 'Psoriatic arthritis; sarcoid (erythema nodosum); syphilis; Behçet’s; HSV or VZV'],
+          ['Respiratory', 'Cough, shortness of breath, coughing blood', 'Sarcoid, TB'],
+          ['Constitutional', 'Fever, night sweats, weight loss, fatigue; TB contact, travel or time in a high-risk country', 'TB, lymphoma or other masquerade, TINU'],
+          ['Neurological', 'Numbness, weakness, double vision, past optic neuritis; headache, neck stiffness', 'MS (intermediate uveitis), VKH, CNS lymphoma'],
+          ['Ears, hair and skin colour', 'Ringing or hearing loss, white patches of skin or lashes, hair loss', 'VKH'],
+          ['Renal', 'Flank pain, kidney problems, recent antibiotics or NSAIDs (younger patients)', 'TINU'],
+          ['Medications', 'Rifabutin, bisphosphonates, cidofovir, immune checkpoint inhibitors, recent oral moxifloxacin', 'Drug-induced uveitis'],
+          ['Immune status', 'HIV risk, immunosuppressants, recent eye surgery or injection', 'CMV, toxoplasma, endophthalmitis'],
+        ])}
         <div class="ncols"><div>${box('warn', '↗️ Refer to ophthalmology', `<p>Posterior or intermediate involvement, large or fixed hypopyon, not responding, granulomatous, bilateral, recurrent or chronic, post-surgical, pregnancy, diagnostic doubt.</p><p><b>GP work-up</b> if recurrent, bilateral, granulomatous or systemic symptoms: HLA-B27, ACE + CXR (sarcoid), IGRA (TB), syphilis serology, ANA (JIA), ESR, CRP. First mild episode: no labs.</p>`)}</div>
         <div>${h3('Clues to the cause')}${ul('<b>Hypopyon:</b> HLA-B27, Behçet’s, endophthalmitis, rifabutin, tumour.', '<b>Mutton-fat KPs / nodules:</b> sarcoid, TB, syphilis, VKH.', '<b>Raised IOP:</b> herpetic, Posner-Schlossman, Fuchs, lens-induced.', '<b>White quiet eye:</b> JIA (band keratopathy), Fuchs, masquerade.')}</div></div>
         ${h3('Hyphema and blunt trauma')}
