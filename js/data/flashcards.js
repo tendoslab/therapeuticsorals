@@ -13,6 +13,8 @@
     { id: 'trials', title: 'Landmark studies', icon: '📊', hue: 270, blurb: 'Name the trial, then one number' },
     { id: 'grading', title: 'Grading scales', icon: '📏', hue: 140, blurb: 'SUN, hyphema, Hodapp, Roper-Hall, Van Herick and more' },
     { id: 'redflags', title: 'Red flags', icon: '🚩', hue: 5, blurb: 'What must be referred, and how fast' },
+    { id: 'weak', title: 'Weak spots', icon: '🎯', hue: 320, blurb: 'Work-ups, mechanisms, special populations, recurrence and the topics that trip people up' },
+    { id: 'ddx', title: 'Differentials', icon: '🔀', hue: 225, blurb: 'Hypopyon, dilated pupil, disc pallor, field defects and more' },
   ];
 
   const C = (deck, list) => list.map(([id, q, a]) => ({ id: `${deck}-${id}`, deck, q, a }));
@@ -344,6 +346,277 @@
         `<b>Malignant hypertension</b>: <b>same-day ED</b>. (BP 180/110+ with symptoms or disc swelling.)`],
       ['herpes-not-healing', 'HSV dendrite not healing after 2 weeks of aciclovir: what do you consider?',
         `<b>Compliance</b>, <b>drug toxicity</b>, <b>neurotrophic</b> keratopathy, and misdiagnosis: <b>Acanthamoeba</b>. Refer.`],
+    ]),
+    // ------------------------------------------------------------ Weak spots
+    ...C('weak', [
+      // Systemic work-ups: scleritis vs uveitis
+      ['scleritis-workup', 'Scleritis: what systemic work-up do you request (via GP / ophthalmologist / rheumatologist)?',
+        `Scleritis <b>always</b> gets a work-up (~50% have systemic disease, mostly <b>vasculitis / connective tissue</b>):` +
+        ul('<b>Baseline:</b> FBC, ESR, CRP, U&amp;E/creatinine, LFTs, glucose, <b>urinalysis</b>, BP (also before oral NSAIDs/steroids)',
+          '<b>RA</b> (commonest): RF, anti-CCP',
+          '<b>GPA</b>: <b>c-ANCA (PR3)</b>, urinalysis, creatinine, chest X-ray',
+          '<b>MPA / PAN</b>: p-ANCA (MPO), hepatitis B serology',
+          '<b>SLE</b>: ANA, anti-dsDNA, C3/C4',
+          '<b>Infection</b>: syphilis serology, QuantiFERON + CXR (past HZO, surgery, trauma)',
+          'Gout: uric acid. Back/gut symptoms: HLA-B27',
+          '<b>Posterior scleritis</b>: B-scan (<b>T-sign</b>)')],
+      ['uveitis-workup', 'Anterior uveitis: what systemic work-up, and when?',
+        `<b>First mild, unilateral, non-granulomatous AAU: no labs.</b> Work up if <b>recurrent, bilateral, granulomatous</b>, posterior involvement or systemic symptoms:` +
+        ul('<b>HLA-B27</b> (+ sacroiliac X-ray if back pain): AS, reactive, psoriatic, IBD',
+          '<b>Sarcoid</b>: ACE, lysozyme, serum calcium, <b>chest X-ray</b> (hilar nodes)',
+          '<b>TB</b>: IGRA (QuantiFERON) + CXR',
+          '<b>Syphilis</b> serology (the great mimic; some test everyone)',
+          '<b>ANA</b> in a child (JIA)', 'ESR, CRP, FBC; urinalysis + creatinine if TINU suspected')],
+      ['scleritis-vs-uveitis-workup', 'Why is the scleritis work-up different from the uveitis work-up?',
+        `They hunt different diseases:` +
+        ul('<b>Scleritis</b> = <b>vasculitis / autoimmune connective tissue</b> (RA, GPA, SLE, polychondritis) → <b>RF, anti-CCP, ANCA, ANA</b>, renal function and urinalysis (GPA kidneys).',
+          '<b>Uveitis</b> = <b>HLA-B27 spondyloarthropathy</b> and <b>granulomatous</b> disease (sarcoid, TB, syphilis) → <b>HLA-B27, ACE/lysozyme, CXR, IGRA, syphilis</b>.',
+          'Shared: syphilis, TB, ESR/CRP. Scleritis is screened from the first episode; uveitis only when recurrent, bilateral or granulomatous.')],
+
+      // Uveitis vs AAC
+      ['aau-vs-aac', 'Anterior uveitis vs acute angle closure: how do you tell them apart?',
+        `<table><tr><th></th><th>AAU</th><th>AAC</th></tr>` +
+        `<tr><td>Pupil</td><td><b>Miotic</b>, sluggish, posterior synechiae</td><td><b>Mid-dilated, fixed</b></td></tr>` +
+        `<tr><td>IOP</td><td>Low/normal (high: herpetic, PSS, steroid)</td><td><b>40–80</b></td></tr>` +
+        `<tr><td>Cornea</td><td>Clear, <b>KPs</b></td><td><b>Steamy / microcystic oedema</b></td></tr>` +
+        `<tr><td>AC</td><td><b>Deep</b>, cells + flare</td><td><b>Shallow</b> (a few cells possible)</td></tr>` +
+        `<tr><td>Angle / fellow eye</td><td>Open; fellow eye normal</td><td>Closed; <b>fellow eye narrow</b> (VH ≤ grade 1)</td></tr>` +
+        `<tr><td>Symptoms</td><td>Photophobia, ache, ± blur</td><td><b>Haloes</b>, severe pain, headache, <b>nausea/vomiting</b></td></tr>` +
+        `<tr><td>Other</td><td>Ciliary flush, ± HLA-B27 history</td><td>Glaukomflecken, iris atrophy, hyperopia</td></tr></table>`],
+      ['aau-vs-aac-treat', 'Why does mixing up AAU and AAC matter for treatment?',
+        `The drugs are <b>opposite</b>:` +
+        ul('AAU: <b>cycloplegic (atropine/homatropine) + steroid</b>. Pilocarpine makes uveitis worse (more synechiae, more breakdown of the blood–aqueous barrier).',
+          'AAC: <b>pilocarpine + aqueous suppressants</b>, LPI. A cycloplegic/dilator can make the closure worse.',
+          'Trap: raised IOP + inflammation with an <b>open angle</b> = herpetic uveitis, Posner-Schlossman, steroid response, lens-induced. Always do gonioscopy (or VH of both eyes).')],
+
+      // EKC
+      ['ekc-features', 'EKC: organism, signs and timeline?',
+        `<b>Adenovirus 8, 19, 37</b>. Recent URTI/contact; watery, gritty; <b>follicles</b>, <b>tender preauricular node</b>, petechial haemorrhages, ± <b>pseudomembranes</b>. Second eye 2–5 days later (milder). Punctate keratitis week 1 → <b>SEIs from ~day 7–14</b> (immune, can last months). Contagious ~<b>10–14 days</b>.`],
+      ['ekc-manage', 'EKC: how do you manage it?',
+        ul('<b>Supportive</b>: cold compresses, PF lubricants (refrigerated), ± topical antihistamine for itch. <b>No antibiotics</b> (unless secondary infection)',
+          '<b>Hygiene</b>: off work/school ~10–14 days, own towels, hand washing',
+          '<b>Peel membranes</b> (they scar → symblepharon)',
+          '<b>Steroid only for SEIs that reduce VA</b> (or membranes/iritis): FML 0.1% low-dose, <b>slow taper</b> (rebound SEIs). Steroids may prolong viral shedding and don’t shorten the illness',
+          '<b>Clinic</b>: tonometer tips disposable or <b>sodium hypochlorite (bleach)</b>; alcohol wipes don’t kill adenovirus',
+          'Review ~1 week; rule out HSV (unilateral, vesicles, dendrite) and chlamydia (&gt;3 weeks)')],
+
+      // Special populations
+      ['pregnancy-cats', 'Australian (TGA) pregnancy categories: what do A, B1–3, C, D and X mean?',
+        ul('<b>A</b>: taken by many pregnant women, no harm seen (e.g. chloramphenicol)',
+          '<b>B1/B2/B3</b>: limited human data; animal studies no harm (B1), inadequate (B2), or harm of uncertain human significance (<b>B3</b>: latanoprost, CAIs, ciprofloxacin, aciclovir)',
+          '<b>C</b>: pharmacological harm, reversible, no malformations (e.g. <b>timolol</b>: neonatal bradycardia)',
+          '<b>D</b>: causes malformations / irreversible harm (<b>doxycycline</b>, tetracyclines)',
+          '<b>X</b>: never in pregnancy (e.g. isotretinoin)')],
+      ['pregnancy-glaucoma', 'Glaucoma drugs in pregnancy and breastfeeding?',
+        ul('<b>Lead with SLT</b>; IOP often falls 3–4 mmHg in pregnancy anyway. Co-manage with the obstetrician',
+          '<b>Brimonidine</b>: OK in trimesters 1–2; <b>stop before delivery and while breastfeeding</b> (neonatal apnoea/CNS depression)',
+          '<b>Timolol</b>: with <b>punctal occlusion</b>; risk of fetal/neonatal bradycardia; concentrates in breast milk',
+          '<b>Topical CAI</b>: later in pregnancy; avoid oral acetazolamide (esp. 1st trimester)',
+          '<b>PGAs: avoid</b> (theoretical uterine contraction/miscarriage)',
+          'Always: lowest dose, punctal occlusion or eyelid closure for 2 min')],
+      ['pregnancy-other', 'Pregnancy: which anterior-eye drugs swap out?',
+        ul('<b>Chlamydia</b>: doxycycline (D) is out → <b>azithromycin 1 g stat</b> (B1); treat partner, notify',
+          '<b>MGD/rosacea</b>: no doxycycline → lid hygiene, warm compresses, oral azithromycin if needed',
+          '<b>Bacterial conjunctivitis</b>: chloramphenicol (A) fine topically',
+          '<b>HSV</b>: topical aciclovir fine (minimal absorption); oral with obstetrician input',
+          '<b>Allergy</b>: cold compresses, lubricants, mast cell stabiliser (cromoglycate) first',
+          '<b>Uveitis in pregnancy</b>: refer. Topical steroid generally OK; minimise systemic',
+          'Phenylephrine 10% and atropine: avoid / minimise; punctal occlusion')],
+      ['peds-drugs', 'Children: which drugs need special care?',
+        ul('<b>Brimonidine</b>: contraindicated <b>under 2</b> (apnoea, CNS depression); caution under 6',
+          '<b>Atropine</b>: systemic toxicity (hot, dry, flushed, tachycardic, delirious); 10 mL swallowed can kill a small child',
+          '<b>Cyclopentolate</b>: CNS effects (hallucinations, ataxia); use 0.5% in infants, watch 30–45 min',
+          '<b>Phenylephrine 10%</b>: avoid in infants (use 2.5%)',
+          '<b>Doxycycline</b>: not under 8 (teeth, bone) → azithromycin/erythromycin',
+          '<b>Steroids</b>: children are more often steroid responders: check IOP',
+          'Antihistamine/mast cell drops: olopatadine/ketotifen from 3 years')],
+      ['other-pops', 'Other populations: what do you check before prescribing?',
+        ul('<b>Elderly</b>: β-blockers (falls, bradycardia, depression, confusion), brimonidine fatigue, dexterity for drops',
+          '<b>Asthma/COPD</b>: no timolol (betaxolol only with caution)',
+          '<b>Heart</b>: brady/heart block/failure: no β-blocker; recent MI or HTN: no phenylephrine 10%',
+          '<b>Diabetes</b>: β-blockers mask hypoglycaemia; steroids raise glucose (systemic)',
+          '<b>Sulfa allergy</b>: CAIs',
+          '<b>Renal</b>: adjust aciclovir/valaciclovir; avoid CAIs if severe',
+          '<b>MAOIs / TCAs</b>: no brimonidine, no phenylephrine',
+          '<b>Breastfeeding</b>: timolol and brimonidine pass into milk; punctal occlusion')],
+
+      // AAION / NAION
+      ['aaion-naion', 'AAION vs NAION: key differences?',
+        `<table><tr><th></th><th>AAION (GCA)</th><th>NAION</th></tr>` +
+        `<tr><td>Age</td><td>Usually <b>over 70</b></td><td>50–70</td></tr>` +
+        `<tr><td>Symptoms</td><td><b>Headache, jaw claudication, scalp tenderness</b>, PMR, weight loss, <b>amaurosis fugax</b> first</td><td>Painless loss <b>on waking</b></td></tr>` +
+        `<tr><td>VA</td><td>Often <b>CF or worse</b></td><td>Often better than 6/60</td></tr>` +
+        `<tr><td>Disc</td><td><b>Chalky-white</b> (pallid) oedema; may have cilioretinal/CRAO</td><td>Hyperaemic, sectoral oedema, splinter haemorrhages</td></tr>` +
+        `<tr><td>Fellow disc</td><td>Normal cup (can be large)</td><td><b>Small crowded “disc at risk”</b></td></tr>` +
+        `<tr><td>Bloods</td><td><b>ESR, CRP, platelets high</b></td><td>Normal</td></tr>` +
+        `<tr><td>Fellow eye</td><td><b>Up to 50% in days–weeks</b> untreated</td><td>~15% over 5 years</td></tr>` +
+        `<tr><td>Action</td><td><b>Same-day ED: high-dose steroids now</b>, biopsy within 1–2 weeks</td><td>No proven treatment; manage vascular risk</td></tr></table>`],
+      ['naion-risk', 'NAION: risk factors to ask about?',
+        ul('<b>Crowded disc</b> (small cup-to-disc), ODD', 'Hypertension, diabetes, hyperlipidaemia, smoking', '<b>Obstructive sleep apnoea</b>', '<b>Nocturnal hypotension</b> (evening BP tablets)', 'Drugs: <b>PDE5 inhibitors</b> (sildenafil), <b>amiodarone</b>, possibly semaglutide (GLP-1 agonists)', 'Blood loss/anaemia, cataract surgery') +
+        'Field: typically <b>inferior altitudinal</b>. Then sectoral pallor. ~40% improve 3+ lines.'],
+      ['gca-tests', 'Suspected GCA: what do you do and what do the tests show?',
+        `Phone/send to <b>ED or ophthalmology same day</b>; do not wait for bloods. <b>ESR</b> (upper limit ≈ age/2 men, (age+10)/2 women), <b>CRP</b> (more sensitive), <b>platelets</b> raised. Steroids (IV methylprednisolone if vision lost, otherwise oral prednisolone ~1 mg/kg) <b>before</b> temporal artery biopsy (still positive for ~2 weeks) or ultrasound (halo sign).`],
+
+      // Angle recession, plateau, mechanisms
+      ['angle-recession', 'Angle recession: what is it, and what does gonioscopy show?',
+        `Blunt trauma <b>tears the ciliary body between its longitudinal and circular muscle fibres</b>. Gonio: <b>abnormally wide ciliary body band</b>, torn iris processes, a whiter/more prominent scleral spur, irregular angle depth. <b>Compare with the fellow eye</b>. Often follows a <b>hyphema</b> (~60–90% of traumatic hyphemas have some recession).`],
+      ['recession-glaucoma', 'Angle recession glaucoma: risk, mechanism and management?',
+        ul('<b>Risk</b>: ~6–9% over 10 years, higher with <b>&gt;180°</b> recession. Can appear <b>years or decades later</b> → lifelong (at least annual) review',
+          '<b>Mechanism</b>: not the recession itself; the <b>TM is scarred</b> (hyaline membrane/fibrosis) → poor outflow. The recession is a marker of TM damage',
+          '<b>Fellow eye</b>: ~50% eventually develop glaucoma (an underlying predisposition) → monitor it too',
+          '<b>Treat</b>: aqueous suppressants and PGAs (uveoscleral outflow). <b>Pilocarpine works poorly or raises IOP</b> (cuts uveoscleral outflow, which these eyes rely on). SLT less effective. Often surgery')],
+      ['closure-vs-recession', 'Mechanism: angle closure vs angle recession glaucoma?',
+        `<table><tr><th></th><th>Angle closure</th><th>Angle recession</th></tr>` +
+        `<tr><td>Angle</td><td><b>Closed</b>: iris against TM, structures not visible</td><td><b>Open</b> and abnormally <b>deep/wide</b></td></tr>` +
+        `<tr><td>Why IOP rises</td><td>Iris <b>blocks access</b> to the TM (pupil block, plateau, lens, posterior push); PAS make it permanent</td><td>TM <b>damaged and scarred</b> by trauma: it’s there but doesn’t drain</td></tr>` +
+        `<tr><td>Type</td><td>Primary or secondary angle closure</td><td>Secondary <b>open</b>-angle</td></tr>` +
+        `<tr><td>Onset</td><td>Acute or chronic</td><td>Late, months to decades after trauma</td></tr>` +
+        `<tr><td>Fix</td><td>LPI, lens extraction, pilocarpine</td><td>Suppressants, PGA, surgery; <b>no pilocarpine</b>, no LPI</td></tr></table>`],
+      ['plateau', 'Plateau iris: what is the mechanism?',
+        `<b>Anteriorly positioned/rotated ciliary processes</b> push the <b>peripheral iris</b> forward into the angle. Not pupil block, so the angle <b>stays closed or occludable after a patent LPI</b>. Signs: <b>normal central AC depth</b>, <b>flat iris plane</b>, very narrow angle; <b>“double hump” sign</b> on indentation gonioscopy; confirmed on <b>UBM</b>. Younger, female, often less hyperopic.`],
+      ['plateau-manage', 'Plateau iris configuration vs syndrome, and management?',
+        ul('<b>Configuration</b>: the anatomy (flat iris, narrow angle) but the angle opens after LPI',
+          '<b>Syndrome</b>: angle <b>still closes after a patent LPI</b> (on dilation or spontaneously)',
+          'Manage: LPI first (to remove any pupil-block part), then <b>pilocarpine</b> (low dose), <b>argon laser peripheral iridoplasty</b>, or <b>lens extraction</b>',
+          'Warn about dilation: can still close after LPI')],
+      ['pas-vs-ps', '(“PAS vs PS”) Peripheral anterior synechiae vs posterior synechiae: how and why does each form?',
+        `<table><tr><th></th><th>Posterior synechiae (PS)</th><th>Peripheral anterior synechiae (PAS)</th></tr>` +
+        `<tr><td>What sticks</td><td><b>Pupil margin to the anterior lens capsule</b></td><td><b>Peripheral iris to the TM/cornea</b></td></tr>` +
+        `<tr><td>How</td><td>Fibrin and inflammatory cells in a small, still pupil (AAU, esp. granulomatous)</td><td>Prolonged <b>iris–angle contact</b> + inflammation: chronic/acute angle closure, iris bombé, granulomatous uveitis (inferior, tent-shaped), <b>NVG</b> (fibrovascular membrane zips the angle), ICE, flat AC after surgery</td></tr>` +
+        `<tr><td>Danger</td><td>360° (seclusio pupillae) → <b>iris bombé → pupil-block angle closure</b></td><td>Permanent closure → raised IOP; don’t open on indentation (appositional does)</td></tr>` +
+        `<tr><td>Prevent / treat</td><td><b>Cycloplegia</b> (moves the pupil, breaks fresh PS) + steroid</td><td>Early LPI in closure, control inflammation, anti-VEGF/PRP for NVG</td></tr></table>`],
+      ['ppa', 'Peripapillary atrophy (PPA): alpha vs beta zone, and which matters in glaucoma?',
+        ul('<b>Alpha zone</b> (outer): irregular pigment; common in normal eyes',
+          '<b>Beta zone</b> (inner, next to the disc margin): bare sclera and large choroidal vessels visible (RPE + photoreceptor loss). <b>Larger and more frequent in glaucoma</b>, especially <b>NTG</b>; its location matches the rim notch and field loss; enlargement can signal progression',
+          'Gamma zone (no Bruch’s membrane) is myopic stretch, not glaucoma')],
+
+      // Dry eye
+      ['dryeye-dx', 'Dry eye: how is it diagnosed (TFOS DEWS II)?',
+        `<b>Symptoms</b> (OSDI ≥13 or DEQ-5 ≥6) <b>plus one</b> sign of homeostasis loss:` +
+        ul('<b>NIBUT &lt;10 s</b>', '<b>Osmolarity ≥308 mOsm/L</b> in either eye, or an inter-eye difference &gt;8', '<b>Ocular surface staining</b>: &gt;5 corneal spots, &gt;9 conjunctival spots, or lid wiper staining ≥2 mm long and ≥25% wide') +
+        'Then subtype: <b>evaporative</b> (MGD, most common) vs <b>aqueous-deficient</b> (Schirmer &lt;5 mm/5 min; think <b>Sjögren’s</b>: anti-Ro/La, dry mouth). Ask about drugs (antihistamines, antidepressants, isotretinoin, preserved drops).'],
+      ['dryeye-steps', 'Dry eye: stepped management?',
+        ol('<b>Step 1</b>: education, environment (screens, fans), diet/omega-3, lubricants, lid hygiene, warm compresses',
+          '<b>Step 2</b>: <b>preservative-free</b> lubricants (gels/ointment nocte), tea tree oil for Demodex, IPL/thermal pulsation, <b>punctal plugs</b>, short-course <b>topical steroid</b> (FML), <b>ciclosporin 0.1% (Ikervis) nocte</b>, oral <b>doxycycline/azithromycin</b> for MGD/rosacea',
+          '<b>Step 3</b>: oral secretagogues (pilocarpine for Sjögren’s), <b>autologous serum</b>, therapeutic CLs (scleral)',
+          '<b>Step 4</b>: longer steroids, amniotic membrane, punctal cautery, tarsorrhaphy') +
+        'Ikervis PBS authority: severe dry eye with keratitis (Oxford ≥4, OSDI ≥23). Treat plugs only once inflammation is controlled.'],
+
+      // Fungal + Acanthamoeba
+      ['fungal-tx', 'Fungal keratitis: what’s the treatment?',
+        ul('<b>Refer same day</b>; scrape and culture (Sabouraud), confocal',
+          '<b>Filamentous</b> (Fusarium, Aspergillus; plant trauma, tropical): <b>natamycin 5% hourly</b>. <b>MUTT I</b>: natamycin beat voriconazole, especially for <b>Fusarium</b>',
+          '<b>Yeast</b> (Candida; compromised surface, steroids): <b>amphotericin B 0.15%</b> or voriconazole 1%',
+          'Deep/progressing: add oral voriconazole (MUTT II: no benefit as routine add-on), intrastromal injection, therapeutic keratoplasty',
+          'Debride epithelium to help penetration; cycloplegic for pain',
+          '<b>No steroids</b>. Slow: weeks–months; perforation risk')],
+      ['acanth-tx', 'Acanthamoeba keratitis: what’s the treatment?',
+        ul('Refer; confocal, culture on <b>non-nutrient agar with E. coli overlay</b>, PCR',
+          '<b>Biguanide</b>: <b>PHMB 0.02%</b> (or 0.08% polihexanide monotherapy, ODAK trial) or <b>chlorhexidine 0.02%</b>, ± a <b>diamidine</b> (propamidine 0.1% Brolene / hexamidine)',
+          '<b>Hourly day and night for ~48 h</b>, then slow taper; <b>treat for months (often 6–12)</b> because <b>cysts</b> resist treatment',
+          'Early epithelial debridement helps; oral NSAIDs/cycloplegic for pain',
+          '<b>Steroids</b>: only by the specialist, after ≥2 weeks of anti-amoebic therapy, for scleritis/inflammation; never alone',
+          'Complications: scleritis, glaucoma, cataract, keratoplasty; stop CL wear; no water with lenses')],
+
+      // Glaucoma drug contraindications
+      ['ci-glaucoma', 'Glaucoma drug contraindications, class by class?',
+        ul('<b>PGA</b>: active uveitis, past <b>HSK</b>, <b>CMO risk</b> (aphakia, torn posterior capsule, recent surgery), pregnancy; caution unilateral/cosmetic (iris colour, lashes, periorbitopathy)',
+          '<b>β-blocker</b>: <b>asthma, COPD</b>, bradycardia (&lt;55), <b>2nd/3rd degree heart block</b>, uncontrolled heart failure; caution diabetes (masks hypos), myasthenia, depression, oral β-blocker or verapamil/diltiazem; <b>no nocte in NTG</b>',
+          '<b>α2 agonist</b>: <b>MAOIs</b>, <b>under 2</b>; caution TCAs, elderly (fatigue, hypotension), cardiovascular disease; allergy (follicular) up to 1/3',
+          '<b>CAI</b>: <b>sulfonamide allergy</b>, severe renal impairment, <b>corneal endothelial compromise</b> (Fuchs, grafts). Oral adds hepatic disease, hypokalaemia, acidosis, <b>sickle cell</b> (esp. with hyphema)',
+          '<b>Pilocarpine</b>: uveitis, NVG, malignant glaucoma, lens-induced/phacomorphic, <b>angle recession</b>; caution <b>high myopia/RD risk</b>, young (accommodative spasm, brow ache), cataract')],
+
+      // Recurrence
+      ['recur-hsv', 'HSV keratitis: recurrence risk, and the effect of prophylaxis?',
+        `~<b>10% at 1 year, ~23% at 2, ~40% at 5, ~63% at 20</b> (Liesegang). Each recurrence raises the next risk; stromal recurs as stromal. <b>HEDS</b>: oral aciclovir <b>400 mg bd</b> cut any ocular HSV <b>32% → 19%</b> and stromal 28% → 14% at 12 months; benefit stops when the drug stops. Consider after recurrent stromal disease or ≥2 episodes.`],
+      ['recur-anterior', 'Recurrence: AAU, RCE, episcleritis, scleritis, pterygium?',
+        ul('<b>AAU</b>: ~39% in 1.5 years; <b>HLA-B27 about half</b>, often alternating eyes',
+          '<b>RCE</b>: ~40% over 4 years conservatively; ~10–25% after diamond burr/PTK',
+          '<b>Episcleritis</b>: a third or more recur; recurrent/bilateral → work-up',
+          '<b>Scleritis</b>: ~1/3 relapse',
+          '<b>Pterygium</b>: bare sclera ~25–90%; <b>conjunctival autograft ~2–10%</b>; most by 6 months',
+          '<b>HZO</b>: usually once (zoster recurs ~5–6% over 8 years)')],
+      ['recur-posterior', 'Recurrence/fellow eye: CSCR, optic neuritis, NAION, AAION, RD, VKC?',
+        ul('<b>CSCR</b>: 80–90% resolve in 3–4 months; <b>1/3–1/2 recur</b> (stop all steroids)',
+          '<b>Optic neuritis</b>: ~35% recur in 10 years (ONTT; oral pred alone raised recurrence). MS ~50% at 15 years (25% normal MRI, 72% with lesions)',
+          '<b>NAION</b>: fellow eye ~15% / 5 years; same eye &lt;5%',
+          '<b>AAION</b>: fellow eye up to 50% in days–weeks untreated',
+          '<b>RRD</b>: fellow eye ~10%',
+          '<b>VKC</b>: every season until puberty; shield ulcer 3–10%')],
+    ]),
+
+    // ------------------------------------------------------------ Differentials
+    ...C('ddx', [
+      ['hypopyon', 'Hypopyon: full differential?',
+        ul('<b>Infective</b>: bacterial/fungal/Acanthamoeba <b>keratitis</b>; <b>endophthalmitis</b> (post-op, post-injection, trauma, endogenous)',
+          '<b>Non-infective inflammatory</b>: <b>HLA-B27 AAU</b> (fibrinous), <b>Behçet’s</b> (mobile “cold” hypopyon, white eye, mouth ulcers), VKH rarely, TASS (12–48 h post-op)',
+          '<b>Drugs</b>: rifabutin, cidofovir, (bisphosphonates)',
+          '<b>Masquerade</b>: <b>retinoblastoma</b> (child), <b>leukaemia/lymphoma</b>, metastasis',
+          '<b>Pseudo-hypopyon</b>: ghost cells, triamcinolone, tumour cells') +
+        'Key questions: surgery/injection? CL? Trauma? Systemic symptoms? Is the cornea involved?'],
+      ['dilated-pupil', 'Unilateral dilated pupil: differential?',
+        ul('<b>CN III palsy</b>: ptosis + down-and-out eye; pupil involved = <b>aneurysm (PComm) until proven otherwise → ED</b>',
+          '<b>Pharmacological</b>: atropine, scopolamine patch, ipratropium nebuliser, plants (angel’s trumpet, nightshade); <b>doesn’t constrict to pilocarpine 1%</b>',
+          '<b>Adie’s tonic pupil</b>: young woman, light–near dissociation, vermiform movements, <b>constricts to pilocarpine 0.125%</b>, reduced reflexes (Holmes-Adie)',
+          '<b>Trauma</b>: sphincter tears/notches', '<b>Acute angle closure</b>: mid-dilated, fixed, red, high IOP',
+          'Iris ischaemia/post-op, benign episodic mydriasis (migraine)',
+          'Is the big pupil the abnormal one? <b>Anisocoria greater in bright light</b> → yes. Greater in dark → the small one is abnormal (Horner’s, physiological)')],
+      ['small-pupil', 'Unilateral small pupil: differential and tests?',
+        ul('<b>Physiological anisocoria</b> (&lt;1 mm, same in light and dark)',
+          '<b>Horner’s</b>: ptosis, miosis, dilation lag; <b>apraclonidine 0.5%</b> reverses the anisocoria (or cocaine 10%: Horner pupil fails to dilate). <b>Painful new Horner’s = carotid dissection → ED</b>; also Pancoast tumour',
+          '<b>Uveitis</b> (posterior synechiae)', 'Drugs: pilocarpine, opioids', 'Argyll Robertson (bilateral, syphilis), old Adie’s (gets smaller over time)')],
+      ['disc-pallor', 'Disc pallor: differential?',
+        ul('<b>Glaucoma</b>: cupping more than pallor; rim that remains is pink',
+          '<b>Compressive</b>: pituitary, meningioma, aneurysm; <b>pallor &gt; cupping</b>, band/bow-tie atrophy (chiasm)',
+          '<b>Ischaemic</b>: NAION (sectoral), AAION (diffuse, can cup)',
+          '<b>After optic neuritis</b>: temporal pallor',
+          '<b>Toxic/nutritional</b>: ethambutol, methanol, amiodarone, B12/folate deficiency, tobacco–alcohol (bilateral, temporal, centrocaecal)',
+          '<b>Hereditary</b>: LHON (young men), dominant optic atrophy',
+          '<b>After papilloedema</b> (secondary atrophy), trauma, radiation, syphilis',
+          '<b>Retinal</b>: RP (waxy pallor), old CRAO') +
+        '<b>Red flags for MRI</b>: pallor out of proportion to cupping, age under 50, reduced VA/colour, RAPD, field respecting the vertical midline.'],
+      ['disc-swelling', 'Optic disc swelling: differential?',
+        ul('<b>Bilateral</b>: <b>papilloedema</b> (raised ICP: tumour, IIH, venous sinus thrombosis), <b>malignant hypertension</b>, bilateral optic neuritis, toxic, infiltration',
+          '<b>Unilateral</b>: NAION/AAION, optic neuritis (papillitis), CRVO, posterior uveitis, compressive orbital lesion, infiltration',
+          '<b>Pseudo-swelling</b>: <b>optic disc drusen</b> (autofluorescence, B-scan, OCT), tilted/crowded disc, myelinated fibres, hyperopia') +
+        'Papilloedema: VA and colour usually normal early, enlarged blind spot; check BP, ask headache/TVOs/pulsatile tinnitus → same-day ED/imaging.'],
+      ['field-altitudinal', 'Altitudinal field defect: differential?',
+        ul('<b>NAION</b> (classically inferior)', '<b>AAION</b> (GCA)', '<b>BRAO / hemi-retinal artery occlusion</b>', 'Hemi-retinal vein occlusion', '<b>Advanced glaucoma</b>', 'Optic neuritis (less often)', 'Retinal detachment (opposite side to the detachment)', 'Optic nerve coloboma/pit, ODD') +
+        'Respects the <b>horizontal</b> midline → retina or optic nerve.'],
+      ['field-central', 'Central or centrocaecal scotoma: differential?',
+        ul('<b>Macular disease</b> (AMD, CSCR, macular hole; Amsler distortion, OCT)', '<b>Optic neuritis</b> (pain on movement, RAPD, colour loss)', '<b>Toxic/nutritional</b> (bilateral centrocaecal: ethambutol, methanol, B12, tobacco–alcohol)', '<b>LHON</b>', '<b>Compressive</b> optic neuropathy', 'Junctional scotoma (central one eye + superotemporal other eye: chiasm)') +
+        'Photostress recovery separates macular (slow) from optic nerve (normal).'],
+      ['field-bitemporal', 'Bitemporal field defect: differential?',
+        ul('<b>Pituitary adenoma</b> (from below → <b>superior</b> first)', '<b>Craniopharyngioma</b> (from above → <b>inferior</b> first; children and older adults)', 'Meningioma (tuberculum sellae), aneurysm, glioma', 'Trauma, demyelination, sarcoid', '<b>Pseudo-bitemporal</b>: <b>tilted discs</b> (doesn’t respect the vertical midline; improves with −3.00 DS), lid/lens rim artefact, enlarged blind spots') +
+        'Respects the <b>vertical</b> midline → MRI with contrast.'],
+      ['field-homonymous', 'Homonymous hemianopia: differential and localisation?',
+        ul('Cause in adults: <b>stroke</b> (most), tumour, trauma, demyelination',
+          '<b>Optic tract</b>: incongruous + RAPD (contralateral eye), band atrophy',
+          '<b>Temporal</b> (Meyer’s loop): superior “pie in the sky”', '<b>Parietal</b>: inferior “pie on the floor”',
+          '<b>Occipital</b> (PCA): congruous, <b>macular sparing</b>') +
+        'The further back, the more congruous. New hemianopia: <b>same-day stroke assessment</b>; driving rules.'],
+      ['field-constricted', 'Constricted / tunnel field: differential?',
+        ul('<b>Advanced glaucoma</b>', '<b>Retinitis pigmentosa</b> (ring scotoma, bone spicules, nyctalopia)', '<b>PRP</b> scars', '<b>Vigabatrin</b> (bilateral nasal → concentric)', 'Bilateral occipital infarcts (macular sparing)', 'Papilloedema (late), CRAO with cilioretinal sparing', '<b>Functional</b>: tubular (doesn’t expand with distance), spiralling', 'Artefacts: high plus lens, ptosis, small pupil')],
+      ['blind-spot', 'Enlarged blind spot: differential?',
+        ul('<b>Papilloedema</b> and other disc swelling', '<b>Optic disc drusen</b>', 'Peripapillary atrophy / myopic disc', '<b>MEWDS</b> and <b>AZOOR</b> (young women, photopsia)', 'Big tilted disc, myelinated fibres', 'Lens rim / refractive artefact')],
+      ['sudden-painless', 'Sudden painless vision loss: differential?',
+        ul('<b>Vascular</b>: CRAO/BRAO (stroke workup; GCA if older), CRVO/BRVO, NAION, <b>AAION</b>', '<b>Vitreous haemorrhage</b> (PDR, tear, PVD)', '<b>Retinal detachment</b>', '<b>Wet AMD</b>', 'Macular hole, CSCR', 'Occipital stroke (bilateral, hemianopic)', 'Functional (diagnosis of exclusion)') +
+        'Painful instead: AAC, optic neuritis, uveitis, keratitis, endophthalmitis, GCA (headache).'],
+      ['rapd', 'RAPD: what causes it (and what doesn’t)?',
+        `<b>Causes</b>: optic nerve disease (optic neuritis, ION, compressive, <b>asymmetric glaucoma</b>, trauma), <b>large</b> retinal lesions (CRAO, CRVO ischaemic, RD involving the macula/large area), optic tract (contralateral eye), dense amblyopia (mild). <b>Doesn’t cause one</b>: cataract, refractive error, corneal opacity, vitreous haemorrhage (unless dense), mild macular disease, functional loss.`],
+      ['iop-inflam', 'Uveitis with raised IOP: differential?',
+        ul('<b>Herpetic</b> (HSV/VZV/CMV): sectoral iris atrophy, reduced corneal sensation, diffuse KPs', '<b>Posner-Schlossman</b>: unilateral, IOP 40–60, few fine KPs, open angle, minimal symptoms', '<b>Steroid response</b> (weeks on drops)', '<b>Lens-induced</b>: phacolytic, phacoanaphylactic, phacomorphic', 'Fuchs heterochromic', 'Trabeculitis in sarcoid/toxoplasma', 'Pupil block from 360° PS (iris bombé), PAS', 'Masquerade') +
+        'Avoid PGA and pilocarpine; use timolol/brimonidine/CAI + steroid.'],
+      ['red-eye-workup', 'Unilateral red eye: features that sort the differential?',
+        ul('<b>Discharge</b>: watery (viral), mucopurulent (bacterial), stringy (allergy), hyperpurulent (gonococcal)',
+          '<b>Follicles</b> (viral, chlamydial, drug) vs <b>papillae</b> (allergy, CL, bacterial)',
+          '<b>Pain + photophobia + reduced VA</b>: keratitis, uveitis, AAC, scleritis',
+          '<b>Pupil</b>: miotic (uveitis), mid-dilated fixed (AAC)',
+          '<b>Staining</b>: dendrite (HSV), infiltrate (MK/CLPU/marginal)',
+          '<b>Blanching with phenylephrine 2.5%</b>: episcleritis yes, scleritis no',
+          '<b>IOP</b> and <b>AC</b> in every red eye')],
+      ['follicles', 'Follicular conjunctivitis: differential?',
+        ul('<b>Adenovirus</b> (EKC, PCF): acute, node, watery', '<b>HSV</b>: unilateral, lid vesicles, check cornea', '<b>Chlamydia</b>: chronic &gt;3 weeks, large inferior follicles, superior pannus, young sexually active', '<b>Molluscum</b>: umbilicated lid lesion', '<b>Drug/toxic</b>: brimonidine, atropine, aminoglycosides, preservatives', 'Parinaud oculoglandular (cat scratch)')],
     ]),
   ];
 })();
