@@ -205,7 +205,7 @@ window.CASES.push(
                     2: 'Without disc, RNFL or field damage it is OHT, not POAG, and most OHT never converts.',
                     3: '550 µm isn’t thin; OHTS’s highest-risk group was 555 µm or less.'
                 },
-                explain: 'OHTS risk factors for conversion: older age, higher IOP, thinner CCT (≤555 µm), larger vertical CD, higher PSD; disc haemorrhage 4–6×. Use the OHTS/EGPS 5-year risk to decide.',
+                explain: 'OHTS risk factors for conversion: older age, higher IOP, thinner CCT (≤555 µm), larger vertical CD, higher PSD; disc haemorrhage 4–6×. Thin CCT roughly triples the risk (≤555 vs >588 µm). Use the OHTS/EGPS 5-year risk to decide.',
                 recall: 'The 9:20 candidate said “average is 535, so 550 is thick and IOP is overestimated” and “I wouldn’t treat as IOP is under 30”. 550 is about average, and 30 isn’t an OHTS threshold. In the 9:40 room the CCT was 515 (thin): then the IOP is under-read and his risk is higher, which favours treating.'
             },
             {
@@ -492,7 +492,7 @@ window.CASES.push(
         title: 'Sunglasses at 5 pm, Slept in Her Lenses',
         theme: 'CL-Related Bacterial Keratitis',
         years: ['2026'],
-        patient: '24-year-old woman (Monday 11:20).',
+        patient: '24-year-old woman (Monday 11:20; the 12:00 room asked the same case: pain and photophobia after sleeping in lenses).',
         stem: 'Comes in wearing sunglasses at 5 pm with pain and photophobia, first time.',
         steps: [
             {
@@ -548,9 +548,9 @@ window.CASES.push(
                 explain: 'She asked “including overnight?”: yes, hourly drops continue overnight for the first day or two. Atropine also relieves ciliary spasm.'
             },
             {
-                phase: '5. Not improving at 24 h',
+                phase: '5. Not improving at 24–48 h',
                 type: 'mcq',
-                question: '“She returns at 24 h and isn’t improving. What now?”',
+                question: '“She returns at 24 h (48 h in the 12:00 room) and isn’t improving. What now?”',
                 options: [
                     'Judge by infiltrate, epithelial defect and AC, not symptoms: if worse, refer same day for culture and fortified drops; if unchanged, review in 24 h.',
                     'Switch to chloramphenicol 0.5% hourly, since failing at 24 h proves fluoroquinolone resistance; review in 48 h and refer only if it then perforates.',
@@ -579,6 +579,34 @@ window.CASES.push(
                 answers: [0, 1, 2, 3],
                 explain: 'Culture is often negative, so treat clinically.',
                 recall: 'The candidate said confocal microscopy is the definitive test for Acanthamoeba. It is a fast, strongly supportive test; the definitive tests are culture, PCR or histology.'
+            },
+            {
+                phase: '7. When to send to hospital',
+                type: 'multi',
+                question: '“When do you refer to hospital?” (12:00 room)',
+                options: [
+                    'Ulcer over about 2–3 mm, or central or paracentral',
+                    'Deep stromal involvement, thinning or perforation risk',
+                    'Hypopyon or marked AC reaction',
+                    'Suspected Acanthamoeba or fungal keratitis',
+                    'Worse at 24–48 h on treatment, or not improving',
+                    'Any CL wearer with a small peripheral infiltrate and no staining'
+                ],
+                answers: [0, 1, 2, 3, 4],
+                why: { 5: 'A small peripheral infiltrate with no staining is more likely CLPU or sterile, managed in practice with close review.' },
+                explain: 'The “1-2-3 rule”: 1+ cells, 2 mm infiltrate, 3 mm from the centre: meet any and it goes for scraping and fortified drops. A small peripheral infiltrate without staining is more likely CLPU or a sterile infiltrate.'
+            },
+            {
+                phase: '8. Bacterial, Acanthamoeba or fungal',
+                type: 'match',
+                question: '“How do you tell MK from Acanthamoeba and fungal keratitis?” (12:00 room)',
+                pairs: [
+                    { label: 'Bacterial (Pseudomonas)', answer: 'Rapid onset over 1–2 days, dense suppurative infiltrate, mucopurulent discharge, often a hypopyon' },
+                    { label: 'Acanthamoeba', answer: 'Pain out of proportion to signs, radial perineuritis, ring infiltrate later; water exposure; slow course' },
+                    { label: 'Fungal', answer: 'Feathery margins, satellite lesions, dry raised infiltrate; vegetative trauma; slow course' }
+                ],
+                distractors: ['Dendritic ulcer with terminal bulbs and reduced corneal sensation'],
+                explain: 'Suspect Acanthamoeba or fungus when the ulcer doesn’t respond to antibiotics. The dendrite is HSV.'
             }
         ]
     },
@@ -1153,7 +1181,8 @@ window.CASES.push(
                     2: 'Acetazolamide isn’t long-term treatment, and drops do work in PXF.',
                     3: 'Twice-daily PGA lowers IOP less than once daily.'
                 },
-                explain: 'Within-class switching is reasonable for a true non-responder.'
+                explain: 'Within-class switching is reasonable for a true non-responder.',
+                recall: 'The candidate said a 1 mmHg drop calls for switching class, and they would switch within the PGA class only if it had dropped about 15%. Both are defensible: first check adherence; a true non-responder to latanoprost usually gets a different class.'
             },
             {
                 phase: '6. Follow-up facts',
@@ -1234,6 +1263,375 @@ window.CASES.push(
                     3: 'The fellow eye has a normal IOP; it needs angle assessment, not drops.'
                 },
                 explain: 'PGA side effects: hyperaemia, iris darkening, lash growth, periorbitopathy, and CMO or uveitis reactivation in at-risk eyes.'
+            }
+        ]
+    },
+    {
+        id: 'r2026-ntg-asymmetric',
+        category: 'glaucoma',
+        title: 'CDR 0.4 and 0.8, IOP 18/17',
+        theme: 'Asymmetric Normal-Tension Glaucoma',
+        years: ['2026'],
+        patient: '65-year-old woman with a family history of glaucoma; no medical history or medicines (Monday 12:00).',
+        stem: 'IOP R 18, L 17 mmHg. CDR R 0.4, L 0.8. Field: right clear, left inferior arcuate defect.',
+        steps: [
+            {
+                phase: '1. Differentials',
+                type: 'multi',
+                question: 'Asymmetric cupping with a matching field defect at normal IOP. What are your differentials?',
+                options: [
+                    'Normal-tension glaucoma',
+                    'POAG with missed IOP peaks (diurnal variation, thin CCT)',
+                    'Burnt-out secondary glaucoma: past steroid response, PDS, PXF, uveitis or trauma (angle recession)',
+                    'Compressive optic neuropathy (pituitary, meningioma)',
+                    'Previous ischaemic optic neuropathy (NAION or GCA)',
+                    'Physiologically large cup in a large disc',
+                    'Central serous chorioretinopathy'
+                ],
+                answers: [0, 1, 2, 3, 4, 5],
+                critical: true,
+                why: { 6: 'CSCR is a macular condition; it doesn’t cause cupping or an arcuate defect.' },
+                explain: 'A large physiological cup is symmetric and has no field defect, so it doesn’t fit a 0.4 vs 0.8 asymmetry with an arcuate. NTG is a diagnosis of exclusion.'
+            },
+            {
+                phase: '2. Tests',
+                type: 'viva',
+                question: '“What other tests do you want to do?”',
+                points: [
+                    'CCT (a thin cornea makes GAT under-read) and IOP phasing or repeat readings at different times of day',
+                    'Gonioscopy: open angle, recession, PAS, pigment, PXF material',
+                    'Disc size and rim colour (pallor out of proportion to cupping suggests a neurological cause)',
+                    'OCT RNFL and GCL: does the structure match the inferior arcuate (superior rim and RNFL loss)?',
+                    'Repeat field to confirm; colour vision and RAPD (an asymmetric optic neuropathy should give a left RAPD)',
+                    'Blood pressure, history of migraine, Raynaud’s, sleep apnoea, nocturnal hypotension, past blood loss'
+                ],
+                explain: 'An inferior arcuate field defect comes from superior rim and RNFL loss: say where you expect the structural change.'
+            },
+            {
+                phase: '3. Results',
+                type: 'reveal',
+                text: 'CCT normal both eyes, angles open with no secondary features. Superior rim thinning and RNFL loss in the left eye matching the field. Discs a similar size, rims pink. Colour vision normal; a small left RAPD.'
+            },
+            {
+                phase: '4. Diagnosis',
+                type: 'mcq',
+                question: 'What is your diagnosis?',
+                options: [
+                    'Left NTG (structure and function agree, IOP never over 21, other causes excluded); right eye a glaucoma suspect.',
+                    'Bilateral OHT: the IOPs are in the high teens and the family history makes both eyes high risk, but there is no damage yet.',
+                    'Left compressive optic neuropathy: any RAPD in glaucoma rules glaucoma out, so she needs an urgent MRI before anything else.',
+                    'Bilateral NTG: a family history of glaucoma means the right eye has it too, even with a 0.4 cup and a clear field.'
+                ],
+                answer: 0,
+                why: {
+                    1: 'OHT means an IOP over 21 with no damage. Hers is normal and the left eye is damaged.',
+                    2: 'Asymmetric glaucoma often gives a small RAPD in the worse eye. Pink rims and an arcuate defect point to glaucoma.',
+                    3: 'Family history raises risk but doesn’t diagnose. The right disc and field are normal.'
+                },
+                explain: 'Pallor, defects that respect the vertical midline, loss of colour vision or VA out of keeping with the cup, or age under 50 would push you to image.'
+            },
+            {
+                phase: '5. Management',
+                type: 'mcq',
+                question: '“What are your management options: drops, SLT?”',
+                options: [
+                    'Treat the left eye: target 30% lower (CNTGS); latanoprost 0.005% nocte or SLT first line; refer to an ophthalmologist; review 4–6 weeks.',
+                    'Don’t treat: the IOP is already normal, so lowering it further can’t help. Monitor fields and OCT every 6 months and refer if it progresses.',
+                    'Treat both eyes with timolol 0.5% at night, since night dosing covers the nocturnal peak in NTG; target 15% lower; review yearly.',
+                    'SLT isn’t used in NTG because the IOP is too low to respond, so start drops and refer for a trabeculectomy straight away.'
+                ],
+                answer: 0,
+                why: {
+                    1: 'CNTGS: a 30% lowering cut progression from 35% to 12% even at normal IOP.',
+                    2: 'Night-time timolol can worsen nocturnal hypotension and optic nerve perfusion, and the right eye isn’t glaucomatous.',
+                    3: 'SLT lowers IOP less from a low baseline but is still a reasonable option in NTG; surgery isn’t first line.'
+                },
+                explain: 'Check for nocturnal hypotension with the GP (BP tablets taken at night). Brimonidine is a good second drug in NTG (LoGTS).'
+            }
+        ]
+    },
+    {
+        id: 'r2026-marginal-bleph',
+        category: 'cornea',
+        title: 'A Peripheral Infiltrate at 4 o’clock, Crusty Lashes',
+        theme: 'Marginal Keratitis With Blepharitis',
+        years: ['2026'],
+        patient: '65-year-old woman, not a contact lens wearer, mild discomfort (Monday 3:20, Daisy).',
+        stem: 'Photo: conjunctival hyperaemia and a small (about 1 × 2 mm) peripheral corneal infiltrate at 4 o’clock.',
+        steps: [
+            {
+                phase: '1. History',
+                type: 'viva',
+                question: '“You’ve described the photo. What do you want to ask?”',
+                points: [
+                    'Pain (mild vs severe), photophobia, discharge, vision: severe pain and a drop in VA suggest infection',
+                    'Contact lenses (she doesn’t wear them), trauma, foreign body',
+                    'Lid symptoms: crusting, itchy or burning lid margins, worse in the morning; past episodes',
+                    'Rosacea, seborrhoeic dermatitis, dry eye',
+                    'Past HSV, cold sores, shingles',
+                    'Medicines, drops already used, allergies'
+                ],
+                explain: 'The candidate finished describing and the examiner sat in silence for about 10 seconds: when that happens, go straight on to history.'
+            },
+            {
+                phase: '2. More information',
+                type: 'reveal',
+                text: 'She has crusty lashes with collarettes and lid margin redness. VA is normal. There is a clear zone between the infiltrate and the limbus, the overlying epithelium is intact or only lightly staining, and the AC is quiet.'
+            },
+            {
+                phase: '3. What causes it',
+                type: 'mcq',
+                question: '“What is it, and what causes it? Think about the location.”',
+                options: [
+                    'Marginal keratitis: a hypersensitivity reaction to staphylococcal antigens, at 2, 4, 8 or 10 o’clock where the lid margin rests on the cornea.',
+                    'Bacterial keratitis: staphylococci from the lids invade the stroma at 4 o’clock, where the lids leave the cornea most exposed during the blink.',
+                    'Mooren’s ulcer: an autoimmune peripheral melt that begins at the limbus without a clear zone and spreads circumferentially around the cornea.',
+                    'Phlyctenulosis: a nodule at the limbus from a cell-mediated reaction to TB protein, which always starts at the 6 o’clock position.'
+                ],
+                answer: 0,
+                critical: true,
+                why: {
+                    1: 'Marginal infiltrates are sterile immune deposits, not infection. A clear zone, an intact epithelium and mild pain don’t fit MK.',
+                    2: 'Mooren’s is very painful, has no clear zone and is an ulcerating melt.',
+                    3: 'Phlyctens are raised nodules that can cross the limbus, usually in children and young adults, and are now mostly staphylococcal too.'
+                },
+                explain: 'The examiner wanted the location: the infiltrates sit where the lid margin crosses the limbus, which is where the staphylococcal toxins pool against the cornea.',
+                recall: 'The candidate explained the exotoxin reaction but missed what “think about the location” meant: say 2, 4, 8 and 10 o’clock and why.'
+            },
+            {
+                phase: '4. Ruling out infection',
+                type: 'multi',
+                question: '“What do you want to rule out, and how?” Which features favour infectious keratitis over marginal keratitis?',
+                options: [
+                    'Severe pain and photophobia, a drop in VA',
+                    'An epithelial defect as large as the infiltrate',
+                    'No clear zone; a central or paracentral position',
+                    'AC reaction, purulent discharge',
+                    'Contact lens wear',
+                    'Several small infiltrates near the limbus with a clear zone'
+                ],
+                answers: [0, 1, 2, 3, 4],
+                why: { 5: 'Small limbal infiltrates with a clear zone are the marginal keratitis picture.' },
+                explain: 'Marginal infiltrates are peripheral, often multiple, with a clear zone, little staining and mild symptoms. Also rule out HSV (dendrites, reduced sensation) before giving a steroid.'
+            },
+            {
+                phase: '5. Management',
+                type: 'mcq',
+                question: '“What is your management plan?”',
+                options: [
+                    'Steroid (FML 0.1% or pred acetate 1% qid) with chloramphenicol cover; lid hygiene and warm compresses; review in 1–3 days.',
+                    'Ciprofloxacin 0.3% hourly day and night as for MK; no steroid until a culture result is back; review in 24 hours and refer if it isn’t better.',
+                    'Lid scrubs only: marginal keratitis is self-limiting, so drops add risk without benefit; review in 4 weeks to see whether it has settled.',
+                    'Oral aciclovir 400 mg five times daily: a peripheral infiltrate in a 65-year-old is herpetic until proven otherwise; review in a week.'
+                ],
+                answer: 0,
+                why: {
+                    1: 'Hourly fluoroquinolone is for presumed MK. Marginal keratitis is immune-mediated and settles with a steroid.',
+                    2: 'Lid hygiene alone is slow; a short steroid course settles the infiltrate and the symptoms.',
+                    3: 'Nothing here suggests HSV (no dendrite, intact epithelium, clear zone).'
+                },
+                explain: 'Taper the steroid over 1–2 weeks. Treat the cause (the blepharitis) or it recurs.',
+                recall: 'The candidate gave Pred Forte qid with next-day review, then lid scrubs. The examiner pushed: “What is causing the blepharitis?” Bacteria, so add an antibiotic.'
+            },
+            {
+                phase: '6. Chloramphenicol',
+                type: 'mcq',
+                question: '“Chloramphenicol comes in two forms. Which are you giving, why, at what concentration and how often?”',
+                options: [
+                    '0.5% drops qid in the day (no blur); 1% ointment rubbed into the lid margins at night, or tds–qid if used alone.',
+                    '1% drops qid and 0.5% ointment at night: the drops are stronger because they wash out faster, so the ointment can be weaker.',
+                    '0.5% drops hourly for 48 hours, then qid: blepharitis needs a loading dose like microbial keratitis to clear the lid bacteria.',
+                    '1% ointment once a week for a month: the ointment stays on the lid margin long enough that weekly dosing gives continuous cover.'
+                ],
+                answer: 0,
+                why: {
+                    1: 'The concentrations are the other way round: drops 0.5%, ointment 1%.',
+                    2: 'Blepharitis doesn’t need loading doses; that regimen is for MK.',
+                    3: 'Weekly dosing gives no meaningful cover.'
+                },
+                explain: 'Ointment suits blepharitis because it can be massaged into the lid margin; it blurs, so use it at night if she needs clear vision in the day.'
+            },
+            {
+                phase: '7. Newer treatments',
+                type: 'match',
+                question: '“She also has SPK. What are the new or emerging treatments?” Match each to what it does.',
+                pairs: [
+                    { label: 'Intense pulsed light (IPL)', answer: 'Treats MGD and lid telangiectasia; reduces inflammation and Demodex' },
+                    { label: 'Low-level light therapy (LLLT)', answer: 'Red light mask that warms the lids and reduces inflammation' },
+                    { label: 'Microblepharoexfoliation (BlephEx)', answer: 'Rotating sponge that debrides biofilm and debris from the lid margin' },
+                    { label: 'Perfluorohexyloctane (NovaTears)', answer: 'Water-free drop that spreads over the tear film to slow evaporation' },
+                    { label: 'Punctal plugs', answer: 'Keeps tears on the eye in aqueous deficiency' }
+                ],
+                distractors: ['Laser that makes a hole in the iris'],
+                explain: 'Also: thermal pulsation (LipiFlow), ciclosporin (Ikervis), tea tree oil wipes for Demodex, oral doxycycline or azithromycin for MGD and rosacea.',
+                recall: 'The candidate gave LLLT, remembered IPL only on the way home (and nearly said LPI), and named Rohto as a new drop. Name IPL first, and give NovaTears or ciclosporin for drops. They also forgot punctal occlusion.'
+            }
+        ]
+    },
+    {
+        id: 'r2026-ntg-neuro-vf',
+        category: 'glaucoma',
+        title: 'Routine Check, Normal IOP, a Wedge Defect',
+        theme: 'NTG: Ruling Out Neuro, Reading the Field, Timolol',
+        years: ['2026'],
+        patient: '60-year-old woman, routine check; IOP and CCT normal (Monday 3:20, Sophia).',
+        stem: 'Fundus photo of the disc. The examiner asked for a description, then went on to neuro causes, the field printout and a non-PGA treatment.',
+        steps: [
+            {
+                phase: '1. The disc',
+                type: 'viva',
+                question: '“Describe the disc.”',
+                points: [
+                    'Size (small, medium, large) and shape',
+                    'CDR (here about 0.8), thin rims, ISNT rule',
+                    'Rim colour: pink or pale',
+                    'Laminar dots visible, margins distinct',
+                    'Inferior RNFL wedge defect; disc haemorrhage (none here), peripapillary atrophy, vessels (bayoneting, nasal shift)'
+                ],
+                explain: 'Mention colour: the examiner picked up on it straight away.'
+            },
+            {
+                phase: '2. A pale rim',
+                type: 'mcq',
+                question: '“You mentioned colour. What do you suspect if the rim is pale?”',
+                options: [
+                    'Pallor beyond the cupping suggests a non-glaucomatous optic neuropathy: optic neuritis, ischaemic (NAION, GCA) or compressive.',
+                    'Pallor is the usual colour of a glaucomatous rim, so it confirms the glaucoma and no other work-up is needed before starting drops.',
+                    'A pale rim means the IOP must have been high at some point, so it confirms POAG with missed peaks rather than NTG; start phasing.',
+                    'Pallor is a normal ageing change after 60 and doesn’t affect the diagnosis or the plan, so record it and review in a year as usual.'
+                ],
+                answer: 0,
+                critical: true,
+                why: {
+                    1: 'In glaucoma the remaining rim stays pink; pallor beyond the cup is the warning sign.',
+                    2: 'Pallor doesn’t tell you about past IOP, and it points away from glaucoma.',
+                    3: 'Rim pallor isn’t a normal ageing change.'
+                },
+                explain: 'Other red flags for a neuro cause: age under 50, VA or colour vision loss out of keeping with the cup, a field that respects the vertical midline, a fast course.'
+            },
+            {
+                phase: '3. Neuro work-up',
+                type: 'match',
+                question: '“What work-up would you do to rule those out? What are those?” Match each sign to what it means.',
+                pairs: [
+                    { label: 'Uhthoff’s phenomenon', answer: 'Vision blurs when body temperature rises (exercise, a hot shower), from slowed conduction in a demyelinated nerve' },
+                    { label: 'Pulfrich phenomenon', answer: 'A pendulum swinging in one plane seems to move in an ellipse, because one optic nerve conducts more slowly' },
+                    { label: 'RAPD', answer: 'Asymmetric optic nerve input: the pupils dilate when the light swings to the affected eye' },
+                    { label: 'Red desaturation', answer: 'A red target looks washed out to the affected eye; an early sign of optic neuropathy' }
+                ],
+                distractors: ['The blind spot moves with gaze direction'],
+                explain: 'Both Uhthoff’s and Pulfrich point to demyelination: multiple sclerosis. Also check VA, colour vision, fields and ask about pain on eye movement.',
+                recall: 'The candidate described Uhthoff’s as muscle weakness and fatigue. For the eye, say vision worsens with heat; the examiner only let them explain Uhthoff’s.'
+            },
+            {
+                phase: '4. A neuro field',
+                type: 'mcq',
+                question: '“What field would you expect if it is neuro?”',
+                options: [
+                    'Defects that respect the vertical midline (chiasm and beyond), or central scotomas in optic neuritis; glaucoma respects the horizontal.',
+                    'Defects that respect the horizontal midline, such as a nasal step, since every optic neuropathy follows the arcuate RNFL bundles exactly.',
+                    'A generalised depression with no localised defect, since neurological disease affects every fibre in the optic nerve equally.',
+                    'An enlarged blind spot only: any neurological cause of a pale disc shows up as blind-spot enlargement on a 24-2 field and nothing else.'
+                ],
+                answer: 0,
+                why: {
+                    1: 'A nasal step is the classic glaucomatous defect; respecting the horizontal is glaucoma or a vascular (altitudinal) cause.',
+                    2: 'Neuro defects are usually localised and patterned, not a uniform depression.',
+                    3: 'An enlarged blind spot is seen in disc swelling, not as the only sign of optic neuropathy.'
+                },
+                explain: 'NAION often gives an altitudinal defect, which respects the horizontal: so a horizontal step doesn’t rule out ischaemia.'
+            },
+            {
+                phase: '5. The printout',
+                type: 'reveal',
+                text: 'HVF 24-2: reliable indices, a superior nasal step, GHT outside normal limits, MD −0.77 dB. The threshold value at the blind-spot point reads 11 dB. Total and pattern deviation maps look the same.'
+            },
+            {
+                phase: '6. Reading the field',
+                type: 'multi',
+                question: 'The examiner pointed at parts of the printout. Which statements are correct?',
+                options: [
+                    'The trace along the bottom is the gaze tracker: upward spikes are eye movements or loss of fixation, downward spikes are blinks',
+                    'GHT compares mirror-image sectors of the superior and inferior hemifields; a superior nasal step makes it “outside normal limits”',
+                    'A value of 11 dB at the blind-spot point means a stimulus was seen there: check fixation (gaze tracker, fixation losses), or the point sits at the blind spot’s edge',
+                    'Cataract causes a generalised depression: total deviation shows it, pattern deviation removes it',
+                    'If total and pattern deviation look the same, there is little generalised depression, so cataract isn’t explaining the defect',
+                    'Pattern deviation hides a localised defect caused by cataract, so a nasal step with a cataract can be ignored'
+                ],
+                answers: [0, 1, 2, 3, 4],
+                why: { 5: 'Pattern deviation removes generalised depression, not localised defects; a nasal step stays visible and matters.' },
+                explain: 'The blind spot should read <0 dB. A seen stimulus there is the old Heijl-Krakau fixation check; light scatter from a cataract can also let a bright target be seen at the edge.',
+                recall: 'The candidate wasn’t sure why the blind spot read 11 and suggested poor fixation or cataract scatter. Lead with fixation and point to the gaze tracker.'
+            },
+            {
+                phase: '7. Diagnosis and grade',
+                type: 'mcq',
+                question: '“What is your diagnosis, and how would you grade it?”',
+                options: [
+                    'NTG (normal IOP and CCT, structure matches function, neuro causes excluded): early, as MD is better than −6 dB and fixation is spared.',
+                    'OHT: the IOP is normal, but the field has a defect, so it is high-risk OHT and the field should be repeated yearly before any diagnosis.',
+                    'NTG, advanced: any nasal step makes it advanced under Hodapp, whatever the MD, so she needs urgent referral and surgery.',
+                    'Not glaucoma: with an MD of −0.77 dB the field counts as normal, so the nasal step and the GHT result can be ignored as noise.'
+                ],
+                answer: 0,
+                why: {
+                    1: 'OHT needs a raised IOP and no damage; she has normal IOP and damage.',
+                    2: 'Hodapp staging uses MD, the number of depressed points and points near fixation; a nasal step with MD −0.77 is early.',
+                    3: 'MD can stay near zero with a localised defect. PSD and GHT catch it; with a matching RNFL wedge it is real.'
+                },
+                explain: 'Confirm with a repeat field: one abnormal field isn’t enough.'
+            },
+            {
+                phase: '8. No PGA',
+                type: 'mcq',
+                question: '“She is worried about cosmetic side effects and doesn’t want surgery or laser. What topical treatment can you give, and how?”',
+                options: [
+                    'Timolol 0.5% once in the morning (or gel-forming 0.5% once daily) if there are no contraindications; can go to bd; avoid an evening dose in NTG.',
+                    'Timolol 0.5% at night only, because NTG is driven by the nocturnal IOP peak and timolol works best during sleep when aqueous flow is high.',
+                    'Brimonidine 0.2% once a day at night, since it is the only drop with no cosmetic or systemic side effects and is first line in Australia.',
+                    'Bimatoprost 0.01% at night, since the lower concentration removes all the cosmetic side effects of the prostaglandin analogues.'
+                ],
+                answer: 0,
+                why: {
+                    1: 'Aqueous production falls at night, so night timolol does little and can worsen nocturnal hypotension and perfusion.',
+                    2: 'Brimonidine is dosed bd–tds, causes allergy in many patients and isn’t first line.',
+                    3: 'Bimatoprost 0.01% still darkens the iris and periorbital skin and grows lashes.'
+                },
+                explain: 'SLT is the other answer to “cosmetic worries”, though the effect is smaller at a low baseline IOP. The examiner meant “skip the PGA”, not “skip all drops”.',
+                recall: 'The candidate said 0.5% once in the morning, then a second drop around lunch if needed. Standard bd dosing is morning and evening; in NTG many keep to a morning dose.'
+            },
+            {
+                phase: '9. Timolol contraindications',
+                type: 'multi',
+                question: '“What are the contraindications of timolol?”',
+                options: [
+                    'Asthma and COPD',
+                    'Bradycardia, second- or third-degree heart block',
+                    'Uncontrolled heart failure',
+                    'Caution: oral beta-blockers, diabetes (masks hypoglycaemia), myasthenia gravis, depression',
+                    'Sulfonamide allergy'
+                ],
+                answers: [0, 1, 2, 3],
+                why: { 4: 'Sulfonamide allergy is a caution for CAIs, not beta-blockers.' },
+                explain: 'Sulfonamide allergy is a CAI caution. Punctal occlusion for 2 minutes cuts systemic absorption.'
+            },
+            {
+                phase: '10. Review and next steps',
+                type: 'mcq',
+                question: '“When do you review her, and if timolol isn’t enough, what do you add?”',
+                options: [
+                    'Review in 4–6 weeks (IOP, side effects, adherence), repeat the field to build a baseline, refer within 4 months; add brimonidine or a CAI.',
+                    'Review in 12 months, since NTG progresses slowly; if timolol isn’t enough add a second beta-blocker such as betaxolol for a stronger effect.',
+                    'Review in 1 week to check for systemic effects, then yearly; if timolol fails switch her to oral acetazolamide through her GP long term.',
+                    'No review needed once she is on drops; the ophthalmologist takes over, so add whatever they suggest when the referral letter comes back.'
+                ],
+                answer: 0,
+                why: {
+                    1: 'A year is too long after starting a drop, and two beta-blockers don’t add.',
+                    2: 'Acetazolamide isn’t long-term glaucoma treatment.',
+                    3: 'Starting a drop means you check its effect and side effects yourself.'
+                },
+                explain: 'Brimonidine has the LoGTS evidence in NTG. The examiner didn’t ask for a brand name, studies or the case report in this sitting.'
             }
         ]
     }
