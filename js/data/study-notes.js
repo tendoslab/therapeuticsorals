@@ -448,6 +448,85 @@
           ['ONTT', 'Optic neuritis', 'IV methylprednisolone speeds recovery, not final VA; oral alone raises recurrence']])
     },
     {
+      id: 'stats', title: 'Key stats: recurrence and progression', icon: '📈', hue: 160,
+      lead: 'The “prognosis?” question at the end of every case. Give one number with a time frame and a source (“about 1 in 4 over 20 years, OHTS”). Figures are rounded; quote the trial if you can.',
+      html: `${h3('Progression to glaucoma')}
+        ${table(['Condition', 'Risk of glaucoma', 'Over', 'Source / what raises it'], [
+          ['OHT, untreated', '9.5% (4.4% treated); about 2% a year', '5 years', 'OHTS. Older, higher IOP, thin CCT, bigger vertical CD, higher PSD, disc haemorrhage (4–6×)'],
+          ['OHT, long term', '~25% overall; ~45% in the highest-risk third vs ~13% in the lowest', '20 years', 'OHTS 20-year follow-up: most OHT never converts, so treat by risk'],
+          ['OHT (Europe)', '~14% on placebo', '5 years', 'EGPS'],
+          ['PXF (no glaucoma yet)', '~5% → ~15%; 25–50% eventually', '5 → 10 years; lifetime', 'Jeng 2007. About 2× the OHT conversion of non-PXF eyes. Fellow eye gets PXF in up to ~40% within 10 years'],
+          ['PDS', '~10% → ~15%', '5 → 15 years', 'Siddiqui 2003. IOP over 21 at diagnosis is the strongest predictor; men, myopia, Krukenberg'],
+          ['Angle recession', '~6–9%', '10 years', 'Over 180° recessed = higher risk. Up to half later get POAG in the <i>fellow</i> eye: follow both for life'],
+          ['Posner-Schlossman', '~25% get glaucomatous damage', 'Years of attacks', 'Jap 2001. Risk rises with the number and length of attacks'],
+          ['Anterior uveitis', '~10–20% get secondary glaucoma', 'Course of disease', 'Higher with herpetic, Fuchs, chronic or granulomatous disease, and steroid response'],
+          ['Steroid response', '~5% high, ~30% moderate responders (~90% of POAG patients)', 'Usually 2–6 weeks', 'Armaly. Children, high myopes, family history, diabetes'],
+          ['Ischaemic CRVO → NVG', '~1/3 (up to ~60% if severe)', 'Mostly within 3 months', 'CVOS (“90-day glaucoma”). Non-ischaemic converts to ischaemic in ~34% within 3 years']])}
+        ${h3('Angle closure')}
+        ${table(['Stage', 'Risk', 'Over', 'Source'], [
+          ['PACS → PAC', '~22%', '5 years', 'Thomas 2003 (Vellore)'],
+          ['PAC → PACG', '~28%', '5 years', 'Thomas 2003'],
+          ['PACS, LPI vs none', '~2% vs ~4% (NNT ~44)', '6 years', 'ZAP: halves risk, but absolute risk low'],
+          ['Fellow eye after AAC (no LPI)', '40–80%', '5–10 years', 'Why both eyes get an LPI within 24–48 h'],
+          ['After AAC, despite LPI', 'About half need further IOP treatment', 'Years', 'Aung 2001: follow for chronic angle closure']])}
+        ${h3('Glaucoma once diagnosed')}
+        <div class="ncols"><div>${table(['Measure', 'Figure', 'Source'], [
+          ['Untreated progression', '62% vs 45% treated (~6 years); each 1 mmHg ≈ 10%', 'EMGT'],
+          ['Untreated MD loss', '~−0.8 dB/yr overall; HTG −1.3, NTG −0.4, PXF −3.1', 'EMGT natural history'],
+          ['NTG untreated vs treated', '35% vs 12% progressed (~5 years). About half of untreated NTG didn’t progress', 'CNTGS'],
+          ['Advanced, IOP always &lt;18', 'Virtually no field loss (mean IOP ~12)', 'AGIS']])}</div>
+        <div>${table(['Measure', 'Figure', 'Source'], [
+          ['Blindness from OAG', '~26% one eye, ~9% both by 20 years; one-eye risk nearly halved (~14%) in later diagnoses', 'Olmsted County (Hattenhauer 1998, Malihi 2014)'],
+          ['Prevalence (Australia)', '~3% over 49; about half undiagnosed', 'BMES'],
+          ['Family history', 'First-degree relative ≈ 2–4× risk; a sibling more than a parent', 'Rotterdam, Barbados'],
+          ['Fast progressor', 'More than −1.5 to −2 dB/yr: escalate and refer', 'Rule of thumb']])}</div></div>
+        ${h3('Recurrence')}
+        ${table(['Condition', 'Recurrence', 'Over', 'Source / notes'], [
+          ['HSV keratitis (any ocular)', '~10% → ~23% → ~40% → ~63%', '1 → 2 → 5 → 20 years', 'Liesegang 1989 (Rochester). Each recurrence raises the risk of the next; stromal disease recurs as stromal'],
+          ['HSV on prophylaxis', 'Any ocular HSV 32% → 19%; stromal 28% → 14%', '12 months', 'HEDS II (aciclovir 400 mg bd). Benefit stops when the drug stops'],
+          ['Herpes zoster (any site)', '~5–6%', '8 years', 'Yawn 2011. HZO is usually once, unlike HSV'],
+          ['HZO eye involvement', '~50% without antivirals; Hutchinson’s + ~76% vs ~34% without', 'The episode', 'Zaal 2003. Chronic or relapsing eye inflammation in ~25%'],
+          ['Post-herpetic neuralgia', '~10–20% of zoster; higher with age', '3+ months', 'Shingrix prevents zoster ~97% under 70, ~90% over 70 (ZOE-50/70)'],
+          ['Anterior uveitis', '39% (HLA-B27: about half recur, often alternating eyes)', '1.5 years', 'HLA-B27 positive in ~50% of AAU'],
+          ['RCE', '~40% on conservative treatment', '4 years', 'Lower after diamond burr or PTK (~10–25%)'],
+          ['Episcleritis', 'Common: roughly a third or more', 'Years', 'Recurrent or bilateral → systemic work-up'],
+          ['Scleritis', '~1/3 relapse', 'Years', 'Necrotising + RA without immunosuppression historically carried high mortality (vasculitis)'],
+          ['Pterygium after excision', 'Bare sclera ~25–90%; conjunctival autograft ~2–10%', '~1 year (most by 6 months)', 'Why autograft ± MMC is standard'],
+          ['CSCR', '~80–90% resolve on their own; ~1/3–1/2 recur', '3–4 months; 1 year', 'Stop steroids (all routes)'],
+          ['VKC', 'Recurs each season; settles at puberty in most', 'Until the late teens', 'Shield ulcer ~3–10%; keratoconus risk with rubbing'],
+          ['Optic neuritis', '~35% (either eye)', '10 years', 'ONTT. Oral prednisolone alone raised recurrence']])}
+        ${h3('Fellow eye and second-event risk')}
+        ${table(['After', 'Fellow eye / next event', 'Over', 'Source'], [
+          ['NAION', '~15% fellow eye; same-eye recurrence &lt;5%. ~40% improve 3+ lines', '5 years; 6 months', 'IONDT'],
+          ['AAION (GCA) untreated', 'Up to 50% fellow eye', 'Days to weeks', 'Why steroids start before the biopsy'],
+          ['Optic neuritis → MS', '~50% overall: 25% with a normal MRI, 72% with 1+ lesion', '15 years', 'ONTT. ~95% recover to 6/12 or better'],
+          ['Wet AMD, fellow eye with large drusen + pigment', '~50%', '5 years', 'AREDS simplified scale (0/1/2/3/4 risk factors: 0.5/3/12/25/50%)'],
+          ['Intermediate AMD on AREDS vitamins', '25% lower risk of advanced AMD', '5 years', 'AREDS / AREDS2'],
+          ['Severe NPDR → PDR', '~50% (very severe ~75%)', '1 year', 'ETDRS. Hence refer at 4-2-1'],
+          ['Acute symptomatic PVD', '~14% have a tear at presentation; 2–5% a new break later', 'Weeks', 'Hollands 2009. Vitreous blood or pigment: much higher'],
+          ['Untreated symptomatic horseshoe tear', '~1/3–1/2 progress to RD', 'Weeks', 'Same-day laser'],
+          ['Rhegmatogenous RD', '~10% fellow eye', 'Lifetime', 'Dilate both; advise symptoms'],
+          ['Full-thickness macular hole', '~10–15% fellow eye (much lower if PVD already)', '5 years', ''],
+          ['Amaurosis fugax / TIA', '~10% stroke, about half in the first 48 h', '90 days', 'Same-day stroke assessment']])}
+        <div class="ncols"><div>${h3('Post-op and contact lens risk')}
+        ${table(['Event', 'Rate', 'Source / notes'], [
+          ['Endophthalmitis after cataract', '~1 in 1000–2500 (0.04–0.1%)', 'EVS: ~half end with 6/12 or better'],
+          ['Clinical CMO after cataract', '~1–2% (angiographic 20–30%)', 'Higher with diabetes, uveitis, PCR, ERM'],
+          ['PCO needing YAG', '~10–20%', 'Within 5 years (modern IOLs)'],
+          ['RD after cataract', '~0.5–1%', '10 years; young male myopes, PCR'],
+          ['MK, daily-wear soft lenses', '~2 per 10,000 a year', 'Stapleton 2008 (Australia)'],
+          ['MK, overnight wear', '~20–25 per 10,000 a year (≈5–10×)', 'Stapleton 2008. Also showering, swimming, poor hygiene']])}</div>
+        <div>${box('good', '✅ How to say a number in the exam', ul(
+          'Number + time frame + source: “roughly 1 in 4 over 20 years, from OHTS.”',
+          'Then turn it into management: “so I’d treat because she has thin corneas and a disc haemorrhage.”',
+          'Relative vs absolute: ZAP halves the risk, but only from ~4% to ~2%.',
+          'If unsure: “I don’t recall the exact figure, but it’s a minority over 5 years, which is why we monitor.”'))}
+        ${box('warn', '⚖️ Figures that vary by source', ul(
+          'PXF → PXG: “25–50% lifetime” vs “15% at 10 years” are both quoted; give the time frame with it.',
+          'PDS → PG: ~10% at 5 years and ~15% at 15 years (not “37.5%”).',
+          'Episcleritis and scleritis recurrence vary widely between series: say “commonly recurs”.'))}</div></div>`
+    },
+    {
       id: 'neuro', title: 'Neuro and visual field localisation', icon: '🧠', hue: 275,
       lead: 'Candidates struggle here most. One eye = before the chiasm; respects the vertical midline = chiasm or behind; respects the horizontal midline = retina or optic nerve.',
       html: `<div class="ncols"><div>${figs(fig('field-pathway', 'Where the lesion sits decides the field defect. The further back the lesion, the more the two eyes’ defects match.', true))}</div>
