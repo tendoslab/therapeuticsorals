@@ -83,45 +83,120 @@
     },
     {
       id: 'glaucoma', title: 'Glaucoma: POAG, OHT, NTG', icon: '🎯', hue: 225,
-      lead: 'Almost every session has one: describe the disc and field, confirm structure–function agreement, pick a drug, defend the target with a trial, give contraindications, set a review and refer within 4 months.',
+      lead: 'Almost every session has one: describe the disc and field, confirm structure–function agreement, weigh the risk factors, decide whether to treat and defend it with a trial, pick a drug for this patient, set a target and a review, and refer within 4 months.',
       html: `<div class="ncols">
+        <div>${h3('What glaucoma is')}
+        <p>A <b>progressive optic neuropathy</b>: retinal ganglion cell and axon loss, a characteristic disc (rim thinning, cupping, RNFL loss) and a matching field defect. IOP is the main <i>modifiable</i> risk factor, not the definition: POAG can occur at any IOP (NTG), and most people with high IOP never get it (OHT).</p>
+        ${ul('<b>Mechanical theory:</b> IOP strains the lamina cribrosa, which deforms and blocks axoplasmic flow (BDNF can’t reach the RGC body) → apoptosis.',
+          '<b>Vascular theory:</b> low ocular perfusion pressure (BP − IOP), nocturnal dips, vasospasm and poor autoregulation starve the nerve head. Explains NTG, migraine, Raynaud’s, sleep apnoea.',
+          '<b>Other:</b> glutamate excitotoxicity, mitochondrial dysfunction, oxidative stress, a thin or weak lamina (myopia), low CSF pressure (translaminar pressure gradient).')}
+        ${h3('How common, and why it matters')}
+        ${ul('<b>BMES:</b> ~3% of Australians over 49; rises from under 1% in the 50s to over 10% after 80. <b>About half are undiagnosed</b>, which is why opportunistic screening matters.',
+          'Leading cause of irreversible blindness worldwide. Damage is permanent: treatment saves what is left, it doesn’t restore it.',
+          '<b>Olmsted County:</b> ~26% blind in one eye and ~9% in both by 20 years (older cohort); halved in later diagnoses, credited to earlier detection and better treatment.',
+          'People who go blind from glaucoma usually had <b>advanced loss at diagnosis</b> or progressed fast and were under-treated. Stage at diagnosis is the strongest predictor of blindness.')}</div>
         <div>${h3('History and work-up')}
         <p><b>Typical opener:</b> 55-year-old man, first eye test, mother or sister with glaucoma, IOP mid-20s.</p>
-        ${ul('<b>Ask:</b> family history (siblings carry more risk than parents), steroids incl. inhalers, migraine, Raynaud’s, sleep apnoea, BP and BP tablets (nocturnal hypotension), diabetes, myopia, trauma, ethnicity, asthma/COPD and heart rate (before a beta blocker), pregnancy.',
-          '<b>Work-up (NHMRC):</b> VA, pupils, IOP with time, CCT, gonioscopy (must be open to call POAG), slit lamp for secondary causes, dilated disc and RNFL, OCT RNFL + GCL, 24-2 field (+10-2 for central defects, NTG, advanced). Two reliable baseline fields early.')}
-        ${h3('The disc: 5 Rs (Fingeret)')}${ol('<b>R</b>ing: scleral ring for disc size', '<b>R</b>im: ISNT, notching, colour', '<b>R</b>NFL defects (wedge, red-free)', '<b>R</b>egion of beta-PPA', '<b>R</b>etinal (disc) haemorrhages: inferotemporal, last 6–8 weeks, mark progression')}
-        <p>Also CD asymmetry over 0.2, bayonetting, baring of vessels, laminar dot sign. <b>Pallor out of proportion to cupping is not glaucoma:</b> think compressive or neuro.</p></div>
-        <div>${figs(fig('disc-poag-session', 'Study session (62-year-old, IOP 26/24): CDR 0.8, inferotemporal notching, PPA, visible lamina pores; matched an inferotemporal RNFL wedge and a superior field defect.', true))}
-        ${h3('Fields')}
+        ${ul('<b>Ask (and say why):</b> family history (who, what type, age at diagnosis, did they lose vision); steroids by any route incl. inhalers, nasal sprays, creams; migraine, Raynaud’s, sleep apnoea (“do you snore or wake unrefreshed?”); BP and when BP tablets are taken (nocturnal hypotension); diabetes; myopia; eye trauma or surgery; ethnicity; asthma/COPD, heart rate and heart block (before a beta blocker); sulfa allergy (before a CAI); pregnancy or plans; other medicines (MAOIs, oral beta blockers); how well they manage drops (arthritis, tremor, memory).',
+          '<b>Work-up (NHMRC):</b> VA, pupils (RAPD), IOP with time of day (phasing for NTG), CCT, <b>gonioscopy</b> (must be open to call POAG; look for PXF, PDS pigment, recession, PAS, NV), slit lamp for secondary causes, dilated stereo disc and RNFL, OCT RNFL + GCL, 24-2 field (+10-2 for paracentral defects, NTG, advanced). Two reliable baseline fields early (front-loading).',
+          '<b>Minimum equipment to manage glaucoma:</b> IOP, CCT, threshold fields, gonioscopy, disc and RNFL assessment (OCT).')}
+        ${figs(fig('disc-poag-session', 'Study session (62-year-old, IOP 26/24): CDR 0.8, inferotemporal notching, PPA, visible lamina pores; matched an inferotemporal RNFL wedge and a superior field defect.', true))}</div></div>
+
+        ${h3('Risk factors: who gets it, and how much each one matters')}
+        <p>Group them in the oral: <b>ocular</b> (IOP, CCT, disc, PSD, myopia, PXF/PDS), <b>demographic</b> (age, family history, ethnicity) and <b>systemic/vascular</b> (perfusion pressure, migraine, sleep apnoea, steroids). Quote one number with its source.</p>
+        ${table(['Risk factor', 'Size of the effect', 'Evidence', 'What you do with it'], [
+          ['Raised IOP', 'Each 1 mmHg ≈ 10% more risk of conversion (OHT → POAG) and of progression once diagnosed', 'OHTS, EMGT', 'The only factor we can treat. Phasing if borderline; record time of day'],
+          ['Age', 'Each decade ≈ +22% risk of conversion; prevalence climbs steeply after 70', 'OHTS, BMES', 'Older = higher risk but less lifetime to lose vision in: weigh both'],
+          ['Family history', 'First-degree relative ≈ 2–4×; lifetime risk ~22% in siblings and children of patients vs ~2% in controls (≈ 9×). Siblings carry more risk than parents', 'Rotterdam (Wolfs 1998), Barbados, BMES', 'Advise relatives over 40 to have checks; screen earlier and more often'],
+          ['Thin CCT', 'Each 40 µm thinner ≈ +71% conversion; ≤555 µm the highest-risk group. Thin corneas also read falsely low', 'OHTS', 'Pachymetry for every suspect. Don’t rely on correction formulas; treat CCT as a risk factor'],
+          ['Larger vertical C/D', 'Each 0.1 larger ≈ +32%', 'OHTS', 'Document with photos/OCT; asymmetry over 0.2 is suspicious'],
+          ['Higher PSD', 'Each 0.2 dB higher ≈ +27%', 'OHTS', 'Early localised loss even when GHT is borderline'],
+          ['Disc haemorrhage', 'Conversion 4–6× more likely; marks progression in established disease (EMGT, CNTGS)', 'OHTS, EMGT, NHMRC', 'Sign of active disease: repeat field and OCT within 3–4 months, consider stepping up'],
+          ['Ethnicity', 'African descent ≈ 4× POAG, earlier and more aggressive. East Asian: more NTG (Japan: ~90% of POAG is NTG, Tajimi) and angle closure', 'Baltimore Eye Survey, Tajimi', 'Lower threshold to treat; gonio every East Asian patient'],
+          ['Myopia', '≈ 2× POAG; moderate–high myopia ≈ 3×', 'BMES (Mitchell 1999), meta-analyses', 'Tilted discs and PPA make the disc hard to read: lean on OCT and fields, check the OCT normative database'],
+          ['PXF', 'Doubles OHT conversion; the strongest predictor of progression in EMGT (≈ 2×, fastest MD loss −3.1 dB/yr)', 'EMGT, Jeng 2007', 'Dilate every older patient; closer reviews, higher target'],
+          ['PDS', '~10% glaucoma at 5 years, ~15% at 15 years', 'Siddiqui 2003', 'IOP after exercise/dilation; DFE for RD'],
+          ['Low ocular perfusion pressure', 'Diastolic perfusion pressure under ~30 mmHg ≈ 6× POAG; low systolic perfusion predicted progression', 'Baltimore (Tielsch 1995), Barbados, EMGT', 'Ask about BP tablets at night and dizziness on standing; liaise with the GP. No timolol at night in NTG'],
+          ['Migraine, Raynaud’s (vasospasm)', 'Predict progression in NTG', 'CNTGS', 'Ask every NTG patient'],
+          ['Obstructive sleep apnoea', '≈ 1.5–2× glaucoma, mostly NTG', 'Meta-analyses', 'Ask about snoring; refer for a sleep study'],
+          ['Steroids', '~1/3 of people raise IOP on steroids (~5% by over 15 mmHg); ~90% of POAG patients respond. High-dose inhaled steroids raise OHT/glaucoma risk', 'Armaly, Garbe 1997', 'Ask about every route; follow responders as suspects for life'],
+          ['Diabetes', 'Modest (≈ 1.3–1.5×); OHTS even found an apparent protective effect (selection bias)', 'Meta-analyses; contested', 'Mention as weak or contested'],
+          ['IOP fluctuation', 'Linked to progression in AGIS (low-IOP eyes) but not in EMGT', 'AGIS, EMGT; contested', 'Phasing; aim for a steady IOP'],
+          ['Advanced or bilateral disease at diagnosis', 'The strongest predictor of going blind; worse baseline MD and bilateral disease predicted progression', 'EMGT, Olmsted', 'Lower target, closer review, refer early']])}
+        <div class="ncols"><div>${box('warn', '📈 Predictors of progression once diagnosed (EMGT)', ul(
+          'Higher baseline IOP (each 1 mmHg ≈ 10%)', 'PXF', 'Bilateral disease', 'Worse baseline MD', 'Older age', 'Disc haemorrhages during follow-up', 'Low systolic perfusion pressure; cardiovascular disease (in NTG)', 'In NTG (CNTGS): <b>female sex, migraine, disc haemorrhage</b>'))}</div>
+        <div>${box('good', '🗣️ Say it like this', '<p>“His risk factors are age, a first-degree relative, an IOP of 28 and a thin cornea at 520 µm. From OHTS, each 40 µm thinner cornea adds about 70% to his risk and each mmHg about 10%, so his 5-year risk of conversion is high and I’d treat.”</p>')}</div></div>
+
+        ${h3('Why treat? What the trials show')}
+        <p>Every treatment decision in the oral should be defended with a trial. The core message from all of them: <b>lowering IOP slows or prevents glaucomatous damage, at every stage and even when IOP is “normal”</b>, but not every patient progresses, so the intensity of treatment follows the risk.</p>
+        ${table(['Trial', 'Who and what', 'Result', 'Why it justifies treatment (what to say)'], [
+          ['<b>OHTS</b> (1994, US)', '1636 people with OHT (IOP 24–32); drops aiming for 20% reduction and ≤24 mmHg vs observation', '5-year conversion <b>9.5% → 4.4%</b> (risk more than halved). At 13 years 22% vs 16% after the observed group was treated too. ~25% converted overall by 20 years', 'Treating OHT prevents glaucoma, but ~90% of untreated OHT didn’t convert in 5 years (NNT ≈ 20). So treat by <b>risk</b> (age, IOP, CCT, C/D, PSD), not by IOP alone. Delaying treatment cost most in the highest-risk third'],
+          ['<b>EGPS</b> (Europe)', '1081 with OHT (IOP 22–29); dorzolamide vs placebo', 'No significant difference (13.4% vs 14.1%); placebo also lowered IOP', 'A small IOP drop isn’t enough. Confirmed the OHTS risk factors; pooled with OHTS for the 5-year risk calculator'],
+          ['<b>EMGT</b> (Sweden)', '255 newly diagnosed early OAG (incl. NTG, PXF; mean MD −5 dB); betaxolol + ALT (25% IOP cut) vs no treatment', 'Progression <b>62% → 45%</b> at ~6 years; time to progression 48 → 66 months. <b>Each 1 mmHg ≈ 10% less risk</b>', 'The first RCT to prove treating established glaucoma slows it. Natural history untreated: ~−0.8 dB/yr overall, high-tension −1.3, NTG −0.4, PXF −3.1. Even treated, many progress → review and step up'],
+          ['<b>CNTGS</b>', '140 NTG eyes (progressing or threatening fixation); 30% IOP reduction vs none', 'Progression <b>35% → 12%</b> (significant once cataract from surgery was accounted for). About half of untreated NTG didn’t progress over 5 years', 'IOP matters even when it’s “normal”: target 30%. But NTG often progresses slowly, so it’s reasonable to confirm progression first unless the defect threatens fixation, is advanced or risk is high'],
+          ['<b>AGIS</b>', '591 eyes with advanced OAG uncontrolled on drops; laser vs surgery sequences', 'Eyes with IOP <b>under 18 at every visit</b> (mean ~12) had virtually no further field loss; eyes under 18 at fewer than half of visits got worse', 'Advanced disease needs a low target (low teens), held at every visit, not just on average'],
+          ['<b>CIGTS</b>', '607 newly diagnosed OAG; drops first vs trabeculectomy first', 'Similar field outcomes at 5 years; surgery gave lower IOP but more cataract. At 9 years, eyes with baseline MD worse than −10 dB did better with surgery', 'Drops first is reasonable; advanced at diagnosis → discuss early surgery'],
+          ['<b>UKGTS</b> (2015)', '516 newly diagnosed OAG; latanoprost vs placebo', 'Field progression at 2 years <b>25.6% → 15.2%</b> (risk roughly halved); a difference within 12–18 months', 'The first placebo-controlled proof that a drop preserves the field. Supports a PGA first'],
+          ['<b>LiGHT</b> (2019)', '718 newly diagnosed OAG or OHT; SLT first vs drops first', '<b>74% drop-free at 3 years</b> (~70% at 6). IOP at target more often; no trabeculectomies needed vs 11 in the drops arm; cheaper; less progression at 6 years (~20% vs ~27%)', 'SLT is a genuine first-line option, not just a back-up: adherence, side effects, pregnancy, cost, cosmesis'],
+          ['<b>LoGTS</b>', '190 NTG patients; brimonidine 0.2% vs timolol 0.5%', 'Field progression ~9% vs ~39% at similar IOP, but ~28% dropped out of the brimonidine arm (allergy)', 'Hints at IOP-independent neuroprotection; Cochrane says unproven. Reason to choose brimonidine (and avoid night timolol) in NTG'],
+          ['<b>TAGS</b> (2021)', '453 with advanced OAG at diagnosis; trabeculectomy vs drops first', 'Lower IOP with surgery (~12 vs ~15 mmHg), similar quality of life and safety at 2 years', 'Advanced at presentation → refer early for surgery']])}
+        <div class="ncols"><div>${h3('Deciding whether to treat')}
+        ${ul('<b>Treat:</b> confirmed glaucoma (disc + field + OCT agree) at any IOP; high-risk OHT; any documented progression.',
+          '<b>OHT 5-year risk</b> (OHTS/EGPS calculator: age, IOP, CCT, vertical C/D, PSD): under 5% → monitor; 5–15% → discuss and consider; over 15% → treat.',
+          '<b>Think in a lifetime:</b> the aim is to keep useful vision for the rest of the patient’s life. Plot rate of progression (dB/yr) against life expectancy: young, fast, advanced or one-eyed → treat harder; elderly, slow and early → gentler or watch.',
+          '<b>Other reasons to treat OHT:</b> IOP over ~30 (vein occlusion, corneal oedema), only eye, poor reliability of follow-up, patient preference.',
+          '<b>The cost of treatment:</b> side effects, price, lifelong drops, and adherence: roughly a third to a half of patients aren’t using drops as prescribed within a year. Under-treatment and non-adherence are why treated patients still progress.')}</div>
+        <div>${h3('Target IOP (write it on the record)')}
+        ${table(['Situation', 'Target', 'Evidence'], [
+          ['High-risk OHT', '20% reduction and ≤24 mmHg', 'OHTS'],
+          ['Early POAG', '20–25% (≤19); a further 20% if progressing', 'NHMRC; EMGT'],
+          ['Moderate POAG', '30% (≤18)', 'NHMRC; LiGHT'],
+          ['Advanced', '30–50%: under 18 at every visit, ideally low teens (≤14)', 'AGIS'],
+          ['NTG', '30% from baseline', 'CNTGS'],
+          ['Unilateral or secondary', 'Often the fellow eye’s IOP', 'Clinical']])}
+        <p>The target is a starting guess: if the disc, OCT or field still progresses at target, the target was wrong. Lower it by another 20%.</p></div></div>
+
+        ${h3('Management')}
+        <div class="ncols"><div>${h3('Treatment ladder')}
+        ${ol('<b>PGA at night</b> (latanoprost 0.005% one drop nocte): most effective (25–35%), once daily, few systemic effects, 24-hour control. UKGTS evidence. <b>Or SLT first</b> (LiGHT).',
+          '<b>Review at 4–6 weeks</b> (full effect 3–5 weeks): IOP at the same time of day, side effects, adherence and drop technique.',
+          'Target missed: check adherence and technique first → switch within class or <b>add</b> a second drug (timolol, brimonidine, brinzolamide) → fixed combination (PBS only once one drug isn’t enough) → SLT.',
+          'Still not at target, progressing or intolerant → ophthalmologist (more laser, MIGS, trabeculectomy, tube).',
+          'One-eye trial is no longer favoured (the eyes don’t respond symmetrically); compare with baseline instead.')}
+        ${h3('Why each drug, and how much it lowers IOP')}
+        ${table(['Class', 'Lowers IOP by', 'Why choose / avoid'], [
+          ['PGA', '25–35%', 'First line: strongest, nocte, 24 h. Avoid with uveitis, HSK history, CMO risk; warn about iris colour, lashes, periorbitopathy'],
+          ['Beta blocker (timolol)', '20–25%', 'Cheap, mane. Weak overnight. Avoid in asthma/COPD, bradycardia, heart block, athletes, and at night in NTG'],
+          ['Alpha-2 agonist (brimonidine)', '20–25% (peak)', 'Good adjunct; LoGTS for NTG. Allergy up to 1/3; not under 2 (CNS depression); MAOIs'],
+          ['Topical CAI (brinzolamide)', '15–20%', 'Adjunct; works overnight. Avoid in sulfa allergy and endothelial disease'],
+          ['SLT', '20–30%', 'First line or add-on; no adherence needed; repeatable. Less effective at low baseline IOP and in angle recession']])}</div>
+        <div>${h3('Pick the drug for the patient')}
+        ${ul('Young, active or athletic: avoid timolol (caps heart rate). PGA or SLT.', 'Asthma/COPD: no timolol; betaxolol only with caution.', 'Already on an oral beta blocker: topical timolol adds little and adds risk.', 'HSK, uveitis or CMO risk: no PGA; use timolol.', 'One eye or cosmetic worry: warn about iris colour and lashes; offer SLT.', 'Dry eye or preservative toxicity: preservative-free (Lumigan PF, tafluprost, Cosopt PF), lubricants 10–15 min apart.', 'NTG: PGA nocte, brimonidine next; no timolol at night.', 'Pregnant: SLT first (see Drug reference).', 'Poor dexterity or memory: SLT, once-daily drops, drop aids, a family member.')}
+        ${h3('Counselling (it’s part of the mark)')}
+        ${ul('Glaucoma is lifelong and silent: drops stop it getting worse, they don’t fix lost vision, and you won’t feel them working.', 'One drop, eyes closed 2 min with punctal occlusion (less systemic absorption, more effect); 5–10 min between drops.', 'Same time each day; a missed dose is skipped, not doubled; bring drops to every visit.', 'Side effects to expect and which to report; tell the GP and pharmacist; tell first-degree relatives to get checked.', 'Driving: advanced bilateral field loss may affect the licence standard.')}
+        ${h3('Monitoring')}
+        ${ul('After starting drops: IOP at 4–6 weeks with an adherence and technique check.', 'New glaucoma: every 3 months for 2 years, field and OCT every 6 months (front-load fields to measure the rate early).', 'At target: every 3–12 months; not at target: about 4-monthly. Stable after 2 years: field and imaging yearly.', 'OHT: IOP 6-monthly, field and DFE yearly, gonio and disc photos every 2–3 years.')}</div></div>
+
+        <div class="ncols"><div>${h3('Fields')}
         ${ul('<b>Reliability first:</b> fixation losses, false positives over 15%, false negatives. Clover-leaf = fatigue.',
           'Then GHT, MD (overall loss), PSD (localised loss), VFI, pattern deviation. Glaucomatous defects respect the horizontal midline.',
           '<b>Grade (Hodapp):</b> early MD better than −6 dB; moderate −6 to −12; advanced worse than −12 or any point within 10°.',
           '<b>Early defect:</b> 3+ adjacent points p&lt;5% with one p&lt;1%, or GHT outside limits, or PSD p&lt;5%.',
-          '<b>Progression:</b> deepening (first and most common), widening, then new defects. Event (GPA) vs trend (dB/yr) analysis.')}</div></div>
-        ${h3('Target IOP and the trial to quote')}
-        ${table(['Situation', 'Target', 'Evidence'], [
-          ['High-risk OHT', '20% reduction and ≤24 mmHg', 'OHTS'],
-          ['Early POAG', '25% (further 20% if progressing)', 'NHMRC; EMGT: each 1 mmHg ≈ 10% less risk'],
-          ['Moderate POAG', '30%', 'NHMRC; LiGHT (30% or under 18)'],
-          ['Advanced', 'Under 18 at every visit, ideally low teens', 'AGIS'],
-          ['NTG', '30% from baseline', 'CNTGS']])}
-        <div class="ncols">
-        <div>${h3('Treatment ladder')}
-        ${ul('<b>PGA first</b>: most effective, once daily (at night), few systemic effects. Review at 4–6 weeks.',
-          'Target missed: check compliance and technique → switch or add → fixed combination.',
-          '<b>SLT</b> is a first-line alternative (LiGHT: 74% drop-free at 3 years): adherence, cosmesis, pregnancy, side effects.')}
-        ${h3('Pick the drug for the patient')}
-        ${ul('Young, active or athletic: avoid timolol (caps heart rate).', 'Asthma/COPD: no timolol; betaxolol only with caution.', 'Already on an oral beta blocker: topical timolol adds little.', 'HSK, uveitis or CMO risk: no PGA, use timolol.', 'One eye or cosmetic worry: warn about iris colour and lashes; offer SLT.', 'Dry eye: preservative-free (Lumigan PF, tafluprost, Cosopt PF).', 'Pregnant: SLT first.')}</div>
+          '<b>Progression:</b> deepening (first and most common), widening, then new defects. Event (GPA) vs trend (dB/yr) analysis; need 4–5 fields. Faster than −1.5 to −2 dB/yr: escalate and refer.')}
+        ${h3('The disc: 5 Rs (Fingeret)')}${ol('<b>R</b>ing: scleral ring for disc size', '<b>R</b>im: ISNT, notching, colour', '<b>R</b>NFL defects (wedge, red-free)', '<b>R</b>egion of beta-PPA', '<b>R</b>etinal (disc) haemorrhages: inferotemporal, last 6–8 weeks, mark progression')}
+        <p>Also CD asymmetry over 0.2, bayonetting, baring of vessels, laminar dot sign. <b>Pallor out of proportion to cupping is not glaucoma:</b> think compressive or neuro.</p></div>
         <div>${h3('Referral and collaborative care (RANZCO, OBA)')}
         ${ul('<b>Refer within 4 months</b> of starting treatment; sooner if not stabilising, needs laser/surgery, or side effects. Review every 4–6 weeks at first.',
+          '<b>Higher risk:</b> IOP 22–24 with average CCT, single disc haemorrhage, PXF or PDS without raised IOP, IOP up 50%, steroids/topiramate.',
           '<b>Very high risk (refer):</b> IOP over 27, over 24 with average CCT, over 21 with thin CCT, multiple risk factors, secondary causes with raised IOP.',
-          '<b>Ophthalmologist manages:</b> secondary glaucoma (except PXF/PDS), trauma, monocular, advanced or unstable, IOP over 35.',
-          'Suspects and early stable: at least 6-monthly, ophthalmologist every 2 years.',
+          '<b>Ophthalmologist manages:</b> secondary glaucoma (except PXF/PDS), trauma, monocular, multiple surgeries, advanced or unstable, IOP over 35. Narrow angles: refer for laser.',
+          'Suspects and early stable: at least 6-monthly (yearly if over 80), ophthalmologist every 2 years; moderate stable: ophthalmologist yearly.',
           'Optometrists can’t prescribe acetazolamide, even in angle closure.')}
         ${h3('OHT and NTG')}
-        ${ul('<b>OHTS risk:</b> each decade +22%; each 1 mmHg +10%; each 0.1 vertical CD +32%; each 40 µm thinner CCT +71%. Disc haemorrhage: 4–6× conversion.',
-          '<b>NTG</b> is a diagnosis of exclusion: thin CCT, missed peaks (phasing), burnt-out PDS, past steroids, trauma, uveitis, neuro causes (pallor, vertical midline, RAPD, poor colour vision → MRI).',
-          'NTG risk (CNTGS): female, migraine, disc haemorrhage; also Raynaud’s, sleep apnoea, nocturnal hypotension. Brimonidine attractive (LoGTS); no timolol at night.')}</div></div>`
+        ${ul('<b>OHT:</b> raised IOP, normal disc, OCT and field, open angles, no secondary cause. Treat if high risk (see the risk calculator above) or patient preference.',
+          '<b>NTG</b> is a diagnosis of exclusion: thin CCT, missed peaks (phasing, water-drinking test), burnt-out PDS, past steroids, trauma, uveitis, neuro causes (pallor, vertical midline, unilateral, young, RAPD, poor colour vision → MRI).',
+          'NTG features: inferior notching, disc haemorrhages, PPA, deep paracentral defects near fixation (do a 10-2).',
+          'NTG management: 30% (CNTGS); PGA nocte, brimonidine attractive (LoGTS); no timolol at night; SLT less effective at low baseline IOP; manage BP and sleep apnoea with the GP.')}</div></div>`
     },
     {
       id: 'secondary', title: 'Secondary glaucomas', icon: '🧩', hue: 250,
