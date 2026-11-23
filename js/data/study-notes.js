@@ -4,7 +4,7 @@
 (() => {
   const fig = (name, caption, wide) => `<figure class="nfig${wide ? ' wide' : ''}"><button type="button" data-act="zoom" data-v="img/notes/${name}.jpg" aria-label="Enlarge: ${caption.replace(/<[^>]+>/g, '').replace(/"/g, '&quot;')}"><img src="img/notes/${name}.jpg" alt="${caption.replace(/<[^>]+>/g, '').replace(/"/g, '&quot;')}" loading="lazy"></button><figcaption>${caption}</figcaption></figure>`;
   const figs = (...items) => `<div class="nfigs">${items.join('')}</div>`;
-  const table = (head, rows) => `<div class="tablewrap"><table class="t ntable"><tr>${head.map((h) => `<th>${h}</th>`).join('')}</tr>${rows.map((r) => `<tr>${r.map((d, i) => (i ? `<td>${d}</td>` : `<td><b>${d}</b></td>`)).join('')}</tr>`).join('')}</table></div>`;
+  const table = (head, rows) => `<div class="tablewrap"><table class="t ntable${head.length > 3 ? ' wide' : ''}"><tr>${head.map((h) => `<th>${h}</th>`).join('')}</tr>${rows.map((r) => `<tr>${r.map((d, i) => (i ? `<td>${d}</td>` : `<td><b>${d}</b></td>`)).join('')}</tr>`).join('')}</table></div>`;
   const box = (kind, title, html) => `<div class="nbox ${kind}"><p class="label">${title}</p>${html}</div>`;
   const ul = (...li) => `<ul>${li.map((x) => `<li>${x}</li>`).join('')}</ul>`;
   const ol = (...li) => `<ol>${li.map((x) => `<li>${x}</li>`).join('')}</ol>`;
@@ -261,21 +261,30 @@
     {
       id: 'herpes', title: 'Herpetic eye disease', icon: '🦠', hue: 300,
       lead: 'The two classic traps: a steroid on an epithelial dendrite, and not dilating. The usual storyline: epithelial HSK, then the patient returns with stromal haze.',
-      html: `${table(['', 'HSV keratitis', 'HZO'], [
+      html: `${h3('HSV vs HZO at a glance')}
+        ${table(['', 'HSV keratitis', 'HZO'], [
           ['Lesion', 'True dendrite with terminal bulbs; ulcerated base stains brightly; edges take rose bengal / lissamine', 'Pseudodendrite: raised, no bulbs, “painted on”, stains poorly'],
           ['Skin', 'Vesicles possible, not dermatomal', 'Dermatomal V1 rash respecting the midline; 2–3 day prodrome'],
           ['Who', 'Any age, recurrent', 'Older or immunocompromised; usually one episode'],
-          ['Latency', 'Trigeminal ganglion', 'Trigeminal ganglion (V1)']])}
+          ['Latency', 'Trigeminal ganglion', 'Trigeminal ganglion (V1)'],
+          ['Antiviral', 'Topical aciclovir 3% for epithelial disease; oral for cover and prophylaxis', 'Oral only (within 72 h); topical antivirals have no role']])}
         ${figs(fig('dendrite-schematic', 'HSV dendrite vs HZO pseudodendrite (schematic).', true), fig('hsv-session', 'Study session: “metal shavings” patient with a cold sore the week before; branching staining lesion with a satellite. HSV epithelial keratitis.', true))}
-        <div class="ncols"><div>
-        ${h3('HSV epithelial keratitis')}
-        ${figs(fig('hsv-dendrite', 'Branching dendrite with end bulbs; the whole ulcer stains.'))}
-        ${ul('<b>Aciclovir 3% ointment</b>, 1 cm 5×/day until 3 days after healing (~10–14 days).', 'Debride the edges under PF anaesthetic. Cycloplegic if AC reaction.', '<b>No steroid</b> on an active epithelial lesion (dendrite → geographic ulcer). <b>Dilate.</b>', 'Review 24–48 h, then weekly. Not healing by 2 weeks: compliance, toxicity, neurotrophic, Acanthamoeba.', 'Oral (via GP) if elderly, poor dexterity or immunocompromised: aciclovir 400 mg 5×/day or valaciclovir 500 mg bd–tds.')}
-        </div><div>
-        ${h3('HSV stromal keratitis')}
-        ${figs(fig('hsv-stromal', 'Stromal scarring with blood vessels growing in.'))}
-        ${ul('Epithelium healed, stromal haze or disciform oedema.', '<b>Pred Forte 1% qid</b> with a slow taper + oral aciclovir 400 mg bd (HEDS I: faster resolution).', '<b>Then prophylaxis</b> 400 mg bd for 12 months (HEDS II: any ocular HSV 32% → 19%; stromal 28% → 14%).', 'Refer necrotising stromal keratitis or endotheliitis.')}
-        </div></div>
+        ${h3('Types of HSV eye disease')}
+        <p>Name the layer, then whether it is <b>live virus</b> (treat with antiviral, no steroid) or <b>immune</b> (steroid with antiviral cover).</p>
+        ${table(['Type', 'Cause', 'What you see', 'Management'], [
+          ['Blepharoconjunctivitis', 'Live virus (often primary, children)', 'Lid vesicles, follicular conjunctivitis, tender preauricular node', 'Self-limiting; aciclovir 3% ointment to eye and skin lesions; oral if extensive'],
+          ['Epithelial: dendritic', 'Live virus in epithelium', 'Branching ulcer with terminal bulbs; base stains with NaFl, edges with lissamine; reduced sensation', 'Aciclovir 3% 5×/day; debride; <b>no steroid</b>. Dilate'],
+          ['Epithelial: geographic', 'Live virus (dendrite enlarged, often after steroid)', 'Large amoeboid ulcer with dendritic edges', 'As dendritic; consider oral antiviral; stop steroid'],
+          ['Marginal', 'Live virus near limbus + immune infiltrate', 'Peripheral ulcer with infiltrate, limbal injection; mimics Staph marginal keratitis but ulcerated and painful', 'Antiviral first; cautious steroid only with antiviral cover'],
+          ['Stromal: non-necrotising (immune)', 'Immune reaction to viral antigen', 'Intact epithelium, stromal haze/infiltrate, vessels, ghost vessels, scarring', '<b>Pred Forte 1%</b> qid slow taper + oral aciclovir 400 mg bd (HEDS I)'],
+          ['Stromal: necrotising', 'Live virus + intense immune response', 'Dense white infiltrate, ulceration, thinning; melt/perforation risk', '<b>Refer urgently</b>; oral antiviral, steroid only under ophthalmology'],
+          ['Endotheliitis (disciform, diffuse, linear)', 'Immune, at the endothelium', 'Round disc of stromal oedema with KPs beneath, no infiltrate; mild AC reaction; IOP may rise', 'Steroid + oral antiviral cover; treat IOP (no PGA). Refer if severe'],
+          ['Iridocyclitis / trabeculitis', 'Live virus ± immune', 'Unilateral AAU with high IOP, sectoral iris atrophy (transillumination)', 'Pred Forte + oral antiviral, cycloplegic, β-blocker/CAI (no PGA). Refer'],
+          ['Neurotrophic (metaherpetic)', 'Nerve damage, not live virus', 'Smooth oval defect with grey rolled edges over a scar; little or no sensation', 'Stop toxic drops (incl. antivirals); PF lubricants, BCL; refer if not healing (cenegermin, tarsorrhaphy, AMT)'],
+          ['Retinitis (ARN)', 'Live virus', 'Vitritis, peripheral necrotising retinitis, arteritis', '<b>Same-day hospital</b>: IV/oral antivirals']])}
+        ${figs(fig('hsv-dendrite', '<b>Dendritic:</b> branching dendrite with end bulbs; the whole ulcer stains.'), fig('hsv-stromal', '<b>Stromal:</b> scarring with blood vessels growing in.'))}
+        <div class="ncols"><div>${box('bad', '⛔ HSV epithelial keratitis', ul('<b>Aciclovir 3% ointment</b>, 1 cm 5×/day until 3 days after healing (~10–14 days).', 'Debride the edges under PF anaesthetic. Cycloplegic if AC reaction.', '<b>No steroid</b> on an active epithelial lesion. <b>Dilate.</b>', 'Review 24–48 h, then weekly. Not healing by 2 weeks: compliance, toxicity, neurotrophic, Acanthamoeba.', 'Oral (via GP) if elderly, poor dexterity or immunocompromised: aciclovir 400 mg 5×/day or valaciclovir 500 mg bd–tds.'))}</div>
+        <div>${box('good', '✅ HSV stromal keratitis and prophylaxis', ul('Epithelium healed, stromal haze or disciform oedema.', '<b>Pred Forte 1% qid</b> with a slow taper + oral aciclovir 400 mg bd (HEDS I: faster resolution).', '<b>Then prophylaxis</b> 400 mg bd for 12 months (HEDS II: any ocular HSV 32% → 19%; stromal 28% → 14%).', 'Refer necrotising stromal keratitis or endotheliitis.'))}</div></div>
         ${h3('HZO')}
         ${figs(fig('hzo-rash', '<b>HZO rash</b> in the first branch of the trigeminal nerve (V1), stopping at the midline.'), fig('hzo-pseudodendrite', '<b>HZO pseudodendrite:</b> raised, rope-like, no end bulbs, stains poorly.'))}
         <div class="ncols"><div>${ul('<b>GP within 72 h</b> for oral antivirals: aciclovir 800 mg 5×/day, or valaciclovir 1 g tds, for 7 days. Still give after 72 h if new lesions or eye involvement. Topical antivirals have no role.',
@@ -305,13 +314,23 @@
           ['Neonatal', 'Within 2 weeks of birth', 'Immediate referral']])}
         ${figs(fig('gonococcal', '<b>Gonococcal:</b> hyperacute, lots of pus within hours. Same-day referral.'), fig('chlamydia', '<b>Adult chlamydia:</b> large follicles in the lower fornix.'), fig('adenoviral', '<b>Adenoviral:</b> red, watery eyes in both eyes (often one starts first).'), fig('membrane', '<b>Membrane</b> on the lower tarsal conjunctiva; peel it.'))}
         ${h3('Episcleritis vs scleritis')}
-        <div class="ncols"><div>${table(['', 'Episcleritis', 'Scleritis'], [
-          ['Pain', 'Mild discomfort', 'Deep, boring, wakes at night, worse with movement'],
-          ['Colour', 'Bright red, sectoral', 'Bluish-violet, deeper'],
+        ${table(['', 'Episcleritis', 'Scleritis'], [
+          ['Pain', 'Mild discomfort', 'Deep, boring, wakes at night, worse with movement; tender to touch'],
+          ['Colour', 'Bright red, sectoral', 'Bluish-violet, deeper; best seen in daylight'],
           ['Vessels', 'Move; blanch with phenylephrine 2.5%', 'Don’t move or blanch'],
-          ['Systemic', 'Uncommon (~10%)', '~50% (RA, GPA)']])}
-          ${ul('<b>Episcleritis:</b> self-limiting 1–3 weeks; cool compresses, FML qid with taper if symptomatic, oral ibuprofen.', '<b>Scleritis:</b> refer. Oral NSAIDs (indometacin, naproxen), then oral prednisolone 60–80 mg once daily; never topical NSAIDs alone.')}</div>
-        <div>${figs(fig('episcleritis', '<b>Simple episcleritis:</b> sectoral redness that blanches with phenylephrine.'), fig('nodular-episcleritis', '<b>Nodular episcleritis:</b> a nodule that moves over the sclera.'), fig('scleritis', '<b>Scleritis:</b> deep, purplish, doesn’t blanch; severe boring pain.'))}</div></div>
+          ['Vision', 'Normal', 'May drop (keratitis, uveitis, posterior involvement)'],
+          ['Systemic', 'Uncommon (~10%)', '~50% (RA, GPA, relapsing polychondritis, SLE)'],
+          ['Management', 'Self-limiting 1–3 weeks; cool compresses, lubricants, FML qid with taper if symptomatic, oral ibuprofen', 'Refer. Oral NSAIDs, then oral prednisolone ± immunosuppression; never topical alone']])}
+        ${h3('Types of episcleritis and scleritis')}
+        ${table(['Type', 'How common', 'What you see', 'Systemic link and outlook', 'Management'], [
+          ['Simple episcleritis', '~80% of episcleritis', 'Sectoral (or diffuse) bright red injection that blanches', 'Rarely systemic; recurs', 'Supportive; FML or oral ibuprofen if symptomatic'],
+          ['Nodular episcleritis', '~20% of episcleritis', 'Mobile red nodule over the sclera; blanches', 'Rarely systemic; lasts longer', 'As simple; may need a longer FML course'],
+          ['Diffuse anterior scleritis', 'Commonest (~40–60%)', 'Widespread deep injection, distorted vessels, oedema', 'Most benign form', 'Refer (urgent): oral NSAID (indometacin, naproxen)'],
+          ['Nodular anterior scleritis', '~20–40%', 'Deep, tender, immobile nodule; doesn’t blanch', '~10% progress to necrotising', 'Refer (urgent): oral NSAID ± oral steroid'],
+          ['Necrotising with inflammation', '~10–15%', 'Severe pain, white avascular patches, scleral thinning (blue uvea shows)', 'Most destructive; strongly linked to RA, GPA; systemic vasculitis can be fatal', '<b>Same-day referral</b>: high-dose oral/IV steroid + immunosuppression'],
+          ['Scleromalacia perforans (necrotising without inflammation)', 'Rare', 'Painless, quiet, grey-blue thinning patches', 'Elderly women with long-standing RA', 'Refer; control RA; protect from trauma'],
+          ['Posterior scleritis', '~2–10%', 'Pain, reduced vision, proptosis, choroidal folds, exudative RD, disc swelling; may look white', 'Often missed; B-scan “T-sign”', '<b>Same-day referral</b>: systemic steroid']])}
+        ${figs(fig('episcleritis', '<b>Simple episcleritis:</b> sectoral redness that blanches with phenylephrine.'), fig('nodular-episcleritis', '<b>Nodular episcleritis:</b> a nodule that moves over the sclera.'), fig('scleritis', '<b>Scleritis:</b> deep, purplish, doesn’t blanch; severe boring pain.'))}
         ${h3('Lids, orbit and lacrimal')}
         ${figs(fig('chalazion-stye', '<b>Chalazion</b> (top): firm painless lump away from the margin. <b>Stye</b>: tender lump at the margin.'), fig('preseptal', '<b>Preseptal cellulitis:</b> swollen red lid; movements, vision and pupils normal.'), fig('demodex', '<b>Demodex:</b> cylindrical collarettes around the lash base.'), fig('lice', '<b>Phthiriasis:</b> lice and nits on the lashes.'), fig('molluscum', '<b>Molluscum:</b> pearly umbilicated lumps; follicular conjunctivitis.'))}
         <div class="ncols"><div>${ul('<b>Preseptal vs orbital:</b> VA, RAPD, motility and pain on movement, proptosis, colour, fever. Preseptal: GP for amoxicillin–clavulanate (cefalexin if penicillin-allergic). Any orbital sign or a child: ED for IV antibiotics and CT.',

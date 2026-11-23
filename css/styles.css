@@ -732,6 +732,8 @@ body.has-player { padding-bottom: 7.5rem; }
 .nfig figcaption b { color: var(--ink); }
 .ntable { font-size: .88rem; margin: .5rem 0 .8rem; }
 .ntable td { line-height: 1.45; }
+.ntable.wide { min-width: 38rem; }
+.ntable.wide td:first-child { min-width: 8rem; }
 .nbox { border-radius: 8px; padding: .75rem .9rem; margin: .7rem 0; background: var(--surface-2); border-left: 4px solid var(--line); }
 .nbox .label { margin: 0 0 .3rem; font-weight: 700; }
 .nbox p { margin: .3rem 0; }
