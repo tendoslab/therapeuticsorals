@@ -282,6 +282,14 @@
           ['Iridocyclitis / trabeculitis', 'Live virus ± immune', 'Unilateral AAU with high IOP, sectoral iris atrophy (transillumination)', 'Pred Forte + oral antiviral, cycloplegic, β-blocker/CAI (no PGA). Refer'],
           ['Neurotrophic (metaherpetic)', 'Nerve damage, not live virus', 'Smooth oval defect with grey rolled edges over a scar; little or no sensation', 'Stop toxic drops (incl. antivirals); PF lubricants, BCL; refer if not healing (cenegermin, tarsorrhaphy, AMT)'],
           ['Retinitis (ARN)', 'Live virus', 'Vitritis, peripheral necrotising retinitis, arteritis', '<b>Same-day hospital</b>: IV/oral antivirals']])}
+        ${h3('Herpes: systemic work-up')}
+        <p>Typical HSV keratitis needs no blood tests. Look further when the story is unusual, and request tests through the GP.</p>
+        ${table(['When', 'Why', 'Ask about / tests'], [
+          ['HZO under ~50, severe, recurrent or multi-dermatomal', 'Possible immunosuppression', 'HIV test; FBC; glucose/HbA1c; medications (steroids, chemotherapy, biologics); age-appropriate cancer screening'],
+          ['Bilateral, severe or frequently recurrent HSV', 'Atopy or immunosuppression', 'Eczema/AKC history, HIV, immunosuppressant drugs'],
+          ['Before oral aciclovir or valaciclovir (treatment or 12-month prophylaxis)', 'Renally cleared; dose by kidney function', 'Creatinine/eGFR, especially in the elderly'],
+          ['Retinitis (ARN or PORN)', 'Confirm virus; screen for HIV and mimics', 'Same-day hospital: aqueous/vitreous PCR, HIV, syphilis serology'],
+          ['Herpes in pregnancy or a neonate', 'Neonatal HSV can be fatal', 'Obstetrician / paediatric referral']])}
         ${figs(fig('hsv-dendrite', '<b>Dendritic:</b> branching dendrite with end bulbs; the whole ulcer stains.'), fig('hsv-stromal', '<b>Stromal:</b> scarring with blood vessels growing in.'))}
         <div class="ncols"><div>${box('bad', '⛔ HSV epithelial keratitis', ul('<b>Aciclovir 3% ointment</b>, 1 cm 5×/day until 3 days after healing (~10–14 days).', 'Debride the edges under PF anaesthetic. Cycloplegic if AC reaction.', '<b>No steroid</b> on an active epithelial lesion. <b>Dilate.</b>', 'Review 24–48 h, then weekly. Not healing by 2 weeks: compliance, toxicity, neurotrophic, Acanthamoeba.', 'Oral (via GP) if elderly, poor dexterity or immunocompromised: aciclovir 400 mg 5×/day or valaciclovir 500 mg bd–tds.'))}</div>
         <div>${box('good', '✅ HSV stromal keratitis and prophylaxis', ul('Epithelium healed, stromal haze or disciform oedema.', '<b>Pred Forte 1% qid</b> with a slow taper + oral aciclovir 400 mg bd (HEDS I: faster resolution).', '<b>Then prophylaxis</b> 400 mg bd for 12 months (HEDS II: any ocular HSV 32% → 19%; stromal 28% → 14%).', 'Refer necrotising stromal keratitis or endotheliitis.'))}</div></div>
@@ -330,6 +338,19 @@
           ['Necrotising with inflammation', '~10–15%', 'Severe pain, white avascular patches, scleral thinning (blue uvea shows)', 'Most destructive; strongly linked to RA, GPA; systemic vasculitis can be fatal', '<b>Same-day referral</b>: high-dose oral/IV steroid + immunosuppression'],
           ['Scleromalacia perforans (necrotising without inflammation)', 'Rare', 'Painless, quiet, grey-blue thinning patches', 'Elderly women with long-standing RA', 'Refer; control RA; protect from trauma'],
           ['Posterior scleritis', '~2–10%', 'Pain, reduced vision, proptosis, choroidal folds, exudative RD, disc swelling; may look white', 'Often missed; B-scan “T-sign”', '<b>Same-day referral</b>: systemic steroid']])}
+        ${h3('Scleritis: systemic work-up')}
+        <p>Episcleritis needs no work-up unless it recurs or there are systemic symptoms. Scleritis always does: ask a review of systems, then request bloods through the GP or ophthalmologist (often with a rheumatologist).</p>
+        ${table(['Cause', 'Ask about / look for', 'Tests'], [
+          ['Everyone (baseline)', 'BP, diabetes, kidney or stomach problems (before oral NSAIDs or steroids)', 'FBC, ESR, CRP, U&amp;E/creatinine, LFTs, glucose, urinalysis'],
+          ['Rheumatoid arthritis (commonest)', 'Painful swollen hand joints, morning stiffness, rheumatoid nodules', 'RF, anti-CCP'],
+          ['GPA (granulomatosis with polyangiitis)', 'Sinusitis, nosebleeds, crusting, saddle nose, cough or coughing blood, blood in urine', 'c-ANCA (PR3), urinalysis, creatinine, chest X-ray'],
+          ['Other vasculitis (MPA, PAN)', 'Weight loss, fever, rash, numbness, kidney disease', 'p-ANCA (MPO), hepatitis B serology'],
+          ['SLE', 'Butterfly rash, photosensitivity, mouth ulcers, joint pain, hair loss', 'ANA, anti-dsDNA, complement (C3, C4)'],
+          ['Relapsing polychondritis', 'Red, swollen ear cartilage (spares the lobe), nasal bridge collapse', 'Clinical; ESR/CRP'],
+          ['IBD and spondyloarthropathy', 'Diarrhoea, blood in stool; inflammatory back pain', 'HLA-B27, sacroiliac X-ray; GI referral'],
+          ['Infection', 'Past HZO, recent eye surgery or trauma, sexual history, TB contact or travel', 'Syphilis serology (EIA/TPPA), QuantiFERON + chest X-ray; scrapings if infectious scleritis suspected'],
+          ['Gout', 'Previous gout attacks', 'Serum uric acid'],
+          ['Posterior scleritis', 'Pain on eye movement, reduced vision', 'B-scan ultrasound (T-sign), OCT; CT/MRI orbits if proptosis']])}
         ${figs(fig('episcleritis', '<b>Simple episcleritis:</b> sectoral redness that blanches with phenylephrine.'), fig('nodular-episcleritis', '<b>Nodular episcleritis:</b> a nodule that moves over the sclera.'), fig('scleritis', '<b>Scleritis:</b> deep, purplish, doesn’t blanch; severe boring pain.'))}
         ${h3('Lids, orbit and lacrimal')}
         ${figs(fig('chalazion-stye', '<b>Chalazion</b> (top): firm painless lump away from the margin. <b>Stye</b>: tender lump at the margin.'), fig('preseptal', '<b>Preseptal cellulitis:</b> swollen red lid; movements, vision and pupils normal.'), fig('demodex', '<b>Demodex:</b> cylindrical collarettes around the lash base.'), fig('lice', '<b>Phthiriasis:</b> lice and nits on the lashes.'), fig('molluscum', '<b>Molluscum:</b> pearly umbilicated lumps; follicular conjunctivitis.'))}
