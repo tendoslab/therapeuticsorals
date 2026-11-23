@@ -861,6 +861,10 @@ kbd { font-family: var(--font-mono); font-size: .75em; padding: .05rem .35rem; b
 .fc-q { font-size: 1.25rem; font-weight: 700; line-height: 1.4; }
 .fc-a { border-top: 1px dashed var(--line); padding-top: .9rem; font-size: 1.02rem; line-height: 1.55; }
 .fc-a ul, .fc-a ol { margin: .4rem 0; }
+.fc-a table { width: 100%; border-collapse: collapse; font-size: .92rem; margin: .4rem 0; }
+.fc-a th, .fc-a td { border-bottom: 1px solid var(--line); padding: .35rem .4rem; text-align: left; vertical-align: top; }
+.fc-a th { color: var(--muted); font-weight: 700; }
+.fc-a td:first-child { font-weight: 600; }
 .fc-show { display: flex; max-width: 46rem; margin: .8rem auto 0; }
 .fc-rate { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .5rem; max-width: 46rem; margin: .8rem auto 0; }
 .fc-r { display: flex; flex-direction: column; align-items: center; gap: .1rem; padding: .6rem .3rem; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font: inherit; color: var(--ink); }
